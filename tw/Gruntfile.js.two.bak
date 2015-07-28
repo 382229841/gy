@@ -1,0 +1,64 @@
+module.exports = function (grunt) {
+  // 项目配置
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+	uglify: {
+		builda: {
+			options: {
+				mangle: false, 
+			},
+			files: {
+				'dest/js/controller/shoppingController.min.js': ['src/js/controller/shoppingController.js'],
+				'dest/js/app.min.js': ['src/js/app.js'],
+			}
+		},
+		buildb:{
+			files: {
+				//'dest/lib/libs.min.js': ['src/lib/angular.min.js', 'src/lib/angular-route.min.js', 'src/lib/angular-touch.min.js', 'src/lib/mobile-angular-ui.js', 'src/lib/jquery/jquery-2.1.1.min.js', 'src/lib/jquery/jquery-ui.min.js', 'src/lib/jquery/jquery.alerts.js', 'src/lib/jquery/jquery.cookie.js', 'src/lib/jquery/jquery.md5.js', 'src/lib/jquery/jquery.sha1.js', 'src/lib/jquery/jquery.raty.min.js', 'src/lib/date.format.js', 'src/lib/mobiscroll.core-2.5.2.js', 'src/lib/mobiscroll.core-2.5.2-zh.js', 'src/lib/mobiscroll.datetime-2.5.1.js', 'src/lib/mobiscroll.datetime-2.5.1-zh.js', 'src/lib/mobiscroll.android-ics-2.5.2.js', 'src/lib/jgestures.min.js', 'src/lib/jquery/jquery.mobile.touch.js', 'src/lib/jquery/jquery.cycle.min.js','src/lib/jquery/jquery.lazyload.min.js','src/lib/mobiscroll.custom-2.6.2.min.js'],
+			    'dest/lib/libs.min.js': ['src/lib/angular.min.js', 'src/lib/angular-route.min.js', 'src/lib/angular-touch.min.js', 'src/lib/mobile-angular-ui.js', 'src/lib/jquery/jquery-2.1.1.min.js', 'src/lib/jquery/jquery-ui.min.js', 'src/lib/jquery/jquery.alerts.js', 'src/lib/jquery/jquery.cookie.js', 'src/lib/jquery/jquery.md5.js','src/lib/jquery/jquery.sha1.js', 'src/lib/jquery/jquery.raty.min.js', 'src/lib/date.format.js','src/lib/mobiscroll.custom-2.6.2.js', 'src/lib/jgestures.min.js', 'src/lib/jquery/jquery.mobile.touch.js', 'src/lib/jquery/jquery.cycle.min.js','src/lib/jquery/jquery.lazyload.min.js'],
+			    'dest/js/mains.min.js': ['src/js/extensions.js', 'src/js/common.js', 'src/js/main.js', 'src/js/const.js', 'src/js/service/dataServices.js', 'src/js/service/dataSignService.js','src/js/service/dataSignWeixin.js', 'src/js/module/shoppingModule.js', 'src/js/load.js']
+			}
+		}
+	},
+	copy: {
+	  main: {
+		files:[
+			{expand: true,flatten: true, src: ['src/image/*'], dest: 'dest/image/'},
+			{expand: true,flatten: true, src: ['src/views/*'], dest: 'dest/views/'},
+			{expand: true,flatten: true, src: ['src/fonts/*'], dest: 'dest/fonts/'},
+			{expand: true,flatten: true, src: ['src/js/config.js'], dest: 'dest/js/'}
+		],
+	  },
+	},
+	//压缩css
+	cssmin: {
+		//文件头部输出信息
+		options: {
+			banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+			//美化代码
+			beautify: {
+				//中文ascii化，非常有用！防止中文乱码的神配置
+				ascii_only: true
+			}
+		},
+		my_target: {
+			files: [
+				{
+					expand: true,
+					//相对路径
+					cwd: 'src/css/',
+					src: '*.css',
+					dest: 'dest/css'
+				}
+			]
+		}
+	}
+  });
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+
+  // 默认任务
+  grunt.registerTask('default', ['uglify:builda', 'uglify:buildb', 'cssmin','copy']);
+}
+//http://www.cnblogs.com/artwl/p/3449303.html

@@ -1,0 +1,78 @@
+<div ng-controller="easyHandsController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            个人信息
+        </div>
+          
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-home background-weixin-home">
+            <div class="nav-main-block">
+            </div>
+            <div class="fill-area input-area address-area" style="margin-bottom:0px;">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="pull-left">
+                            <div class="main-theme-text overlay-text">联系人
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <input id="name" type="text" ng-model="name" class="input"
+                                placeholder="联系人姓名" maxlength="20" ng-blur="saveTemp()" />
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="pull-left">
+                            <div class="main-theme-text overlay-text">手机号
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <input id="mobile" type="text" ng-model="mobile" class="input"
+                                placeholder="手机号码" maxlength="13" ng-keyup="validNum();" ng-blur="search()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fill-area input-area address-area margin-bottom-0 my-info">
+                <div class="list-group">
+                    <a class="list-group-item">
+                        <div class="pull-left">
+                            <div class="main-theme-text overlay-text">回程
+                            </div>                             
+                        </div>
+                        <div class="media-body">
+                            <input ng-click="airport()" type="text" ng-model="flight.terminal" class="input"
+                                placeholder="回程机场" readonly="readonly" style="text-align: center;"/>
+                            <input ng-click="date()" type="text" ng-model="time" class="input input-datetime" name="appDateTime"
+                                id="appDateTime" placeholder="回程时间" style="border-left:1px solid #dddddd;"/>
+                        </div>
+                    </a>                    
+                </div>
+            </div>
+            
+                      
+             <div class="fill-area input-area address-area margin-bottom-0">
+                <div class="list-group">
+                    <a class="list-group-item">
+                        <div class="pull-left">
+                            <div class="main-theme-text overlay-text">出发航班
+                            </div>                             
+                        </div>
+                        <div class="media-body">
+                            <input type="text" class="input"
+                                placeholder="请输入出发航班"/>                           
+                        </div>
+                    </a>                    
+                </div>
+            </div>
+            
+            <div class="easyHandsInfo" style="margin-top:0.6em;"> 
+                <div class="easyHandsInfo_ticket">上传购物小票：<img src="/image/easyBuy_01.png" /></div>           
+                <div class="main-btn-50 main-btn-red">
+                    <button class="btn" ng-click="confirm();">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

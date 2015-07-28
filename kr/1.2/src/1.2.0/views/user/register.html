@@ -1,0 +1,48 @@
+<div ng-controller="registerController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            <span>我的</span>                    
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">            
+            <div class="myPhone-content">
+                <div class="nav-main-block"></div>              
+                <div class="myPhone-item">
+                     <div class="myPhone-item-title">
+                        
+                     </div>
+                     <div class="myPhone-item-text">
+                        <img src="/image/icon_user.png" />
+                        <input type="text" ng-model="username" id="myPhoneNumber" placeholder="手机号" onkeydown="checkNumber(this,false);"/>
+                     </div> 
+                    
+                    <div class="myPhone-item-text">
+                        <i class="fa fa-unlock-alt"></i>
+                        <input type="tel" ng-model="code" id="myPhoneCode" placeholder="请输入验证码"/>
+                        <button class="button-code" ng-click="getCheckCode();" ng-disabled="wait<60"><span id="codeClock" style="display:none;color:#F25A65;font-weight:bold;">{{wait}}</span> 获取验证码</button>
+                     </div>
+                    
+                    <div class="myPhone-item-text">
+                        <img src="/image/icon_password.png" style="width:1.5em;height:auto;"/>
+                        <input type="password" ng-model="password" id="myPhoneNumber" placeholder="密码"/>
+                     </div>
+
+                     <div class="myPhone-item-text" ng-if="!isSetMobile" style="text-align:center;margin-top:25px;">
+                        <button class="btn" ng-click="register();" style="width:50%;">注册</button>
+                     </div>
+
+                </div> 
+            </div>
+
+
+        </div>
+    </div>
+</div>

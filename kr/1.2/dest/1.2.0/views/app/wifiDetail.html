@@ -1,0 +1,90 @@
+<div ng-controller="appWiFiDetailController">
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="pay-area order-detail-area">
+                
+                <div class="list-head" style="border-bottom:0px;">
+                       领取设备
+                </div>
+                <hr class="hr"/>
+                <div class="list-group">
+                    <div class="list-group-item media product-item">
+                        <div style="padding:2px 0px;">
+                            <label class="col-xs-2 padding-h">时间：</label>
+                            <span class="col-xs-10 padding-h">
+                                {{wifiInfo.getInfo.time}}(航班延误等)
+                            </span> 
+                            <div class="clear"></div>
+                        </div>
+                        <div style="padding:2px 0px;">
+                            <label class="col-xs-2 padding-h">地址：</label>
+                            <span class="col-xs-10 padding-h">
+                                {{wifiInfo.getInfo.address}}
+                            </span>
+                            <div class="clear"></div> 
+                        </div>
+                        <div style="padding:2px 0px;">
+                            <label class="col-xs-3 padding-h">客服电话：</label>
+                            <span class="col-xs-9 padding-h">
+                                {{wifiInfo.getInfo.phone}}
+                            </span>
+                            <div class="clear"></div> 
+                        </div>
+                        <div style="padding:5px 0px;" class="text-center" ng-if="!wifiInfo.getInfo.hotel">
+                            <img src="{{wifiInfo.backInfo.img}}" style="width:100%;"/>
+                            醒目位置标示图
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pay-area order-detail-area" style="margin-bottom:4em;">
+                
+                <div class="list-head" style="border-bottom:0px;">
+                       归还设备
+                </div>
+                <hr class="hr"/>
+                <div class="list-group">
+                    <div class="list-group-item media product-item">
+                        <div style="padding:2px 0px;">
+                            <label class="col-xs-2 padding-h">时间：</label>
+                            <span class="col-xs-10 padding-h">
+                                {{wifiInfo.backInfo.time}}
+                            </span> 
+                            <div class="clear"></div>
+                        </div>
+                        <div style="padding:2px 0px;">
+                            <label class="col-xs-2 padding-h">地址：</label>
+                            <span class="col-xs-10 padding-h">
+                                {{wifiInfo.backInfo.address}}
+                            </span>
+                            <div class="clear"></div> 
+                        </div>
+                        <div style="padding:2px 0px;">
+                            <label class="col-xs-3 padding-h">客服电话：</label>
+                            <span class="col-xs-9 padding-h">
+                                {{wifiInfo.backInfo.phone}}
+                            </span>
+                            <div class="clear"></div> 
+                        </div>
+                        <div style="padding:5px 0px;" class="text-center">
+                            <img src="{{wifiInfo.backInfo.img}}" style="width:100%;"/>
+                            醒目位置标示图
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-area">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <div style="padding:1em 0 2em 0;">
+                                关注微信公众号：<span style="color:#F4787C;text-decoration:underline;">海客科技客服（hikder_goeasy）</span>您想提问的都有！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

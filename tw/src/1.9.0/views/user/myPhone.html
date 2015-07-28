@@ -1,0 +1,55 @@
+<div ng-controller="myPhoneController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center" ng-if="isSetMobile">
+            修改手机
+        </div>
+        <div class="navbar-brand navbar-brand-center" ng-if="!isSetMobile">
+            填写手机
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="myPhone-content">              
+                <div id="divMyPhone">  
+                    <div class="nav-main-block"></div>                   
+                    <div class="myPhone-item">
+                         <div class="myPhone-item-title">
+                            为了给您提供更好的服务，请输入大陆手机号码
+                            <br/>
+                            <span style="color:#aaa;">(WiFi用户请输入预订时预留手机号)</span>
+                         </div>
+                         <div class="myPhone-item-text">
+                            <img src="/image/icon_phone.png" />
+                            <input type="tel" ng-model="mobile" id="myPhoneNumber" placeholder="请输入大陆手机号"/>
+                         </div> 
+
+                         <div class="myPhone-item-text">
+                            <i class="fa fa-unlock-alt"></i>
+                            <input type="tel" ng-model="code" id="myPhoneCode" placeholder="请输入验证码"/>
+                            <button class="button-code" ng-click="getCheckCode();" ng-disabled="wait<60"><span id="codeClock" style="display:none;color:#F25A65;font-weight:bold;">{{wait}}</span> 获取验证码</button>
+                         </div> 
+                         <div class="myPhone-item-text" ng-if="!isSetMobile">
+                            <button class="btn" ng-click="setPhone();">确定</button>
+                         </div>
+                         
+                         <div class="mySet-item-text" ng-if="isSetMobile">
+                            <button class="btn" ng-click="setPhone();">确定</button>
+                         </div>
+
+                         <div class="hidden">
+                            
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+<style>
+	img{
+		border:0;
+		margin:0;
+		vertical-align: bottom;
+	}
+	.activity-panel{
+		max-width:640px;
+		width:100%;
+		text-align:center;
+		margin:0 auto;
+	}
+	.img-panel{
+		font-size:0 ;
+	}
+	
+</style>
+<div ng-controller="activityFullController">
+	<div id="shareHint" ng-click="fadeOutShare();" style="display:none;position: fixed;
+				background: #000000;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 99999999;
+				opacity: .8;
+				height: 100%;">
+		<img src="image/activity/hint-1.png" style="position: fixed;width:55%;left:2em;top:2.8em;"/>
+		<img src="image/activity/hint-2.png" style="position: fixed;width:30%;right:1em;"/> 
+	</div>
+	<!-- Navbars -->
+    <div  class="navbar navbar-app nav-main" ng-show="isShowNavbar">
+        <div class="navbar-brand navbar-brand-center">
+            {{activityInfo.activity.name}}         
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable background-white">
+		<div class="scrollable-content relative background-white">	
+			<div class="nav-main-block" ng-show="isShowNavbar"></div>	
+				
+				<div class="activity-panel">
+				
+				<div class="img-panel">
+					<img src="image/activity/full/1.jpg?20150123"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/2.jpg?20150123"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/3.jpg?20150123" ng-click="goProduct(products[0].goodsId);"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/4.jpg?20150123"/>
+				</div>
+				<div class="img-panel">
+					
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:30%">
+								<img src="image/activity/full/5_1.jpg?20150123"  ng-click="goTo(1);"/>
+							</td>
+							<td style="width:40%">
+								<img src="image/activity/full/5_2.jpg?20150123"/>
+							</td>
+							<td style="width:30%">
+								<img src="image/activity/full/5_3.jpg?20150123"  ng-click="goTo(2);"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:30%">
+								<img src="image/activity/full/6_1.jpg?20150123"  ng-click="goTo(3);"/>
+							</td>
+							<td style="width:40%">
+								<img src="image/activity/full/6_2.jpg?20150123"/>
+							</td>
+							<td style="width:30%">
+								<img src="image/activity/full/6_3.jpg?20150123"  ng-click="goTo(4);"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:30%">
+								<img src="image/activity/full/7_1.jpg?20150123"  ng-click="goTo(5);"/>
+							</td>
+							<td style="width:40%">
+								<img src="image/activity/full/7_2.jpg?20150123"/>
+							</td>
+							<td style="width:30%">
+								<img src="image/activity/full/7_3.jpg?20150123"  ng-click="goTo(6);"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/8.jpg?20150123"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/9.jpg?20150123" ng-click="more();"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/10.jpg?20150123"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/11.jpg?20150123"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full/12.jpg?20150123"/>
+				</div>
+
+
+			</div>
+
+			
+
+
+			<div style="margin:0 auto;max-width:640px;padding:1em 2em 2em 2em;text-align:center;font-size:.8em;background:#FBF8F1;line-height:2em;">
+				<br/>
+				<div style="text-align:left;">更多服务请关注：
+				<span style="color:#f5717e;font-size:1.6em;">hiker_goeasy</span>
+				</div>
+				<div style="text-align:left;">长按 <span style="color:#f5717e;">微信号</span> 轻松复制，添加朋友，搜索即可关注</div>
+				
+				<br/>
+			</div>
+			
+		</div>
+	 </div>
+</div>

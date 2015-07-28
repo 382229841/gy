@@ -1,0 +1,43 @@
+<div ng-controller="activityController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            错过会哭
+        </div>
+        
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div>
+                <div class="nav-main-block">
+                </div>
+                <div class="list-group">
+                    <div class="list-group-item border-bottom-0 product-brief-item" ng-repeat="product in products">
+                        <div class="product-brief-box">
+                            <a href="#/product/{{product.id}}/1">
+                                <img alt="" src="{{imageServiceUrl}}{{product.img}}" />
+                            </a>
+                        </div>
+                        <div class="activity-title">
+                            <div class="promotePrice pull-right product-brief-price {{product.c_price != null && product.c_price > 0 ?'':'brief-price-one'}}">
+                                4.5折起 
+                            </div>
+                            <div class="media-body">
+                                {{product.name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="load-bar" ng-hide="pageNum == null || pageNum == pageCount">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                </div>
+                <div class="complete-bar-words" ng-show="pageNum != null && pageNum == pageCount">
+                    已经到底了哦~
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

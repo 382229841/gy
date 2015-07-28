@@ -1,0 +1,45 @@
+<style>
+    .col-xs-6{
+        padding-left:6px;
+        padding-right:6px;
+    }
+    .col-xs-6 button{
+        font-size:.9em;
+        line-height:4em;
+        height:4em;
+    }
+	.main-btn-red2 button {
+		background: #DFAB10;
+		border: 1px solid #DFAB10;
+		border-radius: 10px;
+	}
+	.main-btn button {
+		margin-top: 5px;
+		color: #000;
+		font-size: .8em;
+		font-weight:bold;
+		margin-bottom: 1em;
+	}
+	.main-btn-red2 button:focus, .main-btn-red2 button:hover {
+		background: #F9BF12;
+		border: 1px solid #F9BF12;
+		color: #fff;
+	}
+</style>
+<div ng-controller="downloadAllController">    
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="scrollable-content background-home background-weixin-home" 
+				style="position: relative;
+						background: url(/image/dl_bg.png) no-repeat;
+						background-size: auto 100%;">    
+				
+                <div class="main-btn main-btn-90 main-btn-red2" style="position:absolute;bottom:20%;width:100%;text-align:center;">
+                    <span class="col-xs-6"><button ng-click="download();">“购轻松韩国”下载</button></span>
+                    <span class="col-xs-6"><button ng-click="downloadKr();">“购轻松韩国”下载</button></span>
+                </div>
+				<div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>

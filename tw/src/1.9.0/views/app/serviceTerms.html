@@ -1,0 +1,24 @@
+﻿<div ng-controller="serviceTermsController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController" ng-hide="type == ProgramTypes.APP">
+        <div class="navbar-brand navbar-brand-center">
+            服务条款
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-gray">
+            <div class="nav-main-block" ng-hide="type == ProgramTypes.APP">
+            </div>
+            <div class="service-content">
+                服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容
+                服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容服务条款内容
+            </div>
+        </div>
+    </div>
+</div>

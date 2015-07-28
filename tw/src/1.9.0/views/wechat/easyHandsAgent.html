@@ -1,0 +1,53 @@
+<div ng-controller="agentController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController" ng-hide="type == ProgramTypes.APP">
+        <div class="navbar-brand navbar-brand-center">
+            机场寄存送
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-weixin-home">
+            <div class="nav-main-block">
+            </div>
+            <div class="easyHandsDown">
+                <img src="/image/easyHands_2.png" /> 
+            </div>
+            <div class="background-white">
+                <div class="agent-title" style="padding-top:0.4em;">
+                    机场对应的邮寄地址</div>
+                <div class="agent-content">
+                    1、桃园机场：台湾桃园县大园乡航站南路15号<br />
+                    2、高雄机场：小港区中山四路2号(近交流道)
+                </div>
+
+                <div class="agent-title">
+                    回程机场取货地址及示意图</div>
+                <div class="agent-area" style="padding-left:10px;">
+                    <div class="introduction-body">
+                        <div class="airport new" >
+                            <div>
+                                1、桃园机场：台湾桃园县大园乡航站南路15号</div>
+                            <img src="/image/t1.jpg" ng-click="showLarge(flight)" />
+                        </div>
+                        <div class="airport new">
+                            <div>
+                                2、高雄机场：小港区中山四路2号(近交流道)</div>
+                            <img src="/image/t2.jpg" ng-click="showLarge(flight)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="agent-title" style="padding-top:0.4em;">
+                    温馨提醒</div>
+                <div class="agent-content" style="padding-bottom:1em;">
+                    1、海客承诺：×××××××××<br />
+                    2、保障及服务：××××××××<br />
+                    3、注意事项：××××××××××
+                </div>                             
+            </div>
+            <div style="margin-top:20px;margin-bottom:20px;text-align:center;">
+                <img style="width:66%;" src="/image/easyHands_3.png" />
+            </div> 
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,90 @@
+﻿<div ng-controller="articleController" id="divArticleView">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-hide="type == ProgramTypes.APP">
+        <div class="navbar-brand navbar-brand-center">
+            发现详情
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-main-block" ng-hide="type == ProgramTypes.APP">
+    </div>
+    <ng-include src="'views/download.html'"></ng-include>
+    <div class="scrollable">
+        <div class="scrollable-content background-product">
+            <div id="divArticle">
+                <div class="nav-main-block" ng-hide="type == ProgramTypes.APP">
+                </div>
+                <div ng-show="showDownload == true" class="download-block">
+                </div>
+                <div class="list-group article-style">
+                    <div class="list-group-item border-bottom-0 article-box">
+                        <div class="article-title">
+                            {{article.title}}</div>
+                        <div class="article-content">
+                        </div>
+                    </div>
+                    <a class="list-group-item media border-bottom-0 product-item" ng-click="toProduct(article.goodsId)"
+                        ng-show="article.goodsId != null">
+                        <div class="product-body product-recommond">
+                            <div class="pull-left">
+                                <img alt="" src="{{article.goodsImg}}" class="product-image" />
+                            </div>
+                            <div class="media-body product-instruction product-detail">
+                                <div class="product-name">
+                                    {{article.goodsName}}
+                                </div>
+                                <div class="product-instruction-bottom dark-red">
+                                    {{article.goodsPrice | currency:'￥'}}</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="comment-area background-product">
+                    <div class="list-group article-style article-comment">
+                        <div class="list-group-item item-title">
+                            评论 <span class="comment-num">(共有<span id="spanTotalCount">{{page.totalCount}}</span>条评论)</span>
+                        </div>
+                        <div id="divArticleComment">
+                            <div class="list-group-item media" ng-repeat="comment in comments">
+                                <div class="pull-left avatar" style="background-image: url('{{comment.avatar == null || comment.avatar.toString().trim() == '' ? 'image/icon_avatar.png' : comment.avatar}}');">
+                                </div>
+                                <div class="media-body">
+                                    <span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+                                        {{comment.date}}</span>
+                                    <div class="comment-content">
+                                        {{comment.content}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="load-bar background-white" ng-hide="page == null || page.totalCount == 0 || page.pageNo == page.totalPage">
+                            <div class="pull-loading">
+                                上拉加载
+                            </div>
+                            <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                        </div>
+                        <div class="complete-bar-words background-white border-top-gray" ng-show="page != null && page.pageNo == page.totalPage">
+                            已经到底了哦~
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="favorite-bottom" ng-click="addFavorite()" ng-hide="type == ProgramTypes.APP">
+        <img src="image/icon_like_normal.png" alt="" class="img-favorite" />{{article.loveNum}}
+    </div>
+    <div class="slider_box larger hide">
+        <div id="slider" class="scroll_slider">
+            <div class="pic_group">
+            </div>
+            <div class="pager_control hide">
+                <span id="spanCurPage">0</span> / <span id="spanTotalPage">0</span>
+            </div>
+        </div>
+    </div>
+</div>

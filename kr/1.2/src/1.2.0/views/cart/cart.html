@@ -1,0 +1,115 @@
+<div ng-controller="cartController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController">
+        <div class="navbar-brand navbar-brand-center">
+            购物袋
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+        <div class="pull-right" ng-show="(products && products.length > 0) || (productsTW && productsTW.length > 0)">
+            <div class="btn btn-edit" ng-click="edit()" ng-hide="editMode == true">
+                编辑
+            </div>
+            <div class="btn btn-edit" ng-click="done()" ng-show="editMode == true">
+                完成
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="nav-main-block">
+            </div>
+            <div class="cart-tips" ng-show="empty == true">
+                购物袋还是空的，去选几件中意的商品吧
+            </div>
+            
+            <div class="list-group" ng-show="empty != true">
+				<div ng-repeat="product in products" style="margin-bottom:8px;" ng-init="parentIndex=$index">
+
+					<div class="list-group-item media border-bottom-0 product-item product-cart" ng-repeat="good in product.goodsList">
+						<div style="margin:0.5em 0;" class="product-activity" ng-if="product.type && product.type.length>0 && $first">                   
+							<span class="product-activity-title"><b>{{product.type}}</b></span>
+							<span class="product-activity-content">{{product.tag}}</span>
+						</div>
+						<div class="product-box">
+							<div class="pull-left check-area" ng-click="checked(good,parentIndex,$index);">
+								<div class="checkbox {{good.checked? 'checked':''}}">
+								</div>
+							</div>
+							<div class="media-body product-body">
+								<div class="product-area">
+									<div class="pull-left">
+										<a href="#/product/{{good.id}}/1">
+											<img alt="" src="{{good.img}}" class="product-image" /></a>
+									</div>
+									<div class="media-body product-instruction">
+										<a class="product-name product-name-line" href="#/product/{{good.id}}/1">{{good.name}}
+										</a>
+										<div class="product-instruction-bottom">
+											<div class="cart-item-price">
+												{{good.price| currency:'￥'}}
+											</div>
+											<div class="modify-area order-num-right">
+												<div class="input-group">
+													<div class="input-group-addon num-addon addon-minus {{good.num <= 1 ? 'disabled':''}}"
+														ng-click="reduceNum(good,product,parentIndex,$index);">
+													</div>
+													<input ng-model="good.quantity" class="form-control input-num" type="text"
+														ng-change="validNum(good, false,parentIndex,$index);">
+													<div class="input-group-addon num-addon" ng-click="addNum(good,product,parentIndex,$index);">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="order-area" ng-if="$last">
+							<div class="subtotal" style="float:left;" ng-if="product.activity">
+								节省：<span>{{product.js | currency:'￥'}}</span>
+							</div>
+							<div class="subtotal">
+								小计：<span>{{product.total | currency:'￥'}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="nav-bottom-block">
+            </div>
+        </div>
+    </div>
+    <div ng-show="empty != true">
+        <div class="nav-bottom-background">
+        </div>
+        <div class="nav-bottom">
+            <div class="media">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default btn-confirm btn-go" ng-click="go()"
+                        ng-hide="editMode == true">
+                        去结算({{totalNum()}})</button>
+                    <button type="button" class="btn btn-default btn-confirm btn-go btn-go-less" ng-show="editMode == true"
+                        ng-click="remove()">
+                        删除</button>
+                </div>
+                <div class="media-body">
+                    <div class="order-total">
+                        <div class="checkAllArea" ng-click="checkAll()">
+                            <div class="checkbox checkboxTotal {{isAllChecked()? 'checked':''}}">
+                            </div>
+                            <span ng-hide="editMode == true">合计</span> <span ng-show="editMode == true">全选</span>
+                        </div>
+                        <div ng-hide="editMode == true">
+                            {{totalAmountValue | currency:'￥'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

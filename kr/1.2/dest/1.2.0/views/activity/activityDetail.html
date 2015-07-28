@@ -1,0 +1,48 @@
+<div>
+    <div class="scrollable background-white">
+		<div class="scrollable-content relative">
+			<i class="closer2" ng-click="overlayClose();"></i>
+			<div id="activity-navigator-1-page" class="activity-navigator-1">
+
+			</div>
+			<div id="activity-navigator-2-page" class="activity-navigator-2">
+				<div class="slider_box" style="width:97.5%;">
+					<div id="index-slider-page" class="scroll_slider">
+						<div class="pic_group">
+						</div>
+						<div id="index-serial-number-page" class="serial-number" style="z-index:5; ">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="activity-navigator-3-page" class="activity-navigator-3">
+
+			</div>
+		</div>
+	 </div>
+	 <div class="div-nav-music-background"></div>
+	 <div id="div-nav-music-control" class="div-nav-music" ng-click="ctrPlay()"></div>
+	 <div class="hide">
+		 <audio controls="controls" id="audioControl" loop="loop">
+		   <source src="/image/activity/song.mp3" type="audio/mpeg">
+		   <source src="/image/activity/song.wav" type="audio/ogg">         
+		 Your browser does not support the audio tag.
+		 </audio>
+		 <div ng-init="init();"></div>
+	 </div>
+</div>
+<!--<div ng-controller="activityDetailController">
+    <div class="scrollable">
+        <div class="scrollable-content background-home background-weixin-home"> 
+			<img src="/image/activity/act.png" ng-click="go(good.goodsId,1);"/>
+			<button ng-click="go(good.goodsId,1,good.goodsName,good.goodsImg,good.price1);">可连接至商品详情</button>
+			<br/><br/>
+			<button ng-click="go(good.goodsId,2,good.goodsName,good.goodsImg,good.price1);">可加入购物袋</button><br/><br/>
+			<button ng-click="go(good.goodsId,3,good.goodsName,good.goodsImg,good.price1);">分享至第三分应用</button><br/><br/>
+			<button ng-click="go(good.goodsId,4,good.goodsName,good.goodsImg,good.price1);">立即购买入口</button><br/><br/>
+			<button ng-click="go(good.goodsId,5,good.goodsName,good.goodsImg,good.price1);">可继续访问其余H5页面</button><br/><br/><br/>
+        </div>
+    </div>
+</div>
+-->

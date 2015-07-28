@@ -1,0 +1,140 @@
+<style>
+	#floatDiv{
+		position:absolute;
+		top:42px;
+		display:none;
+		background:#ffffff;
+		z-index:999999;
+	}
+	.btn-buy-now{
+		position:absolute;
+		bottom:0;
+		z-index:999999;
+		width:100%;
+		text-align:center;
+	}
+	.btn-buy-now button{
+		width: 100%;
+		background: #E62156;
+		color: #ffffff;
+		border: 0;
+		border-radius: 5px 5px 0px 0px;
+		height: 40px;
+		line-height:40px;
+		font-size:1.1em;
+	}
+
+</style>
+<div ng-controller="airportServiceController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-hide="isInApp">
+        <div class="navbar-brand navbar-brand-center">
+            机场存送
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-buy-now">
+		<button>立即预定</button>
+    </div>
+
+    <div class="scrollable">
+        <div class="scrollable-content background-white">
+		  <div id="divAirportSave">
+            <div class="nav-main-block" ng-hide="isInApp"></div>
+			<div>
+				<img ng-src="{{airportSaveInfo.img}}" />
+			</div>
+            <div style="padding:5px 5px;margin-top:8px;">
+				<div class="left" style="width:65%;line-height:3em;font-size:1.2em;">
+					<!--<span><b>￥ 10.00</b></span> <span style="color:#666;">&nbsp;约：NT$50</span>-->
+					<span><b>￥ {{promotePrice}}</b><span style="font-size:.8em;">/天</span></span>&nbsp;
+					<span class="shopPriceNew" style="display:inline;float:none;margin-top: 0em;">￥{{price}}</span>
+				</div>
+				<div class="right" style="width:35%;line-height:3em;padding-top:0.4em;">
+					<button ng-click="needService();" 
+					style=" background:#ffffff;
+							color:#51bf87;
+							border:1px solid #51bf87;
+							-webkit-border-radius:12em; 
+							-moz-border-radius:12em; 
+							-o-border-radius:12em; 
+							border-radius:12em;
+							line-height: 1.7em;
+							width: 100%;
+							font-size: 1.2em;
+							">我要服务</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			<div>
+				
+				<div class="btn-group justified nav-tabs" style="margin:8px 0 0 0;" id="floatDivHeight">
+                  <a class="btn btn-default tab-a"
+                     href="#Tab1"
+                     toggle="on"
+                     active-class="active" ng-click="changeTab(1);">介绍
+                  </a>
+
+                  <a class="btn btn-default tab-a"
+                     href="#Tab2"
+                     toggle="on"
+                     active-class="active" ng-click="changeTab(2);">须知
+                  </a>
+				  
+				  <a class="btn btn-default tab-a"
+                     href="#Tab3"
+                     toggle="on"
+                     active-class="active" ng-click="changeTab(3);">评论（3）
+                  </a>
+
+                </div>
+                <div class="tab-content">
+                  <div class="tab-pane"
+                      toggleable
+                      active-class="active"
+                      default="active"
+                      id="Tab1"
+                      exclusion-group="myTabs">
+                       <div id="introduct">
+					    {{airportSaveInfo.brief}}  {{airportSaveInfo.brief}}  {{airportSaveInfo.brief}}  {{airportSaveInfo.brief}}  {{airportSaveInfo.brief}}  {{airportSaveInfo.brief}} 
+                              {{airportSaveInfo.brief}}  {{airportSaveInfo.brief}}{{airportSaveInfo.brief}}{{airportSaveInfo.brief}}   {{airportSaveInfo.brief}}               
+                        </div> 
+                   </div>
+                   <div class="tab-pane"
+                      toggleable
+                      active-class="active"
+                      id="Tab2"
+                      exclusion-group="myTabs">
+                        <div id="notice">
+                              {{airportSaveInfo.brief}} {{airportSaveInfo.brief}} {{airportSaveInfo.brief}} {{airportSaveInfo.brief}} {{airportSaveInfo.brief}} {{airportSaveInfo.brief}} {{airportSaveInfo.brief}}{{airportSaveInfo.brief}}{{airportSaveInfo.brief}}    {{airportSaveInfo.brief}}                
+                        </div>
+                    </div>
+					
+					<div class="tab-pane"
+                      toggleable
+                      active-class="active"
+                      id="Tab3"
+                      exclusion-group="myTabs">
+                        <div id="comments">
+                                 {{airportSaveInfo.brief}} {{airportSaveInfo.brief}}{{airportSaveInfo.brief}}{{airportSaveInfo.brief}}                
+                        </div>
+                    </div>
+					
+					
+                </div>
+			</div>
+
+			
+			
+			
+
+          </div>
+        </div>
+    </div>
+</div>

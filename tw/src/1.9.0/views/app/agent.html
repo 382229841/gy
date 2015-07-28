@@ -1,0 +1,105 @@
+<div ng-controller="agentController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController" ng-hide="type == ProgramTypes.APP">
+        <div class="navbar-brand navbar-brand-center">
+            机场存送
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-white">
+            <div class="nav-main-block" ng-hide="type == ProgramTypes.APP">
+            </div>
+            <div class="agent-title">
+                机场存送服务说明</div>
+            <div class="agent-content">
+                您在台湾任何商家购买的商品，都可以快递给“购轻松台湾服务中心”免费保管，并在回程当天免费送至机场打包点交给您打包带走。
+            </div>
+            <div class="agent-title">
+                快递</div>
+            <div class="agent-area">
+                <div class="introduction-body">
+                    <ul class="ul-introduction">
+                        <li class="agent-info">收货信息
+                            <div>
+                                <div class="pull-left">
+                                    收货人：</div>
+                                <div class="media-body">
+                                    购轻松台湾服务中心</div>
+                            </div>
+                            <div>
+                                <div class="pull-left">
+                                    联系电话：</div>
+                                <div class="media-body">
+                                    <a href="tel:03-393-8689" class="tel">03-393-8689</a>/<a href="tel:0979-627-800"
+                                        class="tel">0979-627-800</a></div>
+                                <div>
+                                    <div class="pull-left">
+                                        收货地址：</div>
+                                    <div class="media-body">
+                                        桃園縣大園鄉航翔路107號2樓w2004室</div>
+                        </li>
+                        <li>快递费用
+                            <br />
+                            部分商家愿意为您免费快递，其他商家需要花少部分运费也可以帮您快递。台湾快递按照商品体积收费，一般情况(长宽高合计在60公分内)120新台币,实际资费可咨询寄货方。
+                        </li>
+                        <li>寄货方法
+                            <ul class="ul-second">
+                                <li>由商家帮您寄出； </li>
+                                <li>由台湾随处可见的7-11/全家便利店帮您打包后寄出； </li>
+                                <li>民宿也很乐意帮您安排快递。 </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="agent-title">
+                存送服务</div>
+            <div class="agent-area">
+                <div class="introduction-body">
+                    <ul class="ul-introduction">
+                        <li>领取时间
+                            <br />
+                            在您回程航班起飞前2.5~3小时 </li>
+                        <li class="agent-info">机场送货人信息<br />
+                            桃园机场T1航站楼：<a href="tel:+886-979-631-060" class="tel">吕先生 +886-979-631-060</a>
+                            <br />
+                            桃园机场T2航站楼：<a href="tel:+886-979-592-800" class="tel">游先生 +886-979-592-800</a>
+                            <br />
+                            松山机场T1航站楼：<a href="tel:+886-979-630-300" class="tel">郑先生 +886-979-630-300</a>
+                            <br />
+                            松山机场T2航站楼：<a href="tel:+886-979-630-300" class="tel">郑先生 +886-979-630-300</a>
+                        </li>
+                        <li>领取地址
+                            <br />
+                            在您回程航班的航站楼出境大厅打包点领取。
+                            <br />
+                            下图为桃园机场提供服务的航站楼及所对应的商品领取地图：
+                            <div class="airport new" ng-repeat="flight in flights | filter: showFlightFilter('桃园')">
+                                <div>
+                                    {{flight.terminal}}</div>
+                                <img src="{{flight.airport_map}}" ng-click="showLarge(flight)" />
+                            </div>
+                        </li>
+                        <li>存送费用
+                            <br />
+                            免费寄存，并免费送货至回程机场打包点。 </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-bottom-block">
+            </div>
+        </div>
+    </div>
+    <div class="nav-bottom-background">
+    </div>
+    <div class="nav-bottom">
+        <a class="btn btn-tel-mainland" href="tel:400-897-2199">召唤大陆小二 </a><a class="btn btn-tel-taiwan"
+            href="tel:+886 3-3938-689">召唤台湾小二 </a>
+    </div>
+</div>

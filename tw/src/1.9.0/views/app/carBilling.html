@@ -1,0 +1,143 @@
+﻿<div ng-controller="carBillingController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController" ng-hide="type == ProgramTypes.APP">
+        <div class="navbar-brand navbar-brand-center">
+            计费说明
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-gray">
+            <div class="nav-main-block" ng-hide="type == ProgramTypes.APP">
+            </div>
+            <div class="car-content">
+                <div>
+                    <strong>桃园国际机场接送机费用说明</strong></div>
+                (价格单位：新台币)
+                <div class="car-box">
+                    <table>
+                        <tr>
+                            <th>
+                                服务地区
+                            </th>
+                            <th>
+                                汽车品牌
+                            </th>
+                            <th>
+                                人数
+                            </th>
+                            <th>
+                                单次
+                            </th>
+                            <th>
+                                往返
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">
+                                大台北<br />
+                                (山区除外)
+                            </td>
+                            <td>
+                                Toyota-camry
+                            </td>
+                            <td>
+                                4人
+                            </td>
+                            <td>
+                                1200
+                            </td>
+                            <td>
+                                2400
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Lexus-Es
+                            </td>
+                            <td>
+                                4人
+                            </td>
+                            <td>
+                                1300
+                            </td>
+                            <td>
+                                2600
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                T5
+                            </td>
+                            <td>
+                                7人
+                            </td>
+                            <td>
+                                1500
+                            </td>
+                            <td>
+                                3000
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">
+                                桃园县市<br />
+                                (山区除外)
+                            </td>
+                            <td>
+                                Toyota-camry
+                            </td>
+                            <td>
+                                4人
+                            </td>
+                            <td>
+                                1000
+                            </td>
+                            <td>
+                                2000
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Lexus-Es
+                            </td>
+                            <td>
+                                4人
+                            </td>
+                            <td>
+                                1200
+                            </td>
+                            <td>
+                                2400
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                T5
+                            </td>
+                            <td>
+                                7人
+                            </td>
+                            <td>
+                                1200
+                            </td>
+                            <td>
+                                2400
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="car-billing-instruction">
+                    <div>
+                        <strong>特别说明：</strong></div>
+                    仅支持桃园国际机场 → 大台北地区/桃园县市 （山区除外）的接送机包车服务。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

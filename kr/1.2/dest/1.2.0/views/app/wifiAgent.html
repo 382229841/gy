@@ -1,0 +1,229 @@
+<style>
+	.col-xs-1,.col-xs-2, .col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9,.col-xs-10,.col-xs-11,.col-xs-12 {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	.col-xs-9{
+		padding-left: 3px;
+	}
+
+</style>
+<div ng-controller="wifiServiceController0">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-hide="isInApp">
+        <div class="navbar-brand navbar-brand-center">
+            WIFI租赁
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-white">
+		  <div id="divAirportSave">
+            <div class="nav-main-block" ng-hide="isInApp"></div>
+			<div>
+				<img ng-src="{{wifiImg}}?20150318" style="width:100%;"/>
+			</div>
+            <div style="padding:5px 5px;margin-top:8px;">
+				<div class="left" style="width:65%;line-height:3em;font-size:1.2em;">
+					<!--<span><b>￥ 10.00</b></span> <span style="color:#666;">&nbsp;约：NT$50</span>-->
+					<span><b>￥ {{promotePrice}}</b></span>&nbsp;&nbsp;&nbsp;
+					<span class="shopPriceNew" style="display:inline;float:none;margin-top: 0em;">￥{{price}}</span>
+				</div>
+				<div class="right" style="width:35%;line-height:3em;padding-top:0.4em;">
+					<button ng-click="needService();" 
+					style=" background:#51bf87;
+							color:#ffffff;
+							border:1px solid #51bf87;
+							-webkit-border-radius:12em; 
+							-moz-border-radius:12em; 
+							-o-border-radius:12em; 
+							border-radius:12em;
+							line-height: 1.7em;
+							width: 100%;
+							font-size: 1.2em;
+							">立即预订</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+            <div style="padding:10px 15px;border-top:1px solid #dddddd;">
+				韩国当地无线上网服务，信号覆盖岛内全境。支持多台设备同时使用，不限流量，价格实惠，服务更好。无需携带设备登机，仅需入境后在机场领取、离境前在机场归还。
+            </div>
+
+            <div class="panel-group" id="accordion">
+              <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseOne">
+                  <h4 class="panel-title">
+                      预订须知
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseOne" toggleable active-class="in" exclusion-group="accordion1" default="" class="panel-collapse collapse">
+                 	<div class="panel-body">
+						<span class="col-xs-1">1.</span><span class="col-xs-11">
+							本服务目前仅支持韩国桃园、松山、高雄三座机场出入境的游客订单；
+						</span>
+                        <span class="col-xs-1">2.</span><span class="col-xs-11">
+							请注意回程离境航班时间早于当天7点30分的离境航班，不能下单；
+						</span>
+						<span class="col-xs-1">3.</span><span class="col-xs-11">
+							航班抵达时间23点（含23点）-次日早晨6点（不含6点）前，抵达的游客 WIFI设备以快递的方式送至游客入住酒店；
+						</span>
+						<span class="col-xs-1">4.</span><span class="col-xs-11">
+							快递费用RMB 25元需要在商品栏目中下单支付，并需给出详细快递信息，才能确保酒店前台签收快递；
+						</span>
+						<span class="col-xs-1">5.</span><span class="col-xs-11">
+							领取设备之后，可以使用购轻松APP，扫取设备上的二维码，获取Wi-Fi热点名称和密码并连接上网。
+						</span>
+				    </div>
+                </div>
+              </div>
+			  
+              <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseTwo">
+                  <h4 class="panel-title">
+                      WiFi领取与归还
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseTwo" toggleable active-class="in" exclusion-group="accordion1" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <span style="color:#000;">桃园机场T1：</span><br/>
+
+                    
+					<span class="col-xs-3">设备领取与归还地址：</span><span class="col-xs-9">一楼接机大厅-游客服务中心旁约10米；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">领取提示：</span><span class="col-xs-9">取完行李→入境电动门后往右约10米，在接机处请留意购轻松红色标示，工作人员穿红色马甲；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">归还提示：</span><span class="col-xs-9">认准“购轻松”标志，工作人员穿红色马甲，先还设备再过值机和安检；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">机场联系人：</span><span class="col-xs-9">游先生   00886-979-592-800或00886-979-771-300。</span>
+					
+					<div class="clear"></div>
+					<br/><br/>
+
+
+					<span style="color:#000;">桃园机场T2：</span><br/>
+					<span class="col-xs-3">设备领取与归还地址：</span><span class="col-xs-9">一楼接机大厅-租赁车服务柜台旁约10米；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">领取提示：</span><span class="col-xs-9">取完行李→入境电动门后往右约10米，在接机处请留意购轻松红色标示，工作人员穿红色马甲；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">归还提示：</span><span class="col-xs-9">认准“购轻松”标志，工作人员穿红色马甲，先还设备再过值机和安检；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">机场联系人：</span><span class="col-xs-9">游先生   00886-979-592-800或00886-979-771-300。</span>
+					<div class="clear"></div>
+					<br/><br/>
+
+
+					<span style="color:#000;">高雄小港机场:</span><br/>
+					<span class="col-xs-3">设备领取：</span><span class="col-xs-9">机场人员会按您班机在入境大厅举姓名牌等候，入境后请往左边走；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">设备回收：</span><span class="col-xs-9">在出境大厅“服务台”旁；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">机场联系人</span><span class="col-xs-9">：蔡先生   00886-979-616-200或00886-979-771-300。</span>
+					<div class="clear"></div>
+					<br/><br/>
+
+					<span style="color:#000;">松山机场：</span><br/>
+					<span class="col-xs-3">设备领取与归还地址：</span><span class="col-xs-9">一楼D门-约10米沙发区；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">领取提示：</span><span class="col-xs-9">取完行李→入境电动门后往左约20米，到达D门附近的沙发区，认准“购轻松”标志，工作人员穿红色马甲；</span>
+					<div class="clear"></div>
+					<span class="col-xs-3">归还提示：</span><span class="col-xs-9">认准“购轻松”标志，工作人员穿红色马甲，先还设备再过值机和安检；</span>
+					<div class="clear"></div>
+					<span class="col-xs-4">机场联系人：</span><span class="col-xs-8">敬谚   00886-979-630-300或00886-979-772-100。</span>
+                  	<div class="clear"></div>
+                  </div>
+                </div>
+              </div>
+			  
+              <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseThree">
+                  <h4 class="panel-title">
+                      产品介绍
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseThree" toggleable active-class="in" exclusion-group="accordion1" class="panel-collapse collapse">
+                  <div class="panel-body">
+                  	    <span class="col-xs-1">1.</span><span class="col-xs-11">
+							4G WiFi极速上网，信号覆盖全韩国；
+						</span>
+                        <span class="col-xs-1">2.</span><span class="col-xs-11">
+							支持多台设备（手机、iPad）同时使用；
+						</span>
+						<span class="col-xs-1">3.</span><span class="col-xs-11">
+							无限上网流量，发微博、晒照片、聊微信、查地图，让您随时“在线”。
+						</span>
+                  </div>
+                </div>
+              </div>
+			  
+			  <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseFive" ng-click="collapseComments();">
+                  <h4 class="panel-title">
+                      评价({{commentInfo.commentNum}}人，{{commentInfo.commentScore}}分)
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseFive" toggleable active-class="in" exclusion-group="accordion1" class="panel-collapse collapse">
+                  <div class="panel-body">
+                   
+						<div class="list-group">							
+							<div class="list-group-item media" ng-repeat="comment in article.comments">
+								<div class="pull-left avatar" style="background-image: url('{{comment.avatar}}');">
+								</div>
+								<div class="media-body">
+									<div class="comment-content">
+										{{comment.content}}</div>
+									<div>
+										<span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+											{{comment.date}}</span></div>
+								</div>
+							</div>
+							<div style="padding-top:{{$first?'0px':'10px'}};border-bottom:{{$last?'0px':'1px solid #dddddd;'}}" class="list-group-item product-comment product-item-comment" ng-repeat="comment in comments">
+								<div class="itemRate" score="{{comment.star}}">
+								</div>
+								<div class="comment-content">
+									{{comment.content}}
+								</div>
+								<div>
+									<span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+										{{comment.date}}</span>
+								</div>
+								<div class="clear">
+								</div>
+							</div>
+						</div>
+
+                   
+                  </div>
+                </div>
+
+
+                <div class="load-bar" ng-hide="!isCollapse || page == null || page.totalCount == 0 || page.pageNo == page.totalPage">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                </div>
+                <div class="complete-bar-words" style="display:none;" ng-show="page != null && page.pageNo == page.totalPage">
+                    已经到底了哦~
+                </div>
+              </div>
+
+			    
+
+
+			  
+            </div>
+
+          </div>
+        </div>
+    </div>
+</div>

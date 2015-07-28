@@ -1,0 +1,82 @@
+<style>
+	
+</style>
+<div ng-controller="activityGuideController">
+	<div id="shareHint" ng-click="fadeOutShare();" style="display:none;position: fixed;
+				background: #000000;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 99999999;
+				opacity: .8;
+				height: 100%;">
+		<img src="image/activity/hint-1.png" style="position: fixed;width:55%;left:2em;top:2.8em;"/>
+		<img src="image/activity/hint-2.png" style="position: fixed;width:30%;right:1em;"/> 
+	</div>
+	<!-- Navbars -->
+    <div  class="navbar navbar-app nav-main" ng-show="isShowNavbar">
+        <div class="navbar-brand navbar-brand-center">
+            {{activityInfo.activity.name || '购物流程'}}         
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable background-white" style="background:#ffffff;">
+		<div class="scrollable-content relative">	
+			<div class="nav-main-block" ng-show="isShowNavbar"></div>	
+				
+				
+			<!--<a class="hide" href="?" id="refresh">点击这里刷新！！！！</a>-->			
+			<img src="image/activity/guide/1.jpg?20150123" style="width:100%;"/>
+			<img src="image/activity/guide/2.jpg?20150123" style="width:100%;"/>
+
+
+			<div style="padding:0em 1em 2em 1em;text-align:center;font-size:.9em;line-height:2em;position:relative;">
+				<div style="height:2em;width:4em;
+							background:#D4F4F1;
+							transform:rotate(45deg);
+							-ms-transform:rotate(45deg);
+							-moz-transform:rotate(45deg);
+							-webkit-transform:rotate(45deg);
+							-o-transform:rotate(45deg);
+							position:absolute;
+							right:5px;
+							top:0;
+							opacity:.7;
+							">
+
+				</div>
+				<div style="height:2em;width:4em;
+							background:#D4F4F1;
+							transform:rotate(45deg);
+							-ms-transform:rotate(45deg);
+							-moz-transform:rotate(45deg);
+							-webkit-transform:rotate(45deg);
+							-o-transform:rotate(45deg);
+							position:absolute;
+							left:0px;
+							bottom:35px;
+							opacity:.7;
+							">
+
+				</div>
+				<div style="background:#DFF6FF;padding:0 1.5em;text-align:left;">
+					<br/>
+					<div style="font-size:1.5em;font-weight:bold;">小贴士：</div>
+					<div style="text-align:left;">1.下单时间需要在回程前2天；</div>
+					<div style="text-align:left;">2.取货机场仅支持：桃园机场、松山机场；</div>
+					<div style="text-align:left;">3.如有疑问，请关注微信号(
+					<span style="color:#f5717e;font-size:1.1em;">hiker_goeasy</span>)联系人工客服。
+					</div>
+
+					<br/>
+				</div>
+			</div>
+			
+		</div>
+	 </div>
+</div>

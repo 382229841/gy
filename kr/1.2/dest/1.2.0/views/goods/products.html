@@ -1,0 +1,84 @@
+<div ng-controller="productListController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            购轻松韩国
+        </div>
+        <div class="btn-group pull-left" ng-click="inquiry()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-left btn-profile">
+                </div>
+            </div>
+        </div>
+        <div class="btn-group pull-right" ng-controller="cartNumController" ng-click="cart()">
+            <div class="btn btn-navbar">
+                <div class="btn-nav-cart">
+                    <div class="cart-mark" ng-show="cartNum() > 0">
+                        {{cartNum()}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-menu">
+        <ul>
+        	<li style="width:{{width}}">
+            	<a href="#/products">首页</a>
+            </li>
+            <li ng-repeat="cat in categories" style="width:{{width}}" ng-if="cat.name.indexOf('韩国必买')==-1">
+            	<a class="{{code==cat.code?'actived':''}}" href="#/products/{{cat.code}}">{{cat.name}}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="scrollable product-list">
+        <div class="scrollable-content background-gray">            
+            <div id="divProductList">
+                <div class="nav-main-block"></div>
+                
+                <div class="nav-sort-block"></div>
+                
+                <div id="divProducts" style="margin-top: 10px;">
+                   <div class="list-group list-show-product-group">
+                        <div class="list-group-item list-show-product-item" ng-repeat="product in products">
+                            <div class="list-show-product">
+                                <a href="#/product/{{product.id}}">
+                                    <div class="col-xs-4 list-show-product-img">
+										<img alt="{{product.name}}" ng-src="{{product.img}}" />
+                                    </div>
+									<div class="col-xs-8 list-show-product-brief">
+										<span class="list-show-product-brief-0">
+											{{product.name}}
+										</span><br/>
+										<span class="list-show-product-brief-1">
+											{{product.promotePrice | currency:'￥'}}
+											<span>{{product.shopPrice | currency:'￥'}}</span>
+										</span><br/>
+										<span class="list-show-product-brief-2">
+											已售{{product.saleNum}}件
+										</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>                                
+                            </div>
+                        </div>
+                    </div>                        
+                </div> 
+
+
+                <div class="load-bar" ng-hide="(pageNum == null || pageNum == pageCount || products.length==0)">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                </div>
+                <div class="complete-bar-words" ng-show="(pageNum != null && pageNum == pageCount)">
+                    已经到底了哦~
+                </div>
+                <div class="complete-bar-words" ng-show="(products.length==0)">
+                    该分类下商品正在上架，敬请期待~
+                </div>
+            </div>
+			
+        </div>
+    </div>
+</div>

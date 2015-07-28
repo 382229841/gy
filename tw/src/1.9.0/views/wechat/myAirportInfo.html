@@ -1,0 +1,133 @@
+<div ng-controller="myAirportWXController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-if="airportInfo">
+        <div class="navbar-brand navbar-brand-center">
+           航班信息
+        </div>
+        <div class="btn-group pull-left" ng-click="back()" ng-if="1==2">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div style="text-align:center;" ng-if="isShow">              
+                <div style="padding:35px 10px 15px 10px;">                
+                    <img style="width:100px;" src="/image/wechat/icon_order_empty.png" />                 
+                </div>
+                <div style="text-align:left;padding:15px;font-size:1.2em;color:#000000;margin-left: auto;margin-right: auto;max-width: 380px;">
+                    抱歉，没有找到你的WiFi领取服务信息
+                </div>
+                <a href="#/wechat/myPhone">
+                    <div style="font-size:1.2em;text-align:center;padding:15px;color:#0000ff;margin-left: auto;margin-right: auto;max-width: 380px;">
+                        请戳这里<br/>
+                        重新输入预订时预留的手机号
+                    </div>
+                </a>
+                <br/>
+                <br/>
+                <br/>
+            </div>
+
+            
+            <div class="" ng-if="airportInfo">            
+                <div class="nav-main-block"></div> 
+                
+                <div style="margin-bottom:15px;">
+                    <div class="list-head">
+                        <span class="col-xs-2" style="color:#aaa;padding-left:0px;padding-right:0px;white-space: nowrap;">联系人</span>
+                        <span class="col-xs-10" style="font-weight:normal;color: #000000;">{{airportInfo.contact}} {{airportInfo.mobile}}</span>
+                        <div class="clear"></div>
+                    </div>                    
+                </div>
+
+
+                <div style="margin-bottom:15px;">
+                    <div class="list-head">
+                        <span class="col-xs-2" style="color:#aaa;padding-left:0px;padding-right:0px;">去程</span>
+                        <span class="col-xs-10" style="color: #000000;font-weight:normal;">{{airportInfo.goFlightno}} {{airportInfo.goDate}}</span>
+                        <div class="clear"></div>
+
+                        <div style="border-top: 1px dashed #dddddd;margin-top: 5px;font-weight:normal;padding:10px;text-align:center;height:100px;line-height:28px;background:#ffffff;">
+                            <div class="col-xs-5">
+                                <spans style="white-space: nowrap;">{{airportInfo.goDptAirport}}</span><br/>
+                                <span style="color:#aaa;">{{airportInfo.goDptTime}}</span><br/>
+                                <span style="color:#aaa;" ng-if="airportInfo.goDptTerminal">{{airportInfo.goDptTerminal}}</span>
+                                <span style="color:#aaa;" ng-if="!airportInfo.goDptTerminal">-</span>
+                            </div>
+                            <div class="col-xs-2" style="line-height:90px;padding-left: 0px;padding-right: 0px;">
+                                <img src="/image/wechat/arrow.png" />
+                            </div>
+                            <div class="col-xs-5">
+                                <span style="white-space: nowrap;">{{airportInfo.goArrAirport}}</span><br/>
+                                <span style="color:#aaa;">{{airportInfo.goArrTime}}</span><br/>
+                                <span style="color:#aaa;" ng-if="airportInfo.goArrTerminal">{{airportInfo.goArrTerminal}}</span>
+                                <span style="color:#aaa;" ng-if="!airportInfo.goArrTerminal">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <div class="list-head">
+                        <span class="col-xs-2" style="color:#aaa;padding-left:0px;padding-right:0px;">回程</span>
+                        <span class="col-xs-10" style="color: #000000;font-weight:normal;">{{airportInfo.backFlightno}} {{airportInfo.backDate}}</span>
+                        <div class="clear"></div>
+
+                        <div style="border-top: 1px dashed #dddddd;margin-top: 5px;font-weight:normal;padding:10px;text-align:center;height:100px;line-height:28px;background:#ffffff;">
+                            <div class="col-xs-5">
+                                <span style="white-space: nowrap;">{{airportInfo.backDptAirport}}</span><br/>
+                                <span style="color:#aaa;">{{airportInfo.backDptTime}}</span><br/>
+                                <span style="color:#aaa;" ng-if="airportInfo.backDptTerminal">{{airportInfo.backDptTerminal}}</span>
+                                <span style="color:#aaa;" ng-if="!airportInfo.backDptTerminal">-</span>
+                            </div>
+                            <div class="col-xs-2" style="line-height:90px;padding-left: 0px;padding-right: 0px;">
+                                <img src="/image/wechat/arrow.png" />
+                            </div>
+                            <div class="col-xs-5">
+                                <span style="white-space: nowrap;">{{airportInfo.backArrAirport}}</span><br/>
+                                <span style="color:#aaa;">{{airportInfo.backArrTime}}</span><br/>
+                                <span style="color:#aaa;" ng-if="airportInfo.backArrTerminal">{{airportInfo.backArrTerminal}}</span>
+                                <span style="color:#aaa;" ng-if="!airportInfo.backArrTerminal">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+
+                <div style="margin-bottom:15px;" ng-if="airportInfo.hotelName && airportInfo.hotelName.length>0">
+                    <div class="list-head">
+                        <span class="col-xs-2" style="color:#aaa;padding-left:0px;padding-right:0px;">酒店</span>
+                        <span class="col-xs-10" style="color: #000000;font-weight:normal;">
+                            
+                            {{airportInfo.hotelName}}<br/>
+                            {{airportInfo.hotelPhone}}<br/>
+                            {{airportInfo.hotelAddress}}<br/>
+                            
+                        </span>
+                        <div class="clear"></div>
+
+
+                    </div>
+                    
+                </div>
+                
+
+                <div class="mySet-item-text">
+                   <button class="btn" ng-click="goWifi();">信息正确，查看wifi领取</button>
+                </div>
+
+                <span style="padding:10px;color:#333333;">※ 若信息变更/有误，请微信联系人工客服！</span>
+                <br/><br/><br/><br/><br/><br/>
+            </div>
+        </div>
+    </div>
+</div>

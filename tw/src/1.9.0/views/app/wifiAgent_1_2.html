@@ -1,0 +1,451 @@
+<style>
+    #viewport {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        background: #eee;
+        overflow: hidden;
+    }
+
+    #wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    #scroller {
+        z-index: 1;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 400%;
+        min-height: 120px;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+        background-color: #eee;
+    }
+
+    .slide {
+        width: 25%;
+        float: left;
+    }
+
+    #indicator {
+        position: relative;
+        width: 55px;
+        height: 10px;
+        margin: 10px auto;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUBAMAAABohZD3AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUGCDYztyDUJgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAGFBMVEUAAADNzc3Nzc3Nzc3Nzc3Nzc3Nzc3///8aWwwLAAAABnRSTlMAX5Ks3/nRD0HIAAAAAWJLR0QHFmGI6wAAAFtJREFUGFdjYGBgEHYNMWRAAJE0IHCEc5nSwEABxleD8JOgXMY0KBCA8FlgfAcIXwzGT4TwzWD8ZAjfDcZPgfDDYPxU7Hx09ejmoduH7h5096L7B8O/6OGBGl4APYg8TQ0XAScAAAAASUVORK5CYII=);
+        background-size:15px;
+        margin-top: -25px;
+    }
+
+    #dotty {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background: #F15155;
+    }
+    a:focus {
+      color: #0055b3;
+      text-decoration: underline;
+    }
+
+    a:focus {
+      outline: none;
+      outline: 0;
+      outline-offset: 0px;
+    }
+    a:active,
+    a:hover {
+        outline: 0;
+    }
+    #viewport.larger {
+        position: absolute;
+        z-index: 99999;
+        width: 100%;
+        top: 4.5em;
+    }
+    .order-rule{
+        line-height:1.8em;
+        font-size:1em;
+        color:#aaa;
+        font-weight:bold;
+    }
+	.nav.nav-tabs li{
+		width:33%;
+		text-align:center;
+		background:#ffffff;
+	}
+	.nav.nav-tabs li:last-child{
+		width:34%;
+	}
+	.nav.nav-tabs li a{
+		color:#333;
+		font-size:1.2em;
+	}
+	.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+		color: #DB5565;
+		background-color: #ffffff;
+		border: 0;
+		border-bottom: 2px solid #DB5565;
+		cursor: default;
+	}
+    .tab-content{
+    	background:#ffffff;
+    }
+	.btn.btn-gray{
+    	background:#aaa;
+    	border:#aaa;
+    }
+    .tab-pane,.product-content{
+    	overflow:hidden;
+    }
+    .nav:after{
+    	display:block;
+    }
+    .btn.btn-buy-new {
+		font-size: 1.3em;
+		color: #DB5565;
+		background-color: #ffffff;
+		border:1.5px solid #DB5565;
+		width: 95%;
+	}
+	
+	.nav-bottom.new {
+		background-color: #eeeeee;
+		text-align: center;
+	}
+	.col-xs-8,.col-xs-4{
+    	padding-left:0;
+    	padding-right:0;
+    }
+
+
+
+
+    #wrapper3 {
+        position: relative;
+        z-index: 1;
+        min-height: 2.5em;
+        width: 100%;
+        background: #fff;
+        overflow: hidden;
+        -ms-touch-action: none;
+    }
+
+    #scroller3 {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 200%;
+        min-height: 2.5em;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+
+    #scroller3 ul {
+        list-style: none;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-top:.5em;
+    }
+
+    #scroller3 li {
+        min-height: 12em;
+        width:12.5%;
+        float: left;
+        border-right: 0px solid #ccc;
+        border-bottom: 0px solid #ccc;
+        background-color: #fff;
+        font-size: .9em;
+        overflow: hidden;
+        text-align: center;
+        
+    }
+    #scroller3 li.last{
+        border-right: 0px solid #ccc;
+    }
+    #scroller3 li .fa{
+        color:#1eb0fe;
+    }
+    @media only screen and (max-width: 100px)
+    {
+        #scroller2 li {
+            font-size: .5em;
+        }
+    }
+    @media only screen and (max-width: 200px)
+    {
+        #scroller3 li {
+            font-size: .6em;
+        }
+    }
+    @media only screen and (max-width: 300px)
+    {
+        #scroller3 li {
+            font-size: .7em;
+        }
+    }
+    @media only screen and (max-width: 400px)
+    {
+        #scroller3 li {
+            font-size: .9em;
+        }
+    }
+
+    #scroller3 ul {
+	  display: -webkit-inline-box;
+	  display: -moz-inline-box;
+	  display: -ms-inline-flexbox;
+	  display: -webkit-inline-flex;
+	  display: inline-flex;
+	}
+
+	#scroller3 ul li{
+
+	}
+
+	#scroller3 ul li a{
+		background-image: url(image/loading_complete_2.png);
+  		background-position: center;
+ 		background-repeat: no-repeat;
+ 		background-size: contain;
+	}
+
+
+    
+
+</style>
+<div ng-controller="wifiServiceController">
+    
+    <div class="btn-back new hide" ng-click="back()">
+        <div class="btn-left new">
+        </div>
+    </div>
+    <div class="scrollable">
+    
+        <div class="scrollable-content background-product">
+         <div id="detail-content">  
+		<div style="position:relative;">
+            <div id="viewport" class="preventDefault">
+                <div id="wrapper">
+                    <div id="scroller">
+                    </div>
+                    <div class="pager_control new hide">
+                        <span id="spanCurrPage">0</span> / <span id="spanTotalsCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div id="indicator" class="hide">
+                <div id="dotty"></div>
+            </div>
+            <div class="slider-bar">
+				<div class="div-favorite">
+					<img src="image/icon_favorite.png" alt="" style="display:none;"/></div>
+				<div class="div-share" ng-click="share();">
+					<img src="image/icon_share.png" alt="" style="display:;"/></div>
+			</div>
+		</div>
+            
+           <div class="list-group product-style" ng-show="isGetData">
+                <div class="background-white">
+                    <div class="list-group-item media" style="padding:10px 0;margin:0 15px;">                    
+                        <div class="media-body product-cur-name-new" style="margin:5px 0px">
+                            <span class="col-xs-12 text-center">
+                            	{{product.name}}
+                            </span>
+                        </div>
+                        <div>
+                            <div class="product-price-new">
+							   <span class="promotePriceNew col-xs-12 text-center" style="margin:5px 0px">
+							   		￥{{product.promotePrice}} 
+							   </span> 
+								<span class="shopPriceNew  col-xs-12 text-center" 
+									style="float:none;
+									margin-top: .2em;
+									text-decoration:inherit;
+									color:#aaa;
+									font-size:1em;
+									">
+									<span ng-if="(product.defaultPrice && product.defaultPrice!=0 && product.defaultPrice!='0' && product.defaultPrice!='0.0' && product.defaultPrice!='0.00')">
+									原价：￥{{product.defaultPrice}}</span>&nbsp;&nbsp;
+									约:NT$ {{product.NTD}}
+
+								</span>
+							</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div style="margin:5px 0px">
+
+							<span class="col-xs-12 text-center text-gray product-cur-name-new">
+                               已售<span style="color:#f24a5b;"> {{product.saleNum}} </span>件
+                            </span>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="list-group-item media service-item">
+                    <div class="order-rule">
+                        <div>下单时间：<span id="aheadOrderTime" style="color:#666;"></span></div>
+                        <div>客服服务：<span id="serviceTime" style="color:#666;"></span></div>
+                    </div>
+                </div>
+				<div id="detailPanel">
+					<ul class="nav nav-tabs" style="margin-top: 10px;border-top:1px solid #eee">
+					  <li><a href="#Tab1" toggle="on" parent-active-class="active" ng-click="changeTap(1);">介绍</a></li>
+					  <li><a href="#Tab2" toggle="on" parent-active-class="active" ng-click="changeTap(2);">须知</a></li>
+					  <li><a href="#Tab3" toggle="on" parent-active-class="active" ng-click="changeTap(3);">评论({{product.commentNum}})</a></li>
+					</ul>
+
+					<div class="tab-content">
+					  <div class="tab-pane"
+						  toggleable
+						  active-class="active"
+						  default="active"
+						  id="Tab1"
+						  exclusion-group="myTabs">
+							<div id="introduct" class="product-content">
+
+							</div>
+						
+						
+					  </div>
+
+					  <div class="tab-pane"
+						  toggleable
+						  active-class="active"
+						  id="Tab2"
+						  exclusion-group="myTabs">
+							<div id="notice" class="product-content">
+								
+							</div>
+						
+					  </div>
+
+					  <div class="tab-pane"
+						  toggleable
+						  active-class="active"
+						  id="Tab3"
+						  exclusion-group="myTabs">
+							<div id="comments" class="product-content">
+								<div class="panel-body">
+                   
+									<div class="list-group">
+										<div class="list-group-item media" ng-repeat="comment in article.comments">
+											<div class="pull-left avatar" style="background-image: url('{{comment.avatar}}');">
+											</div>
+											<div class="media-body">
+												<div class="comment-content">
+													{{comment.content}}</div>
+												<div>
+													<span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+														{{comment.date}}</span></div>
+											</div>
+										</div>
+										<div style="padding-top:{{$first?'0px':'10px'}};border-bottom:{{$last?'0px':'1px solid #dddddd;'}}" class="list-group-item product-comment product-item-comment" ng-repeat="comment in comments">
+											<div class="itemRate" score="{{comment.star}}">
+											</div>
+											<div class="comment-content">
+												{{comment.content}}
+											</div>
+											<div>
+												<span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+													{{comment.date}}</span>
+											</div>
+											<div class="clear">
+											</div>
+										</div>
+									</div>
+
+
+							  </div>
+							</div>
+							
+							
+							<div class="load-bar" ng-hide="page == null || page.totalCount == 0 || page.pageNo == page.totalPage">
+								<div class="pull-loading">
+									上拉加载
+								</div>
+								<canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+							</div>
+							<div class="complete-bar-words" ng-show="page != null && page.pageNo == page.totalPage">
+								已经到底了哦~
+							</div>
+						
+					  </div>
+					  
+					  
+					  
+					</div>
+				</div>
+
+
+				<div id="recommend" style="display:none;background:#fff;margin-top:1em;border-top:1px solid #eee;">
+					<div style="padding:1em;font-size:1.2em;" id="recommendTitle">
+						小伙伴们还买了
+					</div>
+
+					 <div id="wrapper3">
+						<div id="scroller3">
+							<ul id="scroller3ul">
+
+
+
+							</ul>
+						</div>
+					</div>
+
+
+					<div style="width:100%;height:50px;"></div>
+
+
+				</div>
+				
+            </div>
+			
+            <div class="nav-bottom-block">
+            </div>
+			</div>
+        </div>
+    </div>
+    
+    <div class="nav-bottom-background">
+    </div>
+    <div class="nav-bottom new">
+        <div class="media">
+            <div class="media-body">
+                 <button type="button" class="btn btn-default btn-buy-new" ng-click="go()" ng-if="product.inventoryNum>0">
+                    立即预订</button>
+                
+                <button type="button" class="btn btn-default btn-buy-new btn-gray" ng-if="!(product.inventoryNum>0)">
+                    立即预订</button>
+            </div>
+        </div>
+    </div>
+</div>

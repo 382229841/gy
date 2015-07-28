@@ -1,0 +1,183 @@
+<style>
+    .tab-navigation{
+        padding:15px 0px;
+        padding-left:5%;
+    }
+    .tab-navigation ul{
+         width:95%;         
+    }
+    .tab-navigation ul li{
+         width:50%;
+         text-align:center;
+    }
+    .nav > li > a{
+          padding:10px 15px;
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+          color: #ffffff;
+          background-color: #DB5565;
+          border: 1px solid #DB5565;
+          cursor: default;
+    }
+    .nav-tabs > li > a{
+          color: #333;
+          background-color: #ffffff;
+          border: 1px solid #DB5565;
+          cursor: default;
+          
+          margin-right: 0px;
+    }
+    .nav-tabs > li:first-child > a{
+          border-radius: 4px 0 0 4px;
+    }
+    .nav-tabs > li:last-child > a{
+          border-radius: 0 4px 4px 0;
+    }
+    .instruction-area {
+          margin: 15px 5px 5px 5px;
+          border: 1px solid #ffffff;
+          font-size: 1em;
+     }
+     .instruction-area .list-group .list-group-item{
+          border-bottom: 0px solid #dddddd;
+      }
+</style>
+<div ng-controller="myWiFiWXController">
+   <div style="position: fixed;text-align:center;bottom:20px;width:100%;z-index:999999;display:none;" ng-click="swipe();">
+        <i class="fa fa-angle-double-down animation-up-down" id="up-down"></i>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            
+            <div class="tab-navigation">
+                        <ul class="nav nav-tabs">
+                          <li><a href="#Tab1" toggle="on" parent-active-class="active">领取</a></li>
+                          <li><a href="#Tab2" toggle="on" parent-active-class="active">归还</a></li>
+                        </ul>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane"
+                  toggleable
+                  active-class="active"
+                  default="active"
+                  id="Tab1"
+                  exclusion-group="myTabs">
+                
+
+                <div style="background:url(/image/wechat/bg1.jpg);{{wifiInfo.getInfo.hotel?'height:280px':''}}position: relative;text-align:center;">
+                    <div style="display:none;position:absolute;height:40px;width:100%;text-align:center;top:0px;">
+                        <img src="/image/wechat/lq.png" style="height:40px;"/>
+                    </div>
+
+                    <div style="padding-top:60px;height:280px" ng-if="wifiInfo.getInfo.hotel">
+                        <img src="/image/wechat/logo.png" style="height:150px;" ng-if="wifiInfo.getInfo.hotel"/>                    
+                    </div>    
+                    <div ng-if="!(wifiInfo.getInfo.hotel)">                    
+                        <img ng-src="{{wifiInfo.getInfo.img}}" style="width:100%;"/>
+                        
+                        <img src="/image/wechat/T2.jpg" style="width:100%;" ng-if="!wifiInfo.getInfo.hotel && T2"/>
+                        <img src="/image/wechat/T1.jpg" style="width:100%;" ng-if="!wifiInfo.getInfo.hotel && T1"/>
+
+                        <img src="/image/wechat/gx.jpg" style="width:100%;" ng-if="!wifiInfo.getInfo.hotel && GX"/>
+                        <img src="/image/wechat/ss.jpg" style="width:100%;" ng-if="!wifiInfo.getInfo.hotel && SS"/>
+                    </div>            
+                </div>
+                <div style="background:#F15850;padding:20px 2px 15px 6px;color:#ffffff;font-size:1.1em;font-weight:bold;">
+                    <div style="padding-bottom:10px;">
+                        <span style="padding:0;white-space: nowrap;" class="col-xs-3">领取方式：</span>
+                        <span style="padding:0;padding-left:6px;font-weight:normal;" class="col-xs-9">{{wifiInfo.getInfo.address}}</span>
+                        <div class="clear"></div>
+                    </div>
+                    <div style="padding-bottom:10px;" ng-if="!wifiInfo.getInfo.hotel">
+                        <span style="padding:0;white-space: nowrap;" class="col-xs-3">领取时间：</span>
+                        <span style="padding:0;padding-left:6px;font-weight:normal;" class="col-xs-9">{{wifiInfo.getInfo.time}}</span>
+                        <div class="clear"></div>
+                    </div>
+                    <div style="padding-bottom:10px;">
+                        <span style="padding:0;white-space: nowrap;" class="col-xs-3">客服电话：</span>
+                        <span style="padding:0;padding-left:6px;" class="col-xs-9"><span style="font-size:.9em;color:#ffffff;font-weight:normal;">{{wifiInfo.getInfo.phone}}</span></span>
+
+                        <div class="clear"></div>
+                    </div>
+
+
+                    <div style="padding-bottom:10px;"  ng-if="!wifiInfo.getInfo.hotel && wifiInfo.getInfo.pickingPrompt.length>0">
+                        <span style="padding:0;white-space: nowrap;" class="col-xs-3">温馨提示：</span>
+                        <span style="padding:0;padding-left:6px;" class="col-xs-9"><span style="font-size:.9em;color:#ffffff;">{{wifiInfo.getInfo.pickingPrompt}}</span></span>
+                        <div class="clear"></div>
+                    </div>
+
+                         <div class="instruction-area">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    如有疑问，请联系微信客服。
+                                </div>
+                            </div>
+                          </div>
+                </div>
+
+
+
+
+                
+
+              </div>
+
+              <div class="tab-pane"
+                  toggleable
+                  active-class="active"
+                  id="Tab2"
+                  exclusion-group="myTabs">
+                        
+
+                        <div style="background:url(/image/wechat/bg1.jpg);position: relative;text-align:center;">
+                            <div style="display:none;position:absolute;height:40px;width:100%;text-align:center;top:0px;">
+                                <img src="/image/wechat/gh.png" style="height:40px;"/>
+                            </div>
+
+                            <div>
+                                <img src="{{wifiInfo.backInfo.img}}" style="width:100%;"/>
+                            </div>                
+                        </div>
+                        <div style="background:#F15850;padding:20px 2px 15px 10px;color:#ffffff;font-size:1.1em;font-weight:bold;">
+                            <div style="padding-bottom:10px;">
+                                <span style="padding:0;white-space: nowrap;" class="col-xs-3">归还方式：</span>
+                                <span style="padding:0;padding-left:6px;font-weight:normal;" class="col-xs-9">{{wifiInfo.backInfo.address}}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div style="padding-bottom:10px;">
+                                <span style="padding:0;white-space: nowrap;" class="col-xs-3">归还时间：</span>
+                                <span style="padding:0;padding-left:6px;font-weight:normal;" class="col-xs-9">{{wifiInfo.backInfo.time}}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div style="padding-bottom:15px;">
+                                <span style="padding:0;white-space: nowrap;" class="col-xs-3">客服电话：</span>
+                                <span style="padding:0;padding-left:6px;font-weight:normal;" class="col-xs-9"><span style="font-size:.9em;color:#ffffff;">{{wifiInfo.backInfo.phone}}</span></span>
+                                <div class="clear"></div>
+                            </div>
+
+                            <div style="padding-bottom:10px;" ng-if="wifiInfo.backInfo.backPrompt.length>0">
+                                <span style="padding:0;white-space: nowrap;" class="col-xs-3">温馨提示：</span>
+                                <span style="padding:0;padding-left:6px;font-weight:normal;" class="col-xs-9"><span style="font-size:.9em;color:#ffffff;">{{wifiInfo.backInfo.backPrompt}}</span></span>
+                                <div class="clear"></div>
+                            </div>
+
+                           <div class="instruction-area">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    如有疑问，请联系微信客服。
+                                </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+              </div>
+
+              
+
+
+            </div>
+        </div>
+    </div>
+</div>

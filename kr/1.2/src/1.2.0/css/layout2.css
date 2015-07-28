@@ -1,0 +1,332 @@
+@media only screen and (max-width: 359px)
+{
+    .order-total
+    {
+        font-size:1.4em;
+    }
+    
+    .order-total .checkbox.checkboxTotal
+    {
+        width:1.1em;
+        height: 1.1em;
+    }
+    
+    .cart-item-price
+    {
+        margin-top:1.1em;
+        font-size:.9em;
+    }
+    
+    .modify-area.order-num-right
+    {
+        font-size:1em;
+        width: 7.9em;
+    }
+    
+    .modify-area.order-num-right .input-group-addon.num-addon {
+        width: 31px;
+    }
+    
+    .btn-add-cart-new
+    {
+        min-width:120px;
+        margin-top:10px;
+    }
+    .btn.btn-add-cart-new
+    {
+        font-size:1.3em;
+    }
+    .btn-buy-new
+    {
+        margin-top:10px;
+    }
+    .btn.btn-buy-new
+    {
+        font-size:1.3em;
+    }
+
+    .activity-navigator-3>.activity-product>a>.title-span1{
+        bottom: 0.2em;
+        left: 0em;
+        font-size: 0.9em;
+    }
+    .activity-navigator-3>.activity-product>a>.title-span2{
+        bottom: .1em;
+        right: 0.2em;
+        font-size: 1.1em;
+    }
+    .activity-navigator-3>.activity-product>a>.title-span3{
+       width: 75%;
+       bottom: .15em;
+       left: 2.3em;
+       color: #ffffff;
+       font-size: 1.0em;
+    }
+
+    .nav-menu ul li{
+        font-size: 0.9em;
+        padding-left:0px;
+        padding-right:0px;
+    }
+}
+
+@media only screen and (min-width: 360px)
+{
+    body
+    {
+        font-size: 16px;
+    }
+    
+    .product-brief-price
+    {
+        min-width:7em;
+    }
+    .cart-item-price
+    {
+        margin-top:1em;
+    }
+    
+    .modify-area
+    {
+        width: 7.4em;
+    }
+    .input-group-addon.num-addon
+    {
+        width: 42px;
+    }
+
+    .modify-area.order-num-right
+    {
+        font-size:1em;
+        width: 7.6em;
+    }
+    .modify-area.order-num-right .input-group-addon.num-addon {
+        width: 35px;
+    }  
+    .order-total 
+    {
+        bottom: -.4em;
+    }
+    .app-body .btn.btn-go
+    {
+        bottom:-.5em;
+    }
+    .pay-total {
+        bottom: -.7em;
+    }
+    .btn-buy {
+        bottom: -.5em;
+    }
+    .btn-add-cart {
+        bottom: -.5em;
+    }
+    .btn-go-cart {
+        bottom: -.8em;
+    }
+    
+    .promote-price-nav {
+        top:10px;
+    }
+
+    .ori-price-nav
+    {
+        top:10px;
+    }
+    
+    .app-download .media-body
+    {
+        padding-top: 0;
+    }
+    
+    .right-pos
+    {
+        margin-top:2px;
+    }
+    
+    .icon-logo
+    {
+        width:50px;
+    }
+
+    .app-body .btn.btn-download {
+        font-size: 1em;
+        top:8px;
+        padding: 5px 15px;
+    }
+
+    .download-title
+    {
+        font-size:1.3em;
+    }
+
+    .download-instruction
+    {
+        font-size:.8em;
+    }
+    
+    .download-block
+    {
+        height:71px;
+    }
+    .my-info input{
+        width:48%;
+        font-size:0.8em
+    }
+
+    .activity-navigator-3>.activity-product>a>.title-span1{
+        bottom: 0.2em;
+        left: 0.2em;
+        font-size: 0.9em;
+        width: 70%;
+    }
+    .activity-navigator-3>.activity-product>a>.title-span2{
+        bottom: .1em;
+        right: .1em;
+        font-size: 1em;
+    }
+    .activity-navigator-3>.activity-product>a>.title-span3{
+       width: 75%;
+       bottom: .3em;
+       left: 2.3em;
+       font-size: 1.0em;
+    }
+    .nav-menu ul li{
+        font-size: .9em;
+        padding-left:0px;
+        padding-right:0px;
+    }
+}
+
+@media only screen and (min-width: 400px)
+{    
+    .product-brief-price
+    {
+        min-width:8em;
+    }
+    
+    .cart-item-price
+    {
+        margin-top:1.5em;
+    }    
+    .modify-area.order-num-right
+    {
+        font-size:1.2em;
+        width: 7.4em;
+    }
+    .modify-area.order-num-right .input-group-addon.num-addon {
+        width: 42px;
+    }
+    
+    .car-box
+    {
+        font-size:1em;
+    }
+    
+    .product-cur-name-new
+    {
+        font-size:1.2em;        
+        position:relative;
+        top:-3px;
+    }
+    
+    .app-body .btn.btn-download {
+        right:40px;
+    }
+    .my-info input{
+        width:48%;
+        font-size:0.9em
+    }
+
+    .activity-navigator-3>.activity-product>a>.title-span1{
+        bottom: 0.2em;
+        left: 0.2em;
+        font-size: 0.9em;
+        width: 70%;
+    }
+    .activity-navigator-3>.activity-product>a>.title-span2{
+        bottom: .1em;
+        right: .2em;
+        font-size: 1.1em;
+    }
+    .activity-navigator-3>.activity-product>a>.title-span3{
+       width: 75%;
+       bottom: .3em;
+       left: 2.3em;
+        font-size: 1.0em;
+    }
+
+    .nav-menu ul li{
+        font-size: .9em;
+        padding-left:0px;
+        padding-right:0px;
+    }
+}
+@media only screen and (min-width: 490px)
+{
+
+    .activity-navigator-3>.activity-product>a>.title-span3{       
+       left: 3.1em;
+    }
+    .activity-navigator-3>.activity-product>a>.title-img1{
+       margin-top: -0.8em;
+       border:0px;
+       clear:both;
+       width:100%;
+    }
+    .activity-navigator-3>.activity-product>a>.title-img2{
+       margin-top: -0.8em;
+       border:0px;
+       clear:both;
+       width:100%;
+    }
+    .nav-menu ul li{
+        font-size: .9em;
+        padding-left:0px;
+        padding-right:0px;
+    
+    }
+}
+@media only screen and (min-width: 620px)
+{
+    
+    .activity-navigator-3>.activity-product>a>.title-span3{       
+       left: 4em;
+    }
+    .activity-navigator-3>.activity-product>a>.title-img1{
+       margin-top: -1em;
+       border:0px;
+       clear:both;
+       width:100%;
+    }
+    .activity-navigator-3>.activity-product>a>.title-img2{
+       margin-top: -1em;
+       border:0px;
+       clear:both;
+       width:100%;
+    }    
+    .nav-menu ul li{
+        font-size: .9em;
+        padding-left:5px;
+        padding-right:5px;
+        text-align: center;
+    }
+}
+@media only screen and (min-width: 740px)
+{
+    
+    .activity-navigator-3>.activity-product>a>.title-span3{       
+       left: 4.5em;
+    }
+    .activity-navigator-3>.activity-product>a>.title-img1{
+       margin-top: -1.8em;
+       border:0px;
+       clear:both;
+       width:100%;
+    }
+    .activity-navigator-3>.activity-product>a>.title-img2{
+       margin-top: -1.8em;
+       border:0px;
+       clear:both;
+       width:100%;
+    }
+}

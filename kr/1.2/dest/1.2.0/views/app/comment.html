@@ -1,0 +1,62 @@
+﻿<div ng-controller="commentController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController">
+        <div class="navbar-brand navbar-brand-center">
+            评价
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-product">
+            <div id="divProductComments">
+                <div class="nav-main-block">
+                </div>
+                <div class="list-group">
+                    <div class="list-group-item comment-rate-total">
+                        评价<span ng-show="commentInfo.commentNum > 0">{{commentInfo.avgStar}}</span>
+                        <div class="rateTotal" ng-show="commentInfo.commentNum > 0">
+                        </div>
+                    </div>
+                    <div class="list-group-item media" ng-repeat="comment in article.comments">
+                        <div class="pull-left avatar" style="background-image: url('{{comment.avatar}}');">
+                        </div>
+                        <div class="media-body">
+                            <div class="comment-content">
+                                {{comment.content}}</div>
+                            <div>
+                                <span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+                                    {{comment.date}}</span></div>
+                        </div>
+                    </div>
+                    <div class="list-group-item product-comment product-item-comment" ng-repeat="comment in comments">
+                        <div class="itemRate" score="{{comment.star}}">
+                        </div>
+                        <div class="comment-content">
+                            {{comment.content}}
+                        </div>
+                        <div>
+                            <span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+                                {{comment.date}}</span>
+                        </div>
+                        <div class="clear">
+                        </div>
+                    </div>
+                </div>
+                <div class="load-bar" ng-hide="page == null || page.totalCount == 0 || page.pageNo == page.totalPage">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                </div>
+                <div class="complete-bar-words" ng-show="page != null && page.pageNo == page.totalPage">
+                    已经到底了哦~
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

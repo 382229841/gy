@@ -1,0 +1,71 @@
+<div ng-controller="activityCardController">
+	<div id="shareHint" ng-click="fadeOutShare();" style="display:none;position: fixed;
+				background: #000000;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 99999999;
+				opacity: .8;
+				height: 100%;">
+		<img src="image/activity/hint-1.png" style="position: fixed;width:55%;left:2em;top:2.8em;"/>
+		<img src="image/activity/hint-2.png" style="position: fixed;width:30%;right:1em;"/> 
+	</div>
+	<!-- Navbars -->
+    <div  class="navbar navbar-app nav-main" ng-show="isShowNavbar">
+        <div class="navbar-brand navbar-brand-center">
+            {{activityInfo.activity.name}}
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable background-white" style="background:#fbf8f1;">
+		<div class="scrollable-content relative">	
+			<div class="nav-main-block" ng-show="isShowNavbar"></div>	
+				
+			<div class="activity-panel">
+				<div class="img-panel">
+					<img src="image/activity/card/1.jpg?20150622"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/card/2.jpg?20150622"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/card/3.jpg?20150622"  ng-click="goTo(1);"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/card/4.jpg?20150622"/>
+				</div>
+
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:50%">
+								<img src="image/activity/card/5.jpg?20150622"  ng-click="goTo(2);"/>
+							</td>
+							<td style="width:50%">
+								<img src="image/activity/card/6.jpg?20150622" ng-click="goTo(3);"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/card/7.jpg?20150625"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/card/8.jpg?20150625"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/card/9.jpg?20150622"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/card/10.jpg?20150623"/>
+				</div>
+			</div>
+			
+		</div>
+	 </div>	 
+</div>

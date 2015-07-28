@@ -1,0 +1,207 @@
+<style>
+	img{
+		border:0;
+		margin:0;
+		vertical-align: bottom;
+	}
+	.activity-panel{
+		max-width:640px;
+		width:100%;
+		text-align:center;
+		margin:0 auto;
+	}
+	.img-panel{
+		font-size:0 ;
+		position:relative;
+	}
+	.img-panel table{
+		width:100%;
+		max-width:640px;
+		background:#83D7FB;
+	}
+	.img-panel table tr{
+		border:0;
+	}
+	.img-panel table tr td{
+		border:0;
+	}
+</style>
+<div ng-controller="activityFull1Controller">
+	<div id="shareHint" ng-click="fadeOutShare();" style="display:none;position: fixed;
+				background: #000000;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 99999999;
+				opacity: .8;
+				height: 100%;">
+		<img src="image/activity/hint-1.png" style="position: fixed;width:55%;left:2em;top:2.8em;"/>
+		<img src="image/activity/hint-2.png" style="position: fixed;width:30%;right:1em;"/> 
+	</div>
+	<!-- Navbars -->
+    <div  class="navbar navbar-app nav-main" ng-show="isShowNavbar">
+        <div class="navbar-brand navbar-brand-center">
+            {{activityInfo.activity.name}}         
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable background-white">
+		<div class="scrollable-content relative background-white" style="background:#EA618D;">	
+			<div class="nav-main-block" ng-show="isShowNavbar"></div>
+			<div class="activity-panel">
+				
+				<div class="img-panel">
+					<img src="image/activity/full1/1.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full1/2.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full1/3.jpg?20150422"/>
+				</div>
+
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:15%">
+								<img src="image/activity/full1/4.jpg?20150422"/>
+							</td>
+							<td style="width:70%">
+								<img src="image/activity/full1/5.jpg?20150422" ng-click="goTo(1);"/>
+							</td>
+							<td style="width:15%">
+								<img src="image/activity/full1/6.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+
+				<div class="img-panel">
+					<img src="image/activity/full1/7.jpg?20150422"/>
+				</div>
+
+
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:15%">
+								<img src="image/activity/full1/8.jpg?20150422"/>
+							</td>
+							<td style="width:70%">
+								<img src="image/activity/full1/9.jpg?20150422" ng-click="goTo(2);"/>
+							</td>
+							<td style="width:15%">
+								<img src="image/activity/full1/10.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full1/11.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full1/12.jpg?20150422"/>
+				</div>
+
+
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:15%">
+								<img src="image/activity/full1/13.jpg?20150422"/>
+							</td>
+							<td style="width:70%">
+								<img src="image/activity/full1/14.jpg?20150422" ng-click="goTo(3);"/>
+							</td>
+							<td style="width:15%">
+								<img src="image/activity/full1/15.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+
+				<div class="img-panel">
+					<img src="image/activity/full1/16.jpg?20150422"/>
+				</div>
+				
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:15%">
+								<img src="image/activity/full1/17.jpg?20150422"/>
+							</td>
+							<td style="width:70%">
+								<img src="image/activity/full1/18.jpg?20150422" ng-click="goTo(4);"/>
+							</td>
+							<td style="width:15%">
+								<img src="image/activity/full1/19.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full1/20.jpg?20150422"/>
+				</div>
+
+				<div class="img-panel">
+					<img src="image/activity/full1/21.jpg?20150422"/>
+				</div>
+
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:15%">
+								<img src="image/activity/full1/22.jpg?20150422"/>
+							</td>
+							<td style="width:70%">
+								<img src="image/activity/full1/23.jpg?20150422" ng-click="goTo(5);"/>
+							</td>
+							<td style="width:15%">
+								<img src="image/activity/full1/24.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="img-panel">
+					<img src="image/activity/full1/25.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/full1/26.jpg?20150422"/>
+				</div>
+
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:15%">
+								<img src="image/activity/full1/27.jpg?20150422"/>
+							</td>
+							<td style="width:70%">
+								<img src="image/activity/full1/28.jpg?20150422" ng-click="goTo(6);"/>
+							</td>
+							<td style="width:15%">
+								<img src="image/activity/full1/29.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+
+				<div class="img-panel">
+					<img src="image/activity/full1/30.jpg?20150422"/>
+				</div>
+
+				<div class="img-panel">
+					<img src="image/activity/full1/31.jpg?20150422"/>
+				</div>
+			</div>
+		</div>
+	 </div>
+</div>

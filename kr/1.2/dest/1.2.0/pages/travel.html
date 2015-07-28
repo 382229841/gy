@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html ng-app="EasyBuy" ng-controller="mainController">
+<head>
+    <meta charset="utf8" />
+    <title>购轻松</title>
+	<meta property="wb:webmaster" content="7b3c2d5273323f57" />
+	<meta property="qc:admins" content="34620674445661013526375" />
+    <meta name="keywords" content="购轻松,购轻松台湾,购轻松手机,旅游,台湾">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="yes" />
+	
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+	<link type="image/x-icon" rel="shortcut icon" href="image/favicon.png?v=2">
+	
+    <script>
+		var _hmt = _hmt || [];
+		(function() {
+		    var hm = document.createElement("script");
+		    hm.src = "//hm.baidu.com/hm.js?a247baefc371d26011204710b1a6342d";
+		    var s = document.getElementsByTagName("script")[0]; 
+		    s.parentNode.insertBefore(hm, s);
+		})();
+		
+		var MobileTypes = {
+			Android: "Android",
+			iPhone: "iPhone",
+			iPad: "iPad",
+			None: ""
+		}
+
+		function getMobileType() {
+			var u = navigator.userAgent;
+			//android
+			if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) { //android终端或者uc浏览器
+				return MobileTypes.Android;
+			}
+			//iPhone
+			if (u.indexOf('iPhone') > -1) { //是否为iPhone
+				return MobileTypes.iPhone;
+			}
+			//iPad
+			if (u.indexOf('iPad') > -1) { //是否iPad
+				return MobileTypes.iPad;
+			}
+			//iPhone
+			if (u.indexOf('Mac') > -1) { //是否为iPhone或者QQHD浏览器
+				return MobileTypes.iPhone;
+			}
+			return MobileTypes.None;
+		}
+		var androidUrl="http://android.myapp.com/myapp/detail.htm?apkName=com.google.android.apps.maps";
+		var iosUrl="https://itunes.apple.com/cn/app/offline-maps-for-google-maps/id903247390?l=en&mt=8";
+		var rateUrl="http://huilv.gold600.com/cx?from=CNY&to=KRW&money=1";
+		var weatherUrl="http://baidu.weather.com.cn/mweather/102010100.shtml";
+		function redirect(type){
+			switch(type){
+				case 1:
+					window.location.href=rateUrl;
+					break;
+				case 2:
+					window.location.href=weatherUrl;
+					break;
+				case 3:
+					if(getMobileType()==MobileTypes.Android){
+						window.location.href=androidUrl;
+					}else if(getMobileType()==MobileTypes.None){
+						window.location.href=androidUrl;
+					}else{
+						window.location.href=iosUrl;
+					}
+					
+					break;
+				default:
+					window.location.href="http://goeasy.yhiker.com/kr";
+					break;
+			}
+			
+		}
+	</script>
+	<style>
+		.app{
+			overflow: hidden;
+			margin:0 auto;
+			text-align: center;
+		}
+		img{
+			border:0;
+			margin:0;
+			vertical-align: bottom;
+		}
+		.panel{
+			width: 100%;
+			text-align: center;
+			max-width: 640px;
+			margin: 0 auto;
+		}
+		.img-panel{
+			font-size:0 ;
+			position:relative;
+		}
+		.img-panel img{
+			width:100%;
+			max-width:640px;
+		}
+		body{
+			margin:0;
+			padding:0;
+		}
+	</style>
+</head>
+<body>
+	<div class="app">
+		<div class="panel">
+			<div class="img-panel">
+				<img src="../image/pages/travel/01.jpg?v=2" />
+			</div>
+
+			<div class="img-panel">
+				<img src="../image/pages/travel/02.jpg?v=2" />
+			</div>
+
+			<div class="img-panel">
+				<img src="../image/pages/travel/03.jpg?v=2" />
+				<div style="position:absolute;bottom:15px;width:100%;text-align:center;">
+					<img onclick="redirect(1);" src="../image/pages/travel/btn01.png?v=2" style="width:35%;cursor: pointer;"/>
+				</div>
+			</div>
+
+			<div class="img-panel">
+				<img src="../image/pages/travel/04.jpg?v=2" />
+				<div style="position:absolute;bottom:15px;width:100%;text-align:center;">
+					<img onclick="redirect(2);" src="../image/pages/travel/btn02.png?v=2" style="width:35%;cursor: pointer;"/>
+				</div>
+			</div>
+
+			<div class="img-panel">
+				<img src="../image/pages/travel/05.jpg?v=2" />
+				<div style="position:absolute;bottom:15px;width:100%;text-align:center;">
+					<img onclick="redirect(3);" src="../image/pages/travel/btn03.png?v=2" style="width:35%;cursor: pointer;"/>
+				</div>
+			</div>
+
+			<div class="img-panel">
+				<img src="../image/pages/travel/06.jpg?v=2" />
+				<div style="position:absolute;bottom:32%;width:100%;text-align:center;">
+					<img src="../image/pages/travel/btn04.png?v=2" style="width:25%;cursor: pointer;"/>
+				</div>
+			</div>
+
+		</div>
+		
+	</div>
+    
+</body>
+</html>

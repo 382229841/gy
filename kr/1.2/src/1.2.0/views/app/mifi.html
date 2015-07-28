@@ -1,0 +1,61 @@
+﻿<div ng-controller="mifiController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController" ng-hide="type == ProgramTypes.APP">
+        <div class="navbar-brand navbar-brand-center">
+            wifi租赁
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-gray">
+            <div class="nav-main-block" ng-hide="type == ProgramTypes.APP">
+            </div>
+            <div class="mifi-box">
+                <div>
+                    只要19元/天，购轻松邀请您一同无限流量，畅游韩国！</div>
+                <img src="image/wifi1.png" alt="" />
+                <ul class="list-style-doc">
+                    <li><strong>【零押金】</strong>无需任何押金</li>
+                    <li><strong>【零运费】</strong>落地机场领取</li>
+                    <li><strong>【零设置】</strong>连接即可上网</li>
+                    <li><strong>【不限流量】</strong>4G超快上网体验，流量无上限！</li>
+                    <li><strong>【多人共享】</strong>可同时连接4-5台设备，多人上网一机搞定！</li>
+                    <li><strong>【专属客服】</strong>韩国机场内在地客服及24小时微信客服，线上线下为您贴心服务！</li>
+                </ul>
+                <img src="image/wifi2.png" alt="" />
+                <div>
+                    无需携带设备，减轻您的行李负担，当您到达韩国机场后，我们的机场客服会亲自将设备送到您手中，让您即刻体验充满“人情味”的台式服务！</div>
+                <div class="doc-title">
+                    温馨提醒：
+                </div>
+                <ul class="list-style-doc-decimal doc-info">
+                    <li>应用内下单并支付，租用几天就拍几件，比如“5天，就拍5件”；</li>
+                    <li>下单后48小时内，客服会与您电话联系并添加您的微信号，为您提供更多服务咨询；</li>
+                    <li>设备领取是在韩国入境大厅，接机人员举“购轻松+用户姓名”牌并介绍设备的使用，设备归还在出境大厅游客登机报到柜台；</li>
+                    <li>服务咨询热线：<a href="tel:400-897-2199" class="tel">400-897-2199</a></li>
+                </ul>
+            </div>
+            <div class="nav-bottom-block">
+            </div>
+        </div>
+    </div>
+    <div class="nav-bottom-background">
+    </div>
+    <div class="nav-bottom">
+        <div class="media">
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-confirm btn-go" ng-click="go()">
+                    立即购买</button>
+            </div>
+            <div class="media-body price-nav">
+                <span class="promote-price-nav">{{mifi.promotePrice| currency:'￥'}}</span> <span
+                    class="ori-price-nav">￥{{mifi.defaultPrice}}</span>
+            </div>
+        </div>
+    </div>
+</div>

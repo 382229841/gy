@@ -1,0 +1,47 @@
+<div ng-controller="orderInquiryController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController">
+        <div class="navbar-brand navbar-brand-center">
+            订单查询
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+        <div class="btn-group pull-right" ng-controller="cartNumController" ng-click="cart()">
+            <div class="btn btn-navbar">
+                <div class="btn-nav-cart">
+                    <div class="cart-mark" ng-show="cartNum() > 0">
+                        {{cartNum()}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="nav-main-block">
+            </div>
+            <div class="input-area inquiry-area">
+                <div class="inquiry-box">
+                    <div class="list-group-item">
+                        <div class="pull-left">
+                            <div class="icon-phone">
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <input id="mobile" type="text" ng-model="mobile" class="input" placeholder="请填写手机号"
+                                maxlength="13" ng-keyup="validNum();" />
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-default btn-common" ng-click="inquiry()">
+                    查询</button>
+                <div class="warn-area">
+                    通过订购时填写的手机号，可查询取货订单。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

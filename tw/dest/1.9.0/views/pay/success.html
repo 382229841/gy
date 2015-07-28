@@ -1,0 +1,35 @@
+<div ng-controller="successController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController" ng-show="!isApp">
+        <div class="navbar-brand navbar-brand-center">
+            支付成功
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="nav-main-block" ng-show="!isApp">
+            </div>
+            <div class="fill-area status-box">
+                <div class="list-group">
+                    <div class="status-title">
+                        <div class="cart-success status-success"></div>产品订购成功</div>
+                    <div class="status-instruction" ng-if="addressInfo.type!=2 && 1==2">
+                        请于 <span>{{order.time}}</span> 到 <span>{{order.picking_address}}</span> 领取订购商品。
+                        <div class="instruction-mini">
+                            （订购商品领取与mifi设备回收在同一时间及地点）</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-default btn-common btn2" ng-click="goHome()">
+                回到首页</button>
+            <button class="btn btn-default btn-confirm btn2" ng-click="view()">
+                查看订单</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+<div ng-controller="productController">
+    <ng-include src="'views/download.html'"></ng-include>
+    <div class="btn-back new {{showDownload == true?'':''}}" ng-click="back()">
+        <div class="btn-left new">
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div ng-show="showDownload == true" class="download-block">
+            </div>
+            <div class="slider_box">
+                <div id="slider" class="scroll_slider">
+                    <div class="pic_group">
+                    </div>
+                    <div class="pager_control new hide">
+                        <span id="spanCurPage">0</span> / <span id="spanTotalCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="list-group">
+                <div class="list-group-item media border-bottom-0 product-cur-name">
+                    {{product.goods.name}}
+                </div>
+                <div class="list-group-item media">
+                    <div class="product-price">
+                        <span class="promotePrice">{{product.goods.promote_price| currency:'￥'}}</span>
+                        <span class="shopPrice" ng-show="product.goods.t_price != null && product.goods.t_price > 0">
+                            (约:{{product.goods.t_price| currency:'NT$'}})</span>
+                    </div>
+                    <div class="ori-price" ng-show="product.goods.c_price != null && product.goods.c_price > 0">
+                        康是美价: {{product.goods.c_price| currency:'NT$'}}
+                    </div>
+                </div>
+                <div class="list-group-item media">
+                    <div class="order-num">
+                        <span class="title">购买数量</span>
+                        <div class="modify-area">
+                            <div class="input-group">
+                                <div class="input-group-addon num-addon addon-minus {{product.goods.num <= 1 ? 'disabled':''}}"
+                                    ng-click="reduceNum(product.goods);">
+                                </div>
+                                <input ng-model="product.goods.num" class="form-control input-num" type="text" ng-keyup="validNum(product.goods, true);"
+                                    ng-blur="validNum(product.goods, false);">
+                                <div class="input-group-addon num-addon" ng-click="addNum(product.goods);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-group-item media service-item">
+                    <ul>
+                        <li class="item">
+                            <div class="img-service img-free">
+                            </div>
+                            免费送货至回程机场</li>
+                        <li class="item">
+                            <div class="img-service img-payout">
+                            </div>
+                            超时送达赔偿</li>
+                        <li class="item">
+                            <div class="img-service img-real">
+                            </div>
+                            正品保障</li>
+                        <li class="item">
+                            <div class="img-service img-refund">
+                            </div>
+                            支持退款</li>
+                    </ul>
+                </div>
+                <div class="list-group-item media product-go-detail">
+                    <div class="img-product-detail">
+                    </div>
+                    商品介绍
+                </div>
+                <ng-include src="'views/productDetail.html'"></ng-include>
+            </div>
+            <div class="nav-bottom-block">
+            </div>
+        </div>
+    </div>
+    <div class="div-nav-cart-background">
+    </div>
+    <div class="div-nav-cart" ng-controller="cartNumController" ng-click="cart()">
+        <div class="cart-num-mark" ng-show="cartNum() > 0">
+            {{cartNum()}}</div>
+        <div class="cart-name">
+            购物袋</div>
+    </div>
+    <div class="nav-bottom-background">
+    </div>
+    <div class="nav-bottom new">
+        <div class="media">
+            <div class="pull-left div-add-cart">
+                <button type="button" class="btn btn-default btn-add-cart-new" ng-click="addToCart()">
+                    加入购物袋</button>
+            </div>
+            <div class="media-body">
+                <button type="button" class="btn btn-default btn-buy-new" ng-click="go()">
+                    立即购买</button>
+            </div>
+        </div>
+    </div>
+</div>

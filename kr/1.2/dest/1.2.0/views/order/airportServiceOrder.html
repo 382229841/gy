@@ -1,0 +1,296 @@
+<style>
+	.list-group-item{
+		padding-top:0px;
+		padding-bottom:0px;
+		line-height:45px;
+		padding-right:2px;
+	}
+	.list-group-item .media-body input{
+		height:45px;
+	}
+	.list-group-item .pull-left{
+		margin-top: 8px;
+	}
+	.fill-area .list-group a.list-group-item{
+		padding-right:2px;
+	}
+
+</style>
+<div ng-controller="airportServiceOrderController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            <span ng-hide="isNextStep">机场存送</span>
+            <span ng-show="isNextStep">确认订单</span>
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="nav-main-block"></div>
+            
+            <div class="fill-area input-area address-area"  ng-hide="isNextStep">
+				<div class="list-group">
+					<div class="list-group-item">
+						<div class="pull-left">
+							<div class="icon-sign icon-person">
+							</div>
+						</div>
+						<div class="media-body">
+							<input id="name" type="text" ng-model="name" class="input"
+								placeholder="联系人姓名" maxlength="20" ng-blur="saveTemp()" />
+						</div>
+					</div>
+					<div class="list-group-item">
+						<div class="pull-left">
+							<div class="icon-sign icon-mobile">
+							</div>
+						</div>
+						<div class="media-body">
+							<input id="mobile" type="text" ng-model="mobile" class="input"
+								placeholder="联系人手机号码" maxlength="13" ng-keyup="validNum();"/>
+						</div>
+					</div>
+					<a class="list-group-item" >
+						<div class="pull-left">
+							<div class="icon-sign icon-time">
+							</div>
+						</div>
+						<div class="media-body" style="white-space:nowrap;">
+							<input type="text" ng-model="time" class="input input-datetime" name="appDateTime"
+								id="appDateTime" placeholder="日期" style="width:60%;border-right:1px solid #ddd;text-align:center;border-radius:0px;"/>
+							<input type="text" class="input" ng-model="returnFlightno"
+								placeholder="航班号" maxlength="20"  style="width:40%;padding-right: 10px;"/>
+							
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="fill-area input-area address-area"  ng-hide="isNextStep">
+				<div class="list-group">
+					<div class="list-group-item">
+						<div class="pull-left">
+							<div class="icon-sign icon-person">
+							</div>
+						</div>
+						<div class="media-body">
+							<input id="name" type="text" ng-model="shopName" class="input"
+								placeholder="商家名称" maxlength="20" ng-blur="saveTemp()" />
+						</div>
+					</div>
+					<div class="list-group-item">
+						<div class="pull-left">
+							<div class="icon-sign icon-mobile">
+							</div>
+						</div>
+						<div class="media-body">
+							<input id="mobile" type="text" ng-model="shopPhone" class="input"
+								placeholder="商家联系电话" maxlength="13" ng-keyup="validNum();" ng-blur="search()" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="fill-area input-area address-area margin-bottom-0" style="display:none;">
+				<div class="list-group">
+					
+					<a class="list-group-item" href="#/airport/{{flight.id}}">
+						<div class="pull-left">
+							<div class="icon-sign icon-airport">
+							</div>
+						</div>
+						<div class="media-body">
+							<input type="text" ng-model="flight.terminal" class="input"
+								placeholder="回程机场航站楼" readonly="readonly" />
+							<div class="div-right">
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="fill-area input-area address-area"  ng-hide="isNextStep">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="pull-left">
+                            <div class="icon-sign icon-note">
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <input id="agentComment" type="text" ng-model="agentComment" class="input"
+                                placeholder="快递单号" maxlength="20" ng-blur="saveTemp()" />
+                        </div>
+                    </div>                                
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+			<div ng-show="isNextStep">
+
+
+				<div class="fill-area input-area address-area">
+					<div class="list-group">
+						<div class="list-group-item">
+							<div style="float:left;width:5em;">
+								联系人
+							</div>
+							<div class="media-body">
+								{{name}}&nbsp;{{mobile}}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="fill-area input-area address-area">
+					<div class="list-group">
+						<div class="list-group-item" style="height:90px;line-height:45px;">
+							<div style="float:left;width:5em;">
+								回程  
+							</div>
+							<div class="media-body" style="height:80px;line-height:40px;">
+								{{returnDate}}&nbsp;{{returnFlightno}}<br/>
+								{{returnTime}}&nbsp;{{returnAirport}}
+							</div>
+						</div>
+
+
+
+						<div class="list-group-item" style="height:90px;line-height:45px;">
+							<div style="float:left;width:5em;">
+								商家  
+							</div>
+							<div class="media-body" style="height:80px;line-height:40px;">
+								{{shopName}}&nbsp;<br/>
+								{{shopPhone}}&nbsp;
+							</div>
+						</div>
+						<div class="list-group-item">
+							<div style="float:left;width:5em;">
+								备注  
+							</div>
+							<div class="media-body">
+								{{agentComment}}&nbsp;
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="fill-area input-area address-area margin-bottom-0 hide">
+					<div class="list-group">
+
+						<a class="list-group-item">
+							<div style="float:left;width:5em;">
+								支付方式
+							</div>
+							<div class="media-body" style="text-align:right;">
+								支付宝支付
+							</div>
+						</a>
+					</div>
+				</div>
+
+
+				<div class="pay-area">
+					<div>
+						<div class="list-head">
+							支付方式
+						</div>
+						<div class="list-group">
+							<div class="list-group-item media border-bottom-0 product-item" ng-repeat="payment in Payments">
+								<div class="pull-right check-area" ng-click="checked(payment);">
+									<div class="checkbox radio {{payment.checked? 'checked':''}}">
+									</div>
+								</div>
+								<div class="media-body">
+									<div class="product-area">
+										<div class="pull-left">
+											<img alt="" src="image/{{payment.img}}" class="payment-image" />
+										</div>
+										<div class="media-body payment-instruction">
+											<div class="payment-title" style="{{payment.id==1?'line-height:1.5em;font-size:1em;':''}}">
+												{{payment.name}}
+												<div ng-if="payment.id==1" style="font-size:.8em;color:gray;">
+												支持所有支付宝用户使用
+												</div>
+											</div>
+										</div>
+										<div class="clear">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div style="margin-top:10px;">
+					<div>
+						<div class="left" style="padding-left:0.8em">天数 ：<span style="color:red">{{days}}</span>天</div>
+						<div class="right" style="padding-right:0.8em">已节省：<span style="color:red">{{days*price | currency:'￥'}}</span></div>
+						<div class="clear"></div>
+					</div>					
+				</div>
+				
+				
+				<div style="padding:30px 15px;margin-top:10px;background:#ffffff;">
+				   <div class="pull-left" style="height:3em;line-height:2em;">
+						<span>应付金额：</span><b style="color:red">￥{{days * promotePrice}}</b>
+				   </div>
+				   <div class="pull-right" style="height:3em;line-height:2em;">
+						<button style="width:8em;background-color:#DB5565;border:1px solid #DB5565;color:#fff;" class="btn" ng-click="needService();">确认</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<div class="myPhone-item-text" ng-hide="isNextStep">
+               <button style="background-color:#DB5565;border:1px solid #DB5565;" class="btn" ng-click="confirmOrder();">确认填写，下一步</button>
+            </div>
+            
+            
+            <div style="margin-top:10em;">
+				&nbsp;
+            </div>
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,35 @@
+<div ng-controller="aboutController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-hide="type == ProgramTypes.APP || isApp">
+        <div class="navbar-brand navbar-brand-center">
+            关于
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-gray">
+            <div class="nav-main-block" ng-hide="type == ProgramTypes.APP || isApp">
+            </div>
+            <div class="about-content">
+                <img class="about-logo" src="image/about_logo.png" alt="" />
+                <div class="about-instruction">
+                   购轻松台湾</div>
+                <div>
+                    {{mobileType}} {{version}} Build {{build}}</div>
+                <img class="about-chart" src="image/qrcode.png" alt="" />
+                <div class="about-chart-instruction">
+                    扫一扫，让您的朋友一起享受台湾本地服务
+                </div>
+                <div class="about-bottom">
+                    © 2015 &nbsp; yhiker.com<br />
+                    苏州海客科技有限公司
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
