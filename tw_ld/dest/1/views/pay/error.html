@@ -1,0 +1,30 @@
+<div ng-controller="errorController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-show="!isApp">
+        <div class="navbar-brand navbar-brand-center">
+            支付失败
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="nav-main-block" ng-show="!isApp">
+            </div>
+            <div class="fill-area status-box">
+                <div class="list-group">
+                    <div class="status-title status-bottom-0">
+                        支付失败</div>
+                </div>
+            </div>
+            <button class="btn btn-default btn-common btn2" ng-click="goHome()">
+                回到首页</button>
+            <button class="btn btn-default btn-confirm btn2" ng-click="again()">
+                重新购买</button>
+        </div>
+    </div>
+</div>

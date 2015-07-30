@@ -1,0 +1,186 @@
+<style>
+#wrapper2 {
+        position: relative;
+        z-index: 1;
+        height: 3em;
+        width: 100%;
+        background: #fff;
+        overflow: hidden;
+        -ms-touch-action: none;
+    }
+
+    #scroller2 {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 200%;
+        height: 3em;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+
+    #scroller2 ul {
+        list-style: none;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-top:.5em;
+    }
+
+    #scroller2 li {
+        height: 3em;
+        width:12.5%;
+        float: left;
+        line-height: 3em;
+        border-right: 0px solid #ccc;
+        border-bottom: 0px solid #ccc;
+        background-color: #fff;
+        font-size: .9em;
+        overflow: hidden;
+        text-align: center;
+        
+    }
+    #scroller2 li.last{
+        border-right: 0px solid #ccc;
+    }
+    #scroller2 li .fa{
+        color:#1eb0fe;
+    }
+    @media only screen and (max-width: 100px)
+    {
+        #scroller2 li {
+            font-size: .5em;
+        }
+    }
+    @media only screen and (max-width: 200px)
+    {
+        #scroller2 li {
+            font-size: .6em;
+        }
+    }
+    @media only screen and (max-width: 300px)
+    {
+        #scroller2 li {
+            font-size: .7em;
+        }
+    }
+    @media only screen and (max-width: 400px)
+    {
+        #scroller2 li {
+            font-size: .9em;
+        }
+    }
+    .nav-menu ul{
+        display:inline;
+    }
+    .nav-menu ul li .actived, .nav-menu ul li a:hover {
+      border-bottom: 0px solid #F14F57;
+      color: #333;
+    }
+
+</style>
+<div ng-controller="productListController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            购轻松台湾
+        </div>
+        <div class="btn-group pull-left" ng-click="inquiry()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-left btn-profile">
+                </div>
+            </div>
+        </div>
+        <div class="btn-group pull-right" ng-controller="cartNumController" ng-click="cart()">
+            <div class="btn btn-navbar">
+                <div class="btn-nav-cart">
+                    <div class="cart-mark" ng-show="cartNum() > 0">
+                        {{cartNum()}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-menu">
+         <!------ 导航 ------->
+          <div id="wrapper2">
+                <div id="scroller2">
+                    <ul id="scroller2ul" style="display:inline;">
+                    </ul>
+                </div>
+            </div>
+<!------ 导航 ------->
+
+
+        <ul style="display:none;">
+        	<li style="width:{{width}}">
+            	<a href="#/products">首页</a>
+            </li>
+            <li ng-repeat="cat in categories" style="width:{{width}}" ng-if="cat.name.indexOf('台湾必买')==-1">
+            	<a class="{{code==cat.code?'actived':''}}" href="#/products/{{cat.code}}">{{cat.name}}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="scrollable product-list">
+        <div class="scrollable-content background-gray">            
+            <div id="divProductList">
+                <div class="nav-main-block"></div>
+                
+                <div class="nav-sort-block"></div>
+                
+                <div id="divProducts" style="margin-top: 15px;">
+                   <div class="list-group list-show-product-group">
+                        <div class="list-group-item list-show-product-item" ng-repeat="product in products">
+                            <div class="list-show-product">
+                                <a href="#/product/{{product.id}}">
+                                    <div class="col-xs-4 list-show-product-img">
+										<img alt="{{product.name}}" ng-src="{{product.img}}" />
+                                    </div>
+									<div class="col-xs-8 list-show-product-brief">
+										<span class="list-show-product-brief-0">
+											{{product.name}}
+										</span><br/>
+										<span class="list-show-product-brief-1">
+											{{product.promotePrice | currency:'￥'}}
+											<span>{{product.shopPrice | currency:'￥'}}</span>
+										</span><br/>
+										<span class="list-show-product-brief-2">
+											已售{{product.saleNum}}件
+										</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>                                
+                            </div>
+                        </div>
+                    </div>                        
+                </div> 
+
+
+                <div class="load-bar" ng-hide="(pageNum == null || pageNum == pageCount || products.length==0)">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                </div>
+                <div class="complete-bar-words" ng-show="(pageNum != null && pageNum == pageCount)">
+                    已经到底了哦~
+                </div>
+                <div class="complete-bar-words" ng-show="(products.length==0)">
+                    该分类下商品正在上架，敬请期待~
+                </div>
+            </div>
+			
+        </div>
+    </div>
+</div>

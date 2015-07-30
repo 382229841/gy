@@ -1,0 +1,171 @@
+<div ng-controller="airportServiceController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-hide="isInApp">
+        <div class="navbar-brand navbar-brand-center">
+            机场存送
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-white">
+		  <div id="divAirportSave">
+            <div class="nav-main-block" ng-hide="isInApp"></div>
+			<div>
+				<img ng-src="{{airportSaveInfo.img}}" />
+			</div>
+            <div style="padding:5px 5px;margin-top:8px;">
+				<div class="left" style="width:65%;line-height:3em;font-size:1.2em;">
+					<!--<span><b>￥ 10.00</b></span> <span style="color:#666;">&nbsp;约：NT$50</span>-->
+					<span><b>￥ {{promotePrice}}</b><span style="font-size:.8em;">/天</span></span>&nbsp;
+					<span class="shopPriceNew" style="display:inline;float:none;margin-top: 0em;">￥{{price}}</span>
+				</div>
+				<div class="right" style="width:35%;line-height:3em;padding-top:0.4em;">
+					<button ng-click="needService();" 
+					style=" background:#ffffff;
+							color:#51bf87;
+							border:1px solid #51bf87;
+							-webkit-border-radius:12em; 
+							-moz-border-radius:12em; 
+							-o-border-radius:12em; 
+							border-radius:12em;
+							line-height: 1.7em;
+							width: 100%;
+							font-size: 1.2em;
+							">我要服务</button>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+            <div style="padding:10px 15px;border-top:1px solid #dddddd;">				
+            	{{airportSaveInfo.brief}}
+            </div>
+
+            <div class="panel-group" id="accordion">
+              <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseOne">
+                  <h4 class="panel-title">
+                      购买说明
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseOne" toggleable active-class="in" exclusion-group="accordion1" default="" class="panel-collapse collapse">
+                  <!--<div class="panel-body">
+                    ① 服务费用为每天10元，存几天就拍几天；<br/>
+					② 下单时间需在离台前48小时；<br/>
+					③ WiFi或活动用户免费享有(下单后价格为0)；<br/>
+					④ 下单用户请添加客服微信号：hiker_goeasy。<br/>
+                  </div>-->
+					<div class="panel-body" id="description"> 
+				    </div>
+                </div>
+              </div>
+			  
+              <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseTwo">
+                  <h4 class="panel-title">
+                      服务中心联系信息
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseTwo" toggleable active-class="in" exclusion-group="accordion1" class="panel-collapse collapse">
+                  <div class="panel-body" id="contact">
+                  </div>
+                </div>
+              </div>
+			  
+              <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseThree">
+                  <h4 class="panel-title">
+                      服务范围、送货时间、商品领取
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseThree" toggleable active-class="in" exclusion-group="accordion1" class="panel-collapse collapse">
+                  <div class="panel-body" id="serviceScope">
+                  </div>
+                </div>
+              </div>
+			  
+			  <div class="panel panel-default">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseFour">
+                  <h4 class="panel-title">
+                      快递方式及费用
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseFour" toggleable active-class="in" exclusion-group="accordion1" class="panel-collapse collapse">
+                  <div class="panel-body" id="express">
+                   
+                  </div>
+                </div>
+              </div>
+			  
+			  
+			  <div class="panel panel-default" ng-show="isInApp">
+                <div class="panel-heading" active-class="collapse-head-i-active" toggle target="collapseFive" ng-click="collapseComments();">
+                  <h4 class="panel-title">
+                      评价({{commentInfo.commentNum}}人，{{commentInfo.commentScore}}分)
+                      <i class="fa fa-angle-right right"></i>
+                  </h4>
+                </div>
+                <div id="collapseFive" toggleable active-class="in" exclusion-group="accordion1" class="panel-collapse collapse">
+                  <div class="panel-body">
+                   
+						<div class="list-group">							
+							<div class="list-group-item media" ng-repeat="comment in article.comments">
+								<div class="pull-left avatar" style="background-image: url('{{comment.avatar}}');">
+								</div>
+								<div class="media-body">
+									<div class="comment-content">
+										{{comment.content}}</div>
+									<div>
+										<span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+											{{comment.date}}</span></div>
+								</div>
+							</div>
+							<div style="padding-top:{{$first?'0px':'10px'}};border-bottom:{{$last?'0px':'1px solid #dddddd;'}}" class="list-group-item product-comment product-item-comment" ng-repeat="comment in comments">
+								<div class="itemRate" score="{{comment.star}}">
+								</div>
+								<div class="comment-content">
+									{{comment.content}}
+								</div>
+								<div>
+									<span class="dark-red avatar-name">{{comment.nickName}}</span> <span class="comment-date">
+										{{comment.date}}</span>
+								</div>
+								<div class="clear">
+								</div>
+							</div>
+						</div>
+
+                   
+                  </div>
+                </div>
+
+
+                <!--<div class="load-bar" ng-hide="!isCollapse || page == null || page.totalCount == 0 || page.pageNo == page.totalPage">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                </div>
+                <div class="complete-bar-words" style="display:none;" ng-show="page != null && page.pageNo == page.totalPage">
+                    已经到底了哦~
+                </div>-->
+              </div>
+
+			    
+
+
+			  
+            </div>
+
+          </div>
+        </div>
+    </div>
+</div>

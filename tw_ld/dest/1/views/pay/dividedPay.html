@@ -1,0 +1,59 @@
+<div ng-controller="dividedPayController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-if="!isWechat">
+        <div class="navbar-brand navbar-brand-center">
+            支付订单
+        </div>        
+    </div>
+    <div class="scrollable background-white">
+        <div class="scrollable-content" ng-if="!isWechat">
+            <div class="nav-main-block">
+            </div>
+            <div class="text-center" style="font-size:1.5em;padding:1em 0;font-weight:bold;color:#DB5565;">
+                {{order.fee| currency:'￥'}}
+            </div>
+            <div class="fill-area status-box" style="line-height:1.8em;font-size:1.1em">
+                <div style="border:1px solid #eeeeee;border-bottom:0;padding:.5em;">
+                    <span class="pull-left text-gray">收款方</span>
+                    <span class="pull-right">购轻松台湾</span>
+                    <div class="clear"></div>
+                </div>
+                <div style="border:1px solid #eeeeee;border-bottom:0;padding:.5em;">
+                    <span class="pull-left text-gray">订单号</span>
+                    <span class="pull-right">{{order.orderNum}}</span>
+                    <div class="clear"></div>
+                </div>
+                <div style="border:1px solid #eeeeee;border-bottom:0;padding:.5em;">
+                    <span class="pull-left text-gray">支付方式</span>
+                    <span class="pull-right">支付宝</span>
+                    <div class="clear"></div>
+                </div>
+                <div style="border:1px solid #eeeeee;padding:.5em;">
+                    <span class="pull-left text-gray">支付金额</span>
+                    <span class="pull-right">{{order.fee| currency:'￥'}}</span>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="main-btn-80">          
+                <button class="btn btn-default btn-confirm" ng-click="pay()" style="background-image: linear-gradient(to bottom, #DB5565, #F24C5A);">
+                    支付宝支付</button>
+            </div>
+        </div>
+        
+        <div ng-if="isWechat" class="overlay-panel">
+                <img src="/image/pay/icon_alipay.jpg" style="width:8em;margin-top:5px;"/>
+                <br/>
+                点击 页面右上角<img src="/image/pay/icon_pop.png" style="width:2.5em;margin-left:5px;"/> 
+                <br/>         
+
+
+            选择 在浏览器/Safari中打开<br/> 
+
+            即可 使用 支付宝付款<br/> 
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>    
+</div>

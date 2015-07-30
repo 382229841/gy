@@ -1,0 +1,33 @@
+﻿<div ng-controller="airportController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-controller="navbarController">
+        <div class="navbar-brand navbar-brand-center">
+            选择机场
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content">
+            <div class="nav-main-block">
+            </div>
+            <div class="fill-area select-area">
+                <div class="list-group">
+                    <div class="list-group-item" ng-repeat="flight in flights" ng-click="select(flight)">
+                        <div class="pull-right {{isSelected() == true && flight.selected != true ? 'hide':''}}">
+                            <div class="div-right {{flight.selected == true? 'airport-selected':''}}">
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            {{flight.terminal}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

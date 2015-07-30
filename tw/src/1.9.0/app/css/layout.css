@@ -1,0 +1,76 @@
+body{
+	width:100%;
+	text-align:center;
+	margin:0;
+	overflow-x:hidden;
+}
+
+app {
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  background: #777777;
+  overflow: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-transition: -webkit-transform 400ms ease;
+  -moz-transition: -moz-transform 400ms ease;
+  -o-transition: -o-transform 400ms ease;
+  transition: transform 400ms ease;
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+.scrollable{
+	width:100%;
+	max-width:600px;
+	margin:0 auto;
+	
+	position: absolute;
+	height: 100%;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.scrollable-content{
+	width:100%;
+	max-width:600px;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+.viewport{
+	width:400%;
+	transition: all .5s linear;
+	-webkit-transition: all .5s ease-in-out;
+}
+.item{
+	width:25%;
+	float:left;
+}
+.item1{
+	background:#ff5555;
+}
+
+.item2{
+	background:#ff9999;
+}
+.item3{
+	background:#55ff55;
+}
+.item4{
+	background:#5555ff;
+}
+.next{
+	position:absolute;
+	right:8px;
+	top:45%;
+}
+.pre{
+	position:absolute;
+	left:8px;
+	top:45%;
+}

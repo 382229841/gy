@@ -1,0 +1,375 @@
+<style>
+    #viewport {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        background: #eee;
+        overflow: hidden;
+    }
+
+    #wrapper {
+        width: 100%;
+        margin: 0 auto;
+        z-index: 1;
+    }
+
+    #scroller {
+        z-index: 1;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 400%;
+        
+        min-height:100px;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+        background-color: #fff;
+    }
+
+    .slide {
+        width: 25%;
+        float: left;
+    }
+
+    #indicator {
+        position: relative;
+        width: 55px;
+        height: 10px;
+        margin: 10px auto;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUBAMAAABohZD3AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUGCDYztyDUJgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAGFBMVEUAAADNzc3Nzc3Nzc3Nzc3Nzc3Nzc3///8aWwwLAAAABnRSTlMAX5Ks3/nRD0HIAAAAAWJLR0QHFmGI6wAAAFtJREFUGFdjYGBgEHYNMWRAAJE0IHCEc5nSwEABxleD8JOgXMY0KBCA8FlgfAcIXwzGT4TwzWD8ZAjfDcZPgfDDYPxU7Hx09ejmoduH7h5096L7B8O/6OGBGl4APYg8TQ0XAScAAAAASUVORK5CYII=);
+        background-size:15px;
+        margin-top: -25px;
+    }
+
+    #dotty {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background: #F15155;
+    }
+    a:focus {
+      color: #0055b3;
+      text-decoration: underline;
+    }
+
+    a:focus {
+      outline: none;
+      outline: 0;
+      outline-offset: 0px;
+    }
+    a:active,
+    a:hover {
+        outline: 0;
+    }
+
+
+
+
+
+    #wrapper2 {
+        position: relative;
+        height: 3em;
+        width: 100%;
+        background: #fff;
+        overflow: hidden;
+        -ms-touch-action: none;
+    }
+
+    #scroller2 {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 200%;
+        height: 3em;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+
+    #scroller2 ul {
+        list-style: none;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-top:.5em;
+    }
+
+    #scroller2 li {
+        height: 3em;
+        width:12.5%;
+        float: left;
+        line-height: 3em;
+        border-right: 0px solid #ccc;
+        border-bottom: 0px solid #ccc;
+        background-color: #fff;
+        font-size: .9em;
+        overflow: hidden;
+        text-align: center;
+        
+    }
+    #scroller2 li.last{
+        border-right: 0px solid #ccc;
+    }
+    #scroller2 li .fa{
+        color:#1eb0fe;
+    }
+    @media only screen and (max-width: 100px)
+    {
+        #scroller2 li {
+            font-size: .5em;
+        }
+    }
+    @media only screen and (max-width: 200px)
+    {
+        #scroller2 li {
+            font-size: .6em;
+        }
+    }
+    @media only screen and (max-width: 300px)
+    {
+        #scroller2 li {
+            font-size: .7em;
+        }
+    }
+    @media only screen and (max-width: 400px)
+    {
+        #scroller2 li {
+            font-size: .9em;
+        }
+    }
+    .nav-menu ul{
+        display:inline;
+    }
+    .nav-menu ul li .actived, .nav-menu ul li a:hover {
+      border-bottom: 0px solid #F14F57;
+      color: #333;
+    }
+    .nav-sort-block {
+      height: 40px;
+    }
+</style>
+<div>
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            购轻松台湾
+        </div>
+        <div class="btn-group pull-left" ng-click="inquiry()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-left btn-profile">
+                </div>
+            </div>
+        </div>
+        <div class="btn-group pull-right" ng-controller="cartNumController" ng-click="cart()">
+            <div class="btn btn-navbar">
+                <div class="btn-nav-cart">
+                    <div class="cart-mark" ng-show="cartNum() > 0">
+                        {{cartNum()}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-menu">
+    <!------ 导航 ------->
+          <div id="wrapper2">
+                <div id="scroller2">
+                    <ul id="scroller2ul">
+                    </ul>
+                </div>
+            </div>
+<!------ 导航 ------->
+
+
+        <ul style="display:none;">
+            <li style="width:{{width}}">
+            	<a class="actived" href="#/products">首页</a>
+            </li>
+            <li ng-repeat="cat in categories" style="width:{{width}}" ng-if="cat.name.indexOf('台湾必买')==-1">
+            	<a href="#/products/{{cat.code}}">{{cat.name}}</a>
+            </li>
+        </ul>
+
+    </div>
+
+    
+    <div class="scrollable product-list">
+
+        <div class="scrollable-content background-white" style="padding: 0 5px;">  
+			
+            <div id="divProductList">
+                <div class="nav-main-block"></div>
+                
+                <div class="nav-sort-block"></div>
+                <div class="slider_box" style="{{(!activities || activities.length<1)?'display:none':''}}" ng-hide="!activities || activities.length<1">
+                    <div id="slider" class="scroll_slider">
+                        <div class="pic_group">
+                        </div>
+                        <div id="serial-number" class="serial-number" style="z-index:9; ">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="viewport">
+                    <div id="wrapper">
+                        <div id="scroller">
+                        </div>
+                    </div>
+                </div>
+                <div id="indicator">
+                    <div id="dotty"></div>
+                </div>
+
+                <div style="padding:5px 5px;margin-top:8px;">
+                     <a href="#/app/shuttleService" style="color:#555555;display: block;">
+                        <div class="left" style="padding-left:0.5em;">
+                            <div style="
+                            font-size:1.4em;
+                            line-height:1.6em;
+                            font-weight:bold;">机场存送</div>
+                            <div style="color:#666666;line-height:1.4em;font-size:1em;">台湾旅行轻松购，直达机场回程取</div>
+                        </div>
+                        <div class="right" style="line-height: 3em;padding-right: 0.5em;">
+                            <img src="image/icon_arrow.png" style="zoom:.8;"/>
+                        </div>
+                        <div class="clear"></div>
+                    </a>                    
+                </div>
+                
+                <div class="btn-group justified nav-tabs" style="margin:8px 0 0 0;" ng-show="products || latestProducts">
+                  <a class="btn btn-default tab-a"
+                     href="#Tab1"
+                     toggle="on"
+                     active-class="active" ng-click="changeTab(1);">台湾必买
+                  </a>
+
+                  <a class="btn btn-default tab-a"
+                     href="#Tab2"
+                     toggle="on"
+                     active-class="active" ng-click="changeTab(2);">最新上线
+                  </a>
+
+                </div>
+                <div class="tab-content">
+                  <div class="tab-pane"
+                      toggleable
+                      active-class="active"
+                      default="active"
+                      id="Tab1"
+                      exclusion-group="myTabs">
+                       <div id="divProducts">
+                           <div class="list-group">
+                                <div class="list-group-item border-bottom-0 product-brief-item" ng-repeat="product in products">
+                                    <div class="product-brief-box" style="
+                                        width:{{winWidth-10}}px;height:{{(winWidth-10)/2}}px;
+                                        max-width:630px;max-height:315px;
+                                        background-image: url({{product.img}});
+                                        background-position: center 0;
+                                        background-repeat: no-repeat;
+                                        background-size: contain;"
+                                        ng-click="getScrollTop(product.id);"
+                                        >
+                                        <!--
+                                        <a href="" ng-click="getScrollTop(product.id);">
+                                            <img alt="{{product.name}}" ng-src="{{product.img}}" />
+                                        </a>
+                                        -->
+                                        <div class="product-brief-instruction-background">
+                                        </div>
+                                        <div class="product-brief-instruction">
+                                            <div style="top: -0.05em;font-size:1.6em;" class="pull-right product-brief-price {{product.price != null && product.price > 0 ?'':'brief-price-one'}}">
+                                            {{product.price| currency:'￥'}} 
+                                                <!--{{product.t_price| currency:'NT$'}} 
+                                                <span ng-show="product.c_price != null && product.c_price > 0"
+                                                    class="shopPrice brief-price">康是美{{product.c_price| currency:'NT$'}}</span>-->
+                                            </div>
+                                            <div class="media-body">
+                                                {{product.name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <b class="hide" ng-if="$last">{{setScrollTop()}}</b>
+                                </div>
+                            </div>                        
+                        </div> 
+                   </div>
+                   <div class="tab-pane"
+                      toggleable
+                      active-class="active"
+                      id="Tab2"
+                      exclusion-group="myTabs">
+                        <div id="divNewProducts">
+                           <div class="list-group">
+                                <div class="list-group-item border-bottom-0 product-brief-item" ng-repeat="product in latestProducts">
+                                    <div class="product-brief-box" style="
+                                        width:{{winWidth-10}}px;height:{{(winWidth-10)/2}}px;
+                                        max-width:630px;max-height:315px;
+                                        background-image: url({{product.img}});
+                                        background-position: center 0;
+                                        background-repeat: no-repeat;
+                                        background-size: contain;"
+                                        ng-click="getScrollTop(product.id);">
+                                        <!--
+                                        <a href="#/product/{{product.id}}/1">
+                                            <img alt="{{product.name}}" ng-src="{{product.img}}" />
+                                        </a>
+                                        -->
+                                        <div class="product-brief-instruction-background">
+                                        </div>
+                                        <div class="product-brief-instruction">
+                                            <div style="top: -0.05em;font-size:1.6em;" class="pull-right product-brief-price {{product.price != null && product.price > 0 ?'':'brief-price-one'}}">
+                                            {{product.price| currency:'￥'}} 
+                                                <!--{{product.t_price| currency:'NT$'}} 
+                                                <span ng-show="product.c_price != null && product.c_price > 0"
+                                                    class="shopPrice brief-price">康是美{{product.c_price| currency:'NT$'}}</span>-->
+                                            </div>
+                                            <div class="media-body">
+                                                {{product.name}}
+                                            </div>
+                                            <b class="hide"></b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="load-bar" ng-hide="(currentTab !=2 && (pageNum == null || pageNum == pageCount)) || (currentTab ==2 && (pageNum2 == null || pageNum2 == pageCount2))">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;" ng-show="currentTab!=2"></canvas>
+                    <canvas id="myLoadCanvas2" width="70px" height="70px;" ng-show="currentTab==2"></canvas>
+                </div>
+                <div class="complete-bar-words" ng-show="(currentTab !=2 && (pageNum != null && pageNum == pageCount)) || (currentTab ==2 && (pageNum2 != null && pageNum2 == pageCount2))">
+                    已经到底了哦~
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
