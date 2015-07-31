@@ -3,7 +3,7 @@ var app = angular.module('EasyBuy', [
     "ngTouch",
     "mobile-angular-ui"
 ]);
-var onlyWechatOauth=[];
+/*var onlyWechatOauth=[];
 var isNotBindPhone=[];
 onlyWechatOauth["views/wechat/myOrder.html"]="myOrder";
 onlyWechatOauth["views/wechat/myFreeOrder.html"]="myFreeOrder";
@@ -41,7 +41,7 @@ baseOauth["orderList"]=true;
 baseOauth["wechat-myAirportInfo"]=true;
 baseOauth["wechat-myWiFi"]=true;
 var isContainFind=[];
-isContainFind["activity-activityDown"]=true;
+isContainFind["activity-activityDown"]=true;*/
 var preventCache=Math.random().toString(36);
 app.config(function ($routeProvider, $locationProvider,$controllerProvider,$compileProvider,$filterProvider,$provide) {
 	app.register = {
@@ -146,7 +146,6 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
 			}
 		})
-
 		.otherwise({
             redirectTo: '/products'
         });
@@ -226,11 +225,8 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
 			 });
 			 var mod=parseInt($rootScope.categoryIndex/4);
 			 var offset=$("#scroller2ul li").width()*mod;
-			 //myScroll.scrollerStyle['transform'] = 'translate(-'+offset+'px,0px)translateZ(0)';
 			
 			myScroll.scrollTo(-offset, 0);
-
-			 //myScroll.scrollTo(100, 0, 500, 'quadratic')
         };
         if(typeof(IScroll)=="undefined"){
             $.ajax({
