@@ -1,3 +1,14 @@
+<style>
+
+.my_logo{
+	height: 100px;
+	background: url(/image/about_logo_o.png);
+	background-repeat: no-repeat;
+	background-position: center 0;
+	background-size: contain;
+}
+
+</style>
 <div ng-controller="myController">
     <!-- Navbars -->
     <div class="navbar navbar-app nav-main">
@@ -22,6 +33,7 @@
                      <div class="myPhone-item-title">
                         
                      </div>
+					 <div class="my_logo"></div>
                      <div class="myPhone-item-text">
                         <img src="/image/icon_user.png" />
                         <input type="text" ng-model="username" id="myPhoneNumber" placeholder="手机号" onkeydown="checkNumber(this,false);"/>
@@ -31,11 +43,15 @@
                         <img src="/image/icon_password.png" style="width:1.5em;height:auto;"/>
                         <input type="password" ng-model="password" id="myPhoneNumber" placeholder="密码"/>
                      </div>
+                     
+                     <div class="myPhone-item-text text-gray">
+                        仅限领队账号登录，普通账户无法登录
+                     </div>
 
                      <div class="myPhone-item-text" style="text-align:center;margin-top:25px;white-space:nowrap;">
                         <button class="btn" ng-click="login();" style="width:43%;">登录</button>
                         &nbsp;&nbsp;
-                        <button class="btn" ng-click="register();" style="width:43%;">注册</button>
+                        <button class="btn" ng-click="register();" style="width:43%;">注册(邀请码)</button>
                      </div>
 
                 </div> 

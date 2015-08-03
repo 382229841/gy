@@ -2,7 +2,7 @@
     <!-- Navbars -->
     <div class="navbar navbar-app nav-main">
         <div class="navbar-brand navbar-brand-center">
-            <span>我的</span>                    
+            <span>注册</span>                    
         </div>
         <div class="btn-group pull-left" ng-click="back()">
             <div class="btn btn-navbar sidebar-toggle">
@@ -35,8 +35,19 @@
                         <input type="password" ng-model="password" id="myPhoneNumber" placeholder="密码"/>
                      </div>
 
+                     <div class="myPhone-item-text">
+                        <img src="/image/icon_password.png" style="width:1.5em;height:auto;"/>
+                        <input type="password" ng-model="password" id="myPhoneNumber" placeholder="邀请码"/>
+                     </div>
+
                      <div class="myPhone-item-text" ng-if="!isSetMobile" style="text-align:center;margin-top:25px;">
-                        <button class="btn" ng-click="register();" style="width:50%;">注册</button>
+                        <button class="btn" ng-click="register();" style="width:50%;">确定</button>
+                     </div>
+
+
+
+                     <div class="myPhone-item-text" ng-if="!isSetMobile" style="text-align:center;margin-top:50px;">
+                        <a>已有账号，直接登录</a>
                      </div>
 
                 </div> 

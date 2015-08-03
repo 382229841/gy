@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="yes" />
+    <meta content="telephone=no" name="format-detection" />
+    
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+	
+	<link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+	
+	<link rel="stylesheet" href="css/index.min.css" />
+	
+	
+	<script src="js/libs.min.js"></script>	
+	<script src="js/lib/unslider.js"></script>	
+	
+	<script src="js/app.min.js"></script>
+	<script src="js/index.min.js"></script>
+	<script src="js/mains.min.js"></script>
+	<style>
+		body{
+			font-family:"Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif
+		}
+	</style>
+   </head>
+ <body 
+    ng-app="AngularUiExamples" 
+    ng-controller="MainController">
+	<div class="header" id="header">		
+		<div>
+			<nav class="uk-navbar">
+				<ul class="uk-navbar-nav">
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+					<li><a href=""><img src="images/logo-1.png" style="height:46px;margin-top: -12px;" alt="">
+							<span style="margin-left:15px;font-size:1.2em;">购轻松平台</span>
+						</a>
+					</li>
+					<li><a href=""></a></li>
+					<li><a href="">开发</a></li>					
+					<li><a href="">产品</a></li>					
+					<li class="uk-parent" data-uk-dropdown="" aria-haspopup="true" aria-expanded="false">
+						<a href="">运营</a>
+					</li>
+				</ul>
+				
+				<div class="uk-navbar-flip">
+					<ul class="uk-navbar-nav">						
+						<li><a href="">登录</a></li>						
+						<li><a href="">帮助文档</a></li>
+						<li><a href=""></a></li>
+						<li><a href=""></a></li>
+						<li><a href=""></a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</div>
+	
+	<div class="main" style="min-height:{{contentHeight}}px;">
+		<ng-view></ng-view>
+		<div id="index-content">
+			<style>
+				.banner { position: relative; overflow: auto; }
+				.banner ul{padding-left:0px;}
+				.banner li { list-style: none;}
+				.banner ul li { float: left; height:280px;}
+				
+				.banner .dots {
+					position: absolute;
+					top: 240px;
+					left: 45%;
+				}
+				
+				.banner .dots .dot {
+					width: 14px;
+					height: 14px;
+					border: 1px solid white;
+					border-radius: 8px;
+					list-style-type: none;
+					float: left;
+					cursor:pointer;
+					margin:0 10px;
+				}
+				.banner .dots .active {
+					background-color: white;
+				}
+				.slider-item{
+					margin:0px auto;
+					width:1200px;
+					height:280px;
+					background:#2E91E6;
+					position: relative;
+				}
+				
+				.slider-item-li-1{
+					background:#2E91E6;
+				}
+				.slider-item-2{
+					margin:0px auto;
+					width:1200px;
+					height:280px;
+					background:#19A155;
+					position: relative;
+				}
+				.slider-item-li-2{
+					background:#19A155;
+				}
+				.introduce{
+					height:300px;
+					width:100%;
+					background:#F8F8F8;
+					border-bottom: 1px solid #D5DFE7;		
+					min-width: 1200px;
+				}
+				
+				.introduce ul {
+					width: 1200px;
+					margin: 0px auto;
+				}
+				
+				.introduce ul li {
+					list-style-type: none;
+					width: 350px;
+					height: 100%;
+					float: left;
+					text-align: center;
+				}
+				
+				.introduce ul li .icon {
+					margin: 0px auto;
+					margin-top: 35px;
+					margin-bottom: 10px;
+					width: 160px;
+					height: 160px;
+				}
+				
+				.introduce ul li .icon .img {
+					position: relative;
+					top: 0px;
+					margin: 0px auto;
+					margin-top: 50px;
+					width: 90%;
+					height: 90%;
+					-webkit-background-size: 100%;
+					-moz-background-size: 100%;
+					-ms-background-size: 100%;
+					-o-background-size: 100%;
+					background-size: 100%;
+					transition: all 0.2s cubic-bezier(0.64, 0.18, 0.75, 0.4);
+					-ms-transition: all 0.2s cubic-bezier(0.64, 0.18, 0.75, 0.4);
+					-moz-transition: all 0.2s cubic-bezier(0.64, 0.18, 0.75, 0.4);
+					-webkit-transition: all 0.2s cubic-bezier(0.64, 0.18, 0.75, 0.4);
+					-o-transition: all 0.2s cubic-bezier(0.64, 0.18, 0.75, 0.4);
+				}	
+				
+				.introduce ul li:hover .icon .img {
+					transform: scale(1.1);
+					-ms-transform:scale(1.1);
+					-moz-transform:scale(1.1);
+					-webkit-transform:scale(1.1);
+					-o-transform:scale(1.1);
+					
+					
+					
+					-webkit-background-size: 100%;
+					-moz-background-size: 100%;
+					-ms-background-size: 100%;
+					-o-background-size: 100%;
+					background-size: 100%;
+				}
+				.introduce ul li:hover .iconText {
+					color: #f60;
+				}
+				
+				.introduce ul li .Img-IndexIcon1 {
+					background: url('images/1.png') no-repeat 0 0;
+				}
+				
+				.introduce ul li:hover .Img-IndexIcon1 {
+					background: url('images/1-1.png') no-repeat 0 0;
+				}
+				
+				.Img-IndexIcon2 {
+					width: 120px;
+					height: 120px;
+					background: url('images/1.png') center center no-repeat;
+				}
+				
+				.introduce ul li .Img-IndexIcon2 {
+					background: url('images/2.png') no-repeat 0 0;
+				}
+				
+				.introduce ul li:hover .Img-IndexIcon2 {
+					background: url('images/2-1.png') no-repeat 0 0;
+				}
+				
+				
+				
+				.Img-IndexIcon3 {
+					width: 120px;
+					height: 120px;
+					background: url('images/3.png') center center no-repeat;
+				}
+				
+				.introduce ul li .Img-IndexIcon3 {
+					background: url('images/3.png') no-repeat 0 0;
+				}
+				
+				.introduce ul li:hover .Img-IndexIcon3 {
+					background: url('images/3-1.png') no-repeat 0 0;
+				}
+				
+				.Img-IndexIcon3 {
+					width: 120px;
+					height: 120px;
+					background: url('images/3.png') center center no-repeat;
+				}
+				
+			</style>	 
+				<div class="banner">
+					<ul>
+						<li class="slider-item-li-1">
+							<div style="float: left;
+			  margin-left: 10%;
+			  text-align: center;
+			  width: 300px;
+			  color: #fff;
+			  height: 210px;
+			  margin-top: 70px;
+			  line-height: 70px;
+			  font-size: 2em;
+							">
+								<span style="font-size:1.3em;">海外游 —— 购平台</span><br/>
+								<button style="
+								line-height: 35px;
+								cursor:pointer; 
+								border: 1px solid #fff;
+								background: #4CA2E8;
+								color: #fff;
+								font-size: 1em;
+								padding: 10px 50px;
+								border-radius: 10px;">购轻松</button>
+							
+							</div>
+
+							
+							<div style="float:right;margin-right:10%;position:relative;">
+							
+								<img src="images/s.png" style="height:280px;" />
+								
+								<img src="images/logo.png" style="
+								height: 60px;
+								  position: absolute;
+								  top: 124px;
+								  left: 250px;
+								  animation: twinkling4 4s infinite ease-in-out;
+								" />
+								
+								<img src="images/dot1.png" style="
+								  height: 20px;
+								  position: absolute;
+								  top: 208px;
+								  left: 239px;
+								  animation: twinkling1 2s infinite ease-in-out
+								" />
+								
+								
+								<img src="images/dot2.png" style="
+								height: 22px;
+								  position: absolute;
+								  top: 97px;
+								  left: 406px;
+								  animation: twinkling2 2s infinite ease-in-out;
+								" />
+								
+								
+								<img src="images/dot3.png" style="
+								height: 22px;
+								  position: absolute;
+								  top: 90px;
+								  left: 233px;
+								  animation: twinkling3 2s infinite ease-in-out;
+								" />
+								
+								
+								<img src="images/r.png" style="
+								height: 200px;
+								  position: absolute;
+								  top: 58px;
+								  left: 181px;
+								  animation: rotate 8s linear infinite;
+								" />
+								
+								<img src="images/ra.png" style="
+									  height: 553px;
+									  position: absolute;
+									  top: -118px;
+									  left: -1px;
+									  animation: rotate2 30s linear infinite;
+								" />
+							</div>
+							
+						
+						
+						</li>
+						<li class="slider-item-li-2"> 
+							<div><div></div></div>
+							<div><div></div></div>
+							<div><div></div></div>
+							<div><div></div></div>
+						
+						
+						</li>
+					</ul>
+				</div>
+		
+				<div class="introduce">	
+					<ul class="items">
+						<li class="item item1">
+							<div class="icon"><div class="img Img-IndexIcon1"></div></div>
+							<div class="iconText">敏捷开发</div>
+						</li>
+						<li class="item item2">
+							<div class="icon"><div class="img Img-IndexIcon2"></div></div>
+							<div class="iconText">跨境电商</div>
+						</li>
+						<li class="item item3">
+							<div class="icon"><div class="img Img-IndexIcon3"></div></div>
+							<div class="iconText">快速响应</div>
+						</li>
+					</ul>
+				
+				</div>
+				<style>
+						.newContent {
+						  min-width: 1200px;
+						}
+						.newContent {
+						  max-width: 1200px;
+						  overflow: hidden;
+						  margin: 0px auto;
+						}
+						.newContent hr {
+						  border: 0px;
+						  border-bottom: 1px solid #d5dfe7;
+						}
+						.newBannerInfo {
+						  height: 482px;
+						}
+						.newBannerInfo .half {
+						  padding: 0 0 0 100px;
+						  width: 500px;
+						  height: 100%;
+						  float: left;
+						}
+						.newBannerInfo .half .title {
+						  margin-top: 170px;
+						  margin-left: 68px;
+						  font-size: 28px;
+						  font-weight: bold;
+						  text-align:left;
+						}
+						.newBannerInfo .half .title a {
+						  font-size: 28px;
+						  font-weight: bold;
+						  color: #49565D;
+						  text-decoration: none;
+						}
+						.newBannerInfo .half .subTitle {
+						  background: url('images/liStyle.png') no-repeat 0 center;
+						  padding: 0 0 3px 17px;
+						  font-size: 16px;
+						  color: #939FA7;
+						  margin-left: 68px;
+						  text-align: left;
+						}
+						.newBannerInfo .half .subTitle {
+						  font-size: 16px;
+						  color: #939FA7;
+						  margin-left: 68px;
+						}
+						.newBannerInfo .half .one {
+						  margin-top: 33px;
+						}
+						.newBannerInfo.bannerInfo1 .icoBox {
+						  width: 590px;
+						  padding: 0 0 0 10px;
+						}
+						.newBannerInfo.bannerInfo1 .titleBox {
+						  width: 450px;
+						  padding: 0 0 0 150px;
+						}
+						.newBannerInfo.bannerInfo1 .Img-HFiveBig {
+						  width: 590px;
+						}
+						.newBannerInfo.bannerInfo3 .Img-HFiveBig {
+						  position: relative;
+						  left: -60px;
+						  top: 0;
+						  width: 570px;
+						}
+						.newBannerInfo.bannerInfo5 .Img-secureBig {
+						  width: 100%;
+						  height: 100%;
+						  background: url('/platform/mtl/images/newindex/t5.png') no-repeat 30px 0;
+						}
+						.newBannerInfo.bannerInfo3 .titleBox {
+						  width: 450px;
+						  padding: 0 0 0 150px;
+						}
+						.Img-CompatibilityBig {
+						  width: 115%;
+						  height: 100%;
+						  background: url('images/4.png') center center no-repeat;
+						}
+						.Img-StabilityBig {
+						  width: 100%;
+						  height: 100%;
+						  background: url('images/5.png') center center no-repeat;
+						}
+						.Img-HFiveBig {
+						  width: 100%;
+						  height: 100%;
+						  background: url('images/6.png') center center no-repeat;
+						}			
+				</style>
+				<div class="newContent">
+					
+					<div class="newBannerInfo bannerInfo1" id="anchorScroll1">
+						<div class="half" data-uk-scrollspy="{cls:'uk-animation-slide-left',delay:500,repeate:true}"><div class="Img-CompatibilityBig"></div></div>
+						<div class="half titleBox" data-uk-scrollspy="{cls:'uk-animation-slide-right',delay:500,repeate:true}">
+							<div class="title"><a href="/compatibility.htm">开发</a></div>
+							<div class="subTitle one">开发模式 - SCRUM</div>
+							<div class="subTitle two">开发环境 - 云平台</div>
+							<div class="subTitle three">系统架构 - DB,API,H5,App</div>
+							<div class="subTitle three">测试分类 - 手动,自动</div>
+						</div>
+					</div>
+					<hr>
+					<div class="newBannerInfo bannerInfo2" id="anchorScroll2">
+						<div class="half titleBox" data-uk-scrollspy="{cls:'uk-animation-slide-left',delay:500,repeate:true}">
+							<div class="title"><a href="/stability.htm">产品</a></div>
+							<div class="subTitle one">产品设计</div>
+							<div class="subTitle two">需求</div>
+							<div class="subTitle three">UI设计</div>
+						</div>
+						<div class="half" data-uk-scrollspy="{cls:'uk-animation-slide-right',delay:500,repeate:true}">
+							<div class="Img-StabilityBig"></div></div>
+					</div>
+					<hr>
+					<div class="newBannerInfo bannerInfo3" id="anchorScroll3">
+						<div class="half" data-uk-scrollspy="{cls:'uk-animation-slide-left',delay:500,repeate:true}"><div class="Img-HFiveBig"></div></div>
+						<div class="half titleBox" data-uk-scrollspy="{cls:'uk-animation-slide-right',delay:500,repeate:true}">
+							<div class="title"><a href="/hfive.htm">交易量</a></div>
+							<div class="subTitle one">用户数</div>
+							<div class="subTitle two">库存</div>
+							<div class="subTitle">OPS</div>
+						</div>
+					</div>
+			</div>
+			
+			<div>
+				<div style="background:#008ED7;height:15px;opacity: 0.65;"></div>				
+				<div style="background:#008ED7;height:130px;text-align:center;line-height:130px;color:#fff;font-size:2.5em;">
+					购轻松 —— 游购利器
+					<button style="line-height: 45px;cursor:pointer; border: 1px solid #fff;background: #35A5DF;color: #fff;font-size: 1em;padding: 10px 50px;margin-left: 10%;  border-radius: 10px;">下载</button>
+				</div>				
+				<div style="background:#008ED7;height:15px;opacity: 0.65;"></div>
+			</div>
+		</div>
+		
+	</div>
+	
+	<div class="footer" id="footer">
+		<img src="images/logo-1.png" style="height:25px;margin-top: -12px;" alt="">
+		<span style="margin-left:5;font-size:1em;color:#fff;">购轻松</span>
+		<br/>
+		<span style="font-size:1.1em;color:#fff;">Copyright © 2015 - 2020. All Rights Reserved. </span>
+	</div>
+	
+   
+	
+  </body>
+</html>

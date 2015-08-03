@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="yes" />
+    <meta content="telephone=no" name="format-detection" />
+    
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+	
+	<link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+	
+	<link rel="stylesheet" href="css/index.min.css" />	
+	
+	<script src="js/libs.min.js"></script>	
+	<script src="js/app.min.js"></script>
+	<script src="js/index.min.js"></script>
+	<script src="js/mains.min.js"></script>
+	<style>
+
+		body{
+			font-family:"Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif
+		}
+	</style>
+   </head>
+  <body 
+    ng-app="AngularUiExamples" 
+    ng-controller="MainController"
+    >
+	<div class="uk-offcanvas-bar">
+    <ul class="uk-nav uk-nav-offcanvas">...</ul>
+</div>
+	<div class="header" id="header">
+		<div class="logo">
+            <img class="uk-margin-bottom" style="width: 150px;height: 65px;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjQsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTQwcHgiIGhlaWdodD0iMTIwcHgiIHZpZXdCb3g9Ii0yOS41IDI3NS41IDE0MCAxMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgLTI5LjUgMjc1LjUgMTQwIDEyMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8ZyBvcGFjaXR5PSIwLjciPg0KCTxwYXRoIGZpbGw9IiNEOEQ4RDgiIGQ9Ik0tNi4zMzMsMjk4LjY1NHY3My42OTFoOTMuNjY3di03My42OTFILTYuMzMzeiBNNzkuNzg4LDM2NC4zNTVIMS42NTZ2LTU3LjcwOWg3OC4xMzJWMzY0LjM1NXoiLz4NCgk8cG9seWdvbiBmaWxsPSIjRDhEOEQ4IiBwb2ludHM9IjUuODYsMzU4LjE0MSAyMS45NjIsMzQxLjIxNiAyNy45OTUsMzQzLjgyNyA0Ny4wMzIsMzIzLjU2MSA1NC41MjQsMzMyLjUyMyA1Ny45MDUsMzMwLjQ4IA0KCQk3Ni4yMDMsMzU4LjE0MSAJIi8+DQoJPGNpcmNsZSBmaWxsPSIjRDhEOEQ4IiBjeD0iMjQuNDYyIiBjeT0iMzIxLjMyMSIgcj0iNy4wMzQiLz4NCjwvZz4NCjwvc3ZnPg0K" alt="">
+		</div>
+		<div class="title">订单管理系统</div>
+		<div class="user">
+			欢迎：admin
+			<a class="uk-button uk-button-link" style="color:#ffffff;" href="javascript:window.location.href='/login'">退出</a>
+		</div>
+	</div>
+	
+	<div class="main">
+		<div class="left" style="height:{{menuHeight}}px" id="main-left">
+	
+
+				<div class="uk-panel uk-panel-box">
+
+					<h3 class="uk-panel-title"><i class="uk-icon-bars"></i>&nbsp;导航菜单</h3>
+
+					<ul class="uk-nav uk-nav-side uk-nav-parent-icon" data-uk-nav="">
+						<!--
+						<li class="uk-active"><a href="">Active</a></li>
+
+						<li class="uk-parent" aria-expanded="false">
+							<a href="#">Parent</a>
+							<div style="overflow:hidden;height:0;position:relative;" class="uk-hidden"><ul class="uk-nav-sub">
+								<li><a href="">Sub item</a></li>
+								<li><a href="">Sub item</a>
+									<ul>
+										<li><a href="">Sub item</a></li>
+										<li><a href="">Sub item</a></li>
+									</ul>
+								</li>
+							</ul></div>
+						</li>
+
+						<li class="uk-parent" aria-expanded="false">
+							<a href="#">Parent</a>
+							<div style="overflow:hidden;height:0;position:relative;" class="uk-hidden"><ul class="uk-nav-sub">
+								<li><a href="">Sub item</a></li>
+								<li><a href="">Sub item</a></li>
+							</ul></div>
+						</li>
+
+						<li><a href="">Item</a></li>
+						-->
+
+						<li class="uk-nav-header"><i class="uk-icon-files-o"></i>&nbsp;采购管理</li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 查询订单</a></li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 新增订单</a></li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 发布审核</a></li>
+
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 采购收货</a></li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 采购确认</a></li>
+						
+						<li class="uk-nav-divider"></li>
+
+
+						<li class="uk-nav-header"><i class="uk-icon-files-o"></i>&nbsp;基础数据</li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 药品类目</a></li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 配送目录</a></li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 带量采购目录</a></li>
+						
+						<li class="uk-nav-divider"></li>
+
+						<li class="uk-nav-header"><i class="uk-icon-gear "></i>&nbsp;系统管理</li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 查询用户</a></li>
+						<li class="uk-parent"><a href=""><i class="uk-icon-chevron-circle-right"></i> 新增用户</a></li>
+					</ul>
+
+				</div>
+
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<div class="clear"></div>
+		</div>
+		<div class="content" style="height:{{contentHeight}}px;/*width:{{contentWidth}}px*/" id="main-content">
+		
+			 <ng-view></ng-view>
+			<div class="clear"></div>
+		</div>
+	</div>
+	
+	<div class="footer" id="footer">
+		Copyright © 2015 - 2020. All Rights Reserved. 
+		
+	</div>
+	
+   
+	
+  </body>
+</html>

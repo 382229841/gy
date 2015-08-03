@@ -88,6 +88,14 @@
       border-bottom: 0px solid #F14F57;
       color: #333;
     }
+    .delivery-tag{
+		color: #ffffff;
+		background-color: #FEB33E;
+		padding: 4px;
+		border-radius: 5px;
+		box-shadow: 1px 1px 0px #ddd;
+    	
+    }
 
 </style>
 <div ng-controller="productListController">
@@ -152,11 +160,15 @@
 											{{product.name}}
 										</span><br/>
 										<span class="list-show-product-brief-1">
-											{{product.promotePrice | currency:'￥'}}
+											{{product.discountPrice || product.promotePrice | currency:'￥'}}
 											<span>{{product.shopPrice | currency:'￥'}}</span>
 										</span><br/>
 										<span class="list-show-product-brief-2">
 											已售{{product.saleNum}}件
+										</span><br/>
+
+										<span class="delivery-tag">
+											{{product.deliveryMode}}
 										</span>
                                     </div>
                                     <div class="clear"></div>

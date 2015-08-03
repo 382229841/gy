@@ -291,7 +291,7 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
             return;
         }
 
-        var data="platform=all&account="+u+"&password="+p;
+        var data="platform=all&account="+u+"&password="+p+"&category=2";
         httpRequest.APIPOST('/user/login', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
@@ -429,7 +429,8 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
         var u=$scope.username;
         var c=$scope.code;
         var p=$scope.password;
-        
+        var ic=$scope.inviteCode;
+		
         if (!u || (u && u.length<1)) {
             alertWarning("请输入手机号");
             return;
@@ -448,8 +449,13 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
             alertWarning("请输入4~20位的密码");
             return;
         }
+		
+		if (!ic || ic.length<4 || ic.length>20) {
+            alertWarning("请输入4~20位的密码");
+            return;
+        }
         $scope.wait=0;
-        var data="platform=all&mobile="+u+"&password="+p+"&code="+c;
+        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic;
         httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;

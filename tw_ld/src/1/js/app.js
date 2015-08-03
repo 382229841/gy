@@ -225,8 +225,10 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
 			 });
 			 var mod=parseInt($rootScope.categoryIndex/4);
 			 var offset=$("#scroller2ul li").width()*mod;
-			
-			myScroll.scrollTo(-offset, 0);
+			 if(cat.length>3){
+				myScroll.scrollTo(-offset, 0);
+			 }
+			 
         };
         if(typeof(IScroll)=="undefined"){
             $.ajax({
