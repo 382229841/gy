@@ -50,7 +50,7 @@
 					<li><a href="product.html">产品</a></li>
 					<li><a href="tecnology.html">技术</a></li>
 					<li>
-						<a href="business.html">运营</a>
+						<a href="javascript:void(0);" style="color:#E61F57;">运营</a>
 					</li>
 				</ul>
 				
@@ -73,7 +73,7 @@
 				.banner { position: relative; overflow: auto; }
 				.banner ul{padding-left:0px;}
 				.banner li { list-style: none;}
-				.banner ul li { float: left; height:280px;}
+				.banner ul li { float: left; height:350px;}
 				
 				.banner .dots {
 					position: absolute;
@@ -103,7 +103,11 @@
 				}
 				
 				.slider-item-li-1{
-					background:#2E91E6;
+					background-image:url(images/bg.jpg);
+					background-repeat:no-repeat;
+					background-position:center 0;
+					background-size:cover;
+					text-align:center;
 				}
 				.slider-item-2{
 					margin:0px auto;
@@ -231,117 +235,22 @@
 				<div class="banner">
 					<ul>
 						<li class="slider-item-li-1">
-							<div style="float: left;
-			  margin-left: 10%;
-			  text-align: center;
-			  width: 300px;
-			  color: #fff;
-			  height: 210px;
-			  margin-top: 70px;
-			  line-height: 70px;
-			  font-size: 2em;
-							">
-								<span style="font-size:1.3em;">海外游 —— 购平台</span><br/>
-								<button style="
-								line-height: 35px;
-								cursor:pointer; 
-								border: 1px solid #fff;
-								background: #4CA2E8;
-								color: #fff;
-								font-size: 1em;
-								padding: 10px 50px;
-								border-radius: 10px;">购轻松</button>
+							<a class="tab monetize" href="#monetize" data-spm-anchor-id="a3c0d.7758105.2.1">
+								<span class="icon"></span>
+								<span style="font-size:20px;">产品</span>
+							</a>
 							
-							</div>
-
+							<a class="tab build">
+								<span class="icon"></span>
+								<span style="font-size:20px;">技术</span>
+							</a>
 							
-							<div style="float:right;margin-right:10%;position:relative;">
-							
-								<img src="images/s.png" style="height:280px;" />
-								
-								<img src="images/logo.png" style="
-								height: 60px;
-								  position: absolute;
-								  top: 124px;
-								  left: 250px;
-								  animation: twinkling4 4s infinite ease-in-out;
-								" />
-								
-								<img src="images/dot1.png" style="
-								  height: 20px;
-								  position: absolute;
-								  top: 208px;
-								  left: 239px;
-								  animation: twinkling1 2s infinite ease-in-out
-								" />
-								
-								
-								<img src="images/dot2.png" style="
-								height: 22px;
-								  position: absolute;
-								  top: 97px;
-								  left: 406px;
-								  animation: twinkling2 2s infinite ease-in-out;
-								" />
-								
-								
-								<img src="images/dot3.png" style="
-								height: 22px;
-								  position: absolute;
-								  top: 90px;
-								  left: 233px;
-								  animation: twinkling3 2s infinite ease-in-out;
-								" />
-								
-								
-								<img src="images/r.png" style="
-								height: 200px;
-								  position: absolute;
-								  top: 58px;
-								  left: 181px;
-								  animation: rotate 8s linear infinite;
-								" />
-								
-								<img src="images/ra.png" style="
-									  height: 553px;
-									  position: absolute;
-									  top: -118px;
-									  left: -1px;
-									  animation: rotate2 30s linear infinite;
-								" />
-							</div>
-							
-						
-						
-						</li>
-						<!--
-						<li class="slider-item-li-2"> 
-							<div><div></div></div>
-							<div><div></div></div>
-							<div><div></div></div>
-							<div><div></div></div>
-						
-						
-						</li>-->
-					</ul>
-				</div>
-		
-				<div class="introduce">	
-					<ul class="items">
-						<li class="item item1">
-							<div class="icon"><div class="img Img-IndexIcon1"></div></div>
-							<div class="iconText">敏捷开发</div>
-						</li>
-						<li class="item item2">
-							<div class="icon"><div class="img Img-IndexIcon2"></div></div>
-							<div class="iconText">跨境电商</div>
-						</li>
-						<li class="item item3">
-							<div class="icon"><div class="img Img-IndexIcon3"></div></div>
-							<div class="iconText">快速响应</div>
+							<a class="tab grow">
+								<span class="icon"></span>
+								<span style="font-size:20px;">运营</span>
+							</a>
 						</li>
 					</ul>
-				
 				</div>
 				<style>
 						.newContent {
@@ -456,81 +365,43 @@
 						  cursor: pointer;
 						}
 				</style>
-				<div class="newContent">					
-					<div class="newBannerInfo bannerInfo1" id="anchorScroll1">
-						<div class="half titleBox" data-uk-scrollspy="{cls:'uk-animation-slide-left',delay:500,repeate:true}">
-							<div class="title"><a href="/stability.htm">产品</a></div>
-							<div class="subTitle one">产品设计</div>
-							<div class="subTitle two">需求</div>
-							<div class="subTitle three">UI设计</div>
-						</div>
-						<div class="half" data-uk-scrollspy="{cls:'uk-animation-slide-right',delay:500,repeate:true}">
-							<a href="product.html"><div class="Img-StabilityBig"></div></a>
-							
-							</div>
-					</div>
-					<hr>
+				<div class="section hr" id="monetize"  style="margin-bottom:20px;margin-top:20px;">
+				<div class="container">
+					<div class="section_title">产品</div>
+					<ul>
+						<li>
+							<div class="function_title">运营资源 <span class="en">RESOURCES</span></div>
+							<ul class="function_list clearfix">
+								<li>
+									<p class="item_icon"><i class="iconfont" data-iconf="&amp;#" data-iconb="xe678;"></i></p>
+									<p class="item_name">用户数</p>
+									<p class="item_desc">海量商品，轻松挑选</p>
+									<p class="item_detail"><a class="btn_detail" href="">查看详情</a></p>
+								</li>
+								<li>
+									<p class="item_icon"><i class="iconfont" data-iconf="&amp;#" data-iconb="xe68b;"></i></p>
+									<p class="item_name">库存</p>
+									<p class="item_desc">基于用户偏好的商品推荐模块</p>
+									<p class="item_detail"><a class="btn_detail" href="">查看详情</a></p>
+								</li>
+								<li>
+									<p class="item_icon"><i class="iconfont" data-iconf="&amp;#" data-iconb="xe685;"></i></p>
+									<p class="item_name">OPS</p>
+									<p class="item_desc">交易佣金，快速变现</p>
+									<p class="item_detail"><a class="btn_detail" href="">查看详情</a></p>
+								</li>
+								<li class="blank"></li>
+							</ul>
+						</li>
+						
+					</ul>
 					
-					
-					<div class="newBannerInfo bannerInfo2" id="anchorScroll2">
-						<div class="half" data-uk-scrollspy="{cls:'uk-animation-slide-left',delay:500,repeate:true}">
-							<a href="tecnology.html"><div class="Img-CompatibilityBig"></div></a>
-						</div>
-						<div class="half titleBox" data-uk-scrollspy="{cls:'uk-animation-slide-right',delay:500,repeate:true}">
-							<div class="title"><a href="/compatibility.htm">技术</a></div>
-							<div class="subTitle one">开发模式 - SCRUM</div>
-							<div class="subTitle two">开发环境 - 云平台</div>
-							<div class="subTitle three">系统架构 - DB,API,H5,App</div>
-							<div class="subTitle four">测试分类 - 手动,自动</div>
-						</div>
-					</div>
-					<hr>
-					
-					<div class="newBannerInfo bannerInfo3" id="anchorScroll3">
-						<div class="half" data-uk-scrollspy="{cls:'uk-animation-slide-left',delay:500,repeate:true}">
-							<a href="business.html"><div class="Img-HFiveBig"></div></a>
-						</div>
-						<div class="half titleBox" data-uk-scrollspy="{cls:'uk-animation-slide-right',delay:500,repeate:true}">
-							<div class="title"><a href="/hfive.htm">运营</a></div>
-							<div class="subTitle one">用户数</div>
-							<div class="subTitle two">库存</div>
-							<div class="subTitle three">OPS</div>
-						</div>
-					</div>
-			</div>
-			
-			<div style="display:none;z-index:998;position:fixed;bottom:0px;width:100%;min-width:1300px;left:0%;transition: all 1s linear;-webkit-transition: all 1s ease-in-out;" id="ljty">		
-				<div style="background:rgba(0,0,0,0.88);height:130px;text-align:center;line-height:130px;color:#fff;font-size:2.5em;border-top:1px solid #eee;">
-					购轻松 —— 游购利器
-					<button style="
-					line-height: 45px;
-					cursor:pointer; 
-					border: 0px solid #fff;
-					background: #707070;
-					color: #fff;
-					font-size: .7em;
-					padding: 1px 20px;
-					margin-left: 10%;  
-					border-radius: 30px;outline: none;">立即体验</button>
+					<div class="clear"></div>
 				</div>
-				<div class="appd_wrap_close uk-close uk-close-alt"></div>				 
-			</div>
+				
+				</div>
 			
-			<div id="ljtyarrow" style="position: fixed;z-index:997;
-					  width: 50px;
-					  background: #000;
-					  height: 50px;
-					  left: -68px;
-					  bottom: 28px;
-					  line-height: 50px;
-					  border-radius: 50px;
-					  text-align: right;
-					  padding-right: 15px;
-					  transition: all 1s linear;-webkit-transition: all 1s ease-in-out;
-					  opacity:1;
-					  ">
-				<span class="uk-icon-angle-double-right" style="color:#fff"></span>
-			</div>
+			
 		</div>
 		
 	</div>
@@ -545,46 +416,13 @@
 	<script type="text/javascript">
 		(function(){
 	  
-			$("#ljty").delegate(".appd_wrap_close","click",function(){
-				$("#ljty").css("left","-100%");
-				$("#ljtyarrow").css("left","-24px");
-				$("#ljtyarrow").fadeIn();
-				setToken({isClosed:true});
-			});
-			$("#ljtyarrow").delegate(this,"click",function(){
-				$("#ljty").css("display","");
-				$("#ljtyarrow").css("left","-68px");
-				$("#ljtyarrow").css("display","none");
-				$("#ljty").css("left","0%");
-				setToken({isClosed:false});
-			});
 			
-			var token=getToken() || {};
-			if(token.isClosed){
-				$("#ljty").css("display","");
-				$("#ljty").css("left","-100%");
-				$("#ljtyarrow").css("left","-24px");
-				$("#ljtyarrow").fadeIn();
-			}else{
-				$("#ljty").css("display","");
-			}
 		})();
 		
-		$('.banner').unslider({
-			dots: false,
-			speed: 500,
-			delay: 3000
-		});
+
 		
-		$(".introduce .items .item1").click(function(){
-			$.scrollTo('#anchorScroll1',500);
-		});
-		$(".introduce .items .item2").click(function(){
-			$.scrollTo('#anchorScroll2',800);
-		});
-		
-		$(".introduce .items .item3").click(function(){
-			$.scrollTo('#anchorScroll3',1000);
+		$(".slider-item-li-1 .tab").click(function(){
+			$.scrollTo('#anchorScroll3',500);
 		});		
 		
 	  </script>

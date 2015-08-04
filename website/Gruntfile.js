@@ -49,9 +49,7 @@ module.exports = function (grunt) {
 			    'dest/<%= pkg.version%>/js/libs.min.js': [
 				'src/<%= pkg.version%>/js/lib/jquery/jquery.min.js',
 				'src/<%= pkg.version%>/js/lib/jquery/jquery.scrollTo.js',
-				'src/<%= pkg.version%>/js/lib/uikit.min.js',
-				'src/<%= pkg.version%>/js/lib/angular.min.js',
-				'src/<%= pkg.version%>/js/lib/angular-route.min.js'
+				'src/<%= pkg.version%>/js/lib/uikit.min.js'
 				],
 			    'dest/<%= pkg.version%>/js/mains.min.js': ['src/<%= pkg.version%>/js/common.js']
 			}

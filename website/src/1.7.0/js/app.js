@@ -47,5 +47,16 @@ app.controller('MainController', function($rootScope, httpRequest, $scope, $loca
 	$(".introduce .items .item3").click(function(){
 		$.scrollTo('#anchorScroll3',1000);
 	});
+	
+	$scope.close=function(){
+		$("#ljty").css("left","-100%");
+		$("#ljtyarrow").css("left","-24px");
+		$("#ljtyarrow").fadeIn();
+	}
+	$scope.show=function(){
+		$("#ljtyarrow").css("left","-68px");
+		$("#ljtyarrow").css("display","none");
+		$("#ljty").css("left","0%");
+	}
 
 });

@@ -9,24 +9,30 @@
     min-width: 1423px;
     background:#333C39;
     height:80px;
-	color:#fff;
+	color:#666;
 	line-height:80px;
 	font-size:1.5em;
 	
 }
-
+.main-color{
+	color:#E61F57
+}
+.uk-navbar-nav>li{
+  line-height:80px;
+}
 .uk-navbar-nav>li>a:active {
-  background-color: #ddd;
-  color: #fff;
+  background-color: #EAEFF9;
+  color: #E61F57;
+
 }
 .uk-navbar-nav>li.uk-open>a, .uk-navbar-nav>li:hover>a, .uk-navbar-nav>li>a:focus {
-  background-color: #f5f5f5;
-  color: #fff;
+  background-color: #EAEFF9;
+  color: #E61F57;
   outline: 0;
 }
 .uk-navbar-nav>li.uk-open>a, .uk-navbar-nav>li:hover>a, .uk-navbar-nav>li>a:focus {
-  background-color: #333C39;
-  color: #fff;
+  background-color: #EAEFF9;
+  color: #E61F57;
   outline: 0;
 }
 .uk-navbar-nav>li>a {
@@ -37,15 +43,15 @@
   height: 40px;
   padding: 0 15px;
   line-height: 40px;
-  color: #fff;
+  color: #666;
   font-size: 15px;
   font-family:"Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif
   font-weight: 400;
 }
 
 .uk-navbar {
-  background: #333C39;
-  color: #fff;
+  background: #EAEFF9;
+  color: #666;
 }
 
 .header .logo{
@@ -127,7 +133,7 @@
 .footer{
     width:100%;
     min-width: 1423px;
-    background:#233340;
+    background:#F7F7F7;
     text-align:center;
     line-height:25px;
 	padding:15px 0px;
@@ -222,6 +228,212 @@
 .slider-item-li-2 > div:nth-of-type(4) > div:after {
   -webkit-animation-delay: -1.5s;
   animation-delay: -1.5s;
+}
+
+
+.build {
+  background-color: #4cc08c;
+}
+
+.monetize {
+  background-color: #3199f4;
+}
+
+.monetize .icon {
+  background-position: -3px 42px;
+}
+
+.grow {
+  background-color: #f67823;
+}
+.grow .icon {
+  background-position: -212px 38px;
+}
+
+.tab {
+  display: inline-block;
+  width: 290px;
+  height: 200px;
+  margin: 80px 30px;
+  color: #fff;
+  font-size: 20px;
+  transition: 0.3s margin;
+}
+.tab:hover{
+	margin-top:70px;
+}
+.monetize:hover {
+  color: #fff;
+  text-decoration:blink;
+}
+.build:hover {
+  color: #fff;
+  text-decoration:blink;
+}
+.grow:hover {
+  color: #fff;
+  text-decoration:blink;
+}
+
+.banner ul li{
+  width: 100%;
+  min-width: 1423px;
+  overflow: hidden;
+}
+  
+.build .icon {
+  background-position: -108px 22px;
+}
+.banner .icon {
+  width: 80px;
+  height: 103px;
+  margin: 35px auto 20px;
+}
+.banner .icon {
+  background-image: url('../images/TB1aRUeIpXXXXawXVXXSfPx9pXX-446-272.png');
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.section_title {
+  font-weight: normal;
+  font-size: 48px;
+  color: #333;
+  margin-bottom: 60px;
+  text-align: center;
+}
+ul {
+  list-style: none;
+}
+.function_title {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+.function_title .en {
+  color: #999;
+  font-size: 14px;
+  padding: 0 5px;
+}
+.clearfix {
+  zoom: 1;
+}
+.clearfix {
+}
+.function_list li .item_icon {
+  text-align: center;
+}
+.function_list li .item_icon .iconfont {
+  font-size: 60px;
+  color: #3199f4;
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+}
+i, em {
+  font-style: normal;
+  font-weight: normal;
+}
+.function_list li .item_name {
+  margin-top: 10px;
+}
+.item_name {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+.item_desc {
+  line-height: 20px;
+  text-align: center;
+}
+.function_list .blank {
+  border: 1px dashed #dcdcdc;
+  background: #f9f9f9;
+  width: 228px;
+  height: 138px;
+}
+#monetize .item_detail {
+  animation: monetize .7s forwards;
+  -moz-animation: monetize .7s forwards;
+  -webkit-animation: monetize .7s forwards;
+  -o-animation: monetize .7s forwards;
+}
+.item_detail {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  text-align: center;
+  display: none;
+}
+.btn_detail {
+  color: #fff;
+  width: 70px;
+  line-height: 36px;
+  font-size: 16px;
+  padding: 0 20px;
+  margin: 80px auto 0;
+  border: 1px solid #fff;
+  display: block;
+}
+.btn_detail:hover{
+	background:#fff;
+	text-decoration:blink;
+}
+
+body, div, p, span, ul, li {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.function_list li:first-child {
+  margin-left: 0;
+}
+.function_list li {
+  width: 230px;
+  height: 140px;
+  background-color: #f0f0f0;
+  padding: 30px;
+  float: left;
+  margin-left: 13px;
+  position: relative;
+}
+.function_list li:hover .item_detail {
+  display: block;
+}
+.item_detail {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  text-align: center;
+  display: none;
+}
+.btn_detail {
+  color: #fff;
+  width: 70px;
+  line-height: 36px;
+  font-size: 16px;
+  padding: 0 20px;
+  margin: 80px auto 0;
+  border: 1px solid #fff;
+  display: block;
+}
+#monetize .btn_detail:hover {
+  color: #3199f4;
 }
 
 @-webkit-keyframes trail_ { 
@@ -428,4 +640,69 @@
   100% {
     opacity: 0.6;
   }
+}
+@keyframes monetize {
+    from {
+        background: rgba(240,240,240,0.9)
+    }
+
+    to {
+        background: rgba(49,153,244,0.9)
+    }
+}
+
+@-webkit-keyframes monetize {
+    from {
+        background: rgba(240,240,240,0.9)
+    }
+
+    to {
+        background: rgba(49,153,244,0.9)
+    }
+}
+
+@keyframes build {
+    from {
+        background: rgba(240,240,240,0.9)
+    }
+
+    to {
+        background: rgba(76,192,140,0.9)
+    }
+}
+
+@-webkit-keyframes build {
+    from {
+        background: rgba(240,240,240,0.9)
+    }
+
+    to {
+        background: rgba(76,192,140,0.9)
+    }
+}
+
+@keyframes grow {
+    from {
+        background: rgba(240,240,240,0.9)
+    }
+
+    to {
+        background: rgba(246,120,35,0.9)
+    }
+}
+
+@-webkit-keyframes grow {
+    from {
+        background: rgba(240,240,240,0.9)
+    }
+
+    to {
+        background: rgba(246,120,35,0.9)
+    }
+}
+@font-face {
+    font-family: 'FZLanTingHei';
+    src: url('../fonts/FZLanTingHei.eot');
+    src: url('../fonts/FZLanTingHei.eot?#iefix') format('embedded-opentype'),url('../fonts/FZLanTingHei.woff') format('woff'),url('../fonts/FZLanTingHei.ttf') format('truetype'),url('../fonts/FZLanTingHei.svg#FZLanTingHei') format('svg');
+    font-weight: normal
 }
