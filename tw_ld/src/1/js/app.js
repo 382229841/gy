@@ -294,7 +294,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
         return;
     };
 
-    httpRequest.APIPOST('/goods/category', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+    httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 		if (result && result.code == statusCode.Success) {
 			var cat=result.result;			
 			$rootScope.categories=cat.slice(1);

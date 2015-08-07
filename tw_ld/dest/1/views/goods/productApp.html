@@ -77,6 +77,14 @@
         width: 100%;
         top: 4.5em;
     }
+    .discount-des{
+    	color: #ffffff;
+		background-color: #FEB33E;
+		padding: 3px;
+		border-radius: 0px;
+		box-shadow: 1px 1px 0px #ddd;
+    	font-size: .8em;
+    }
 </style>
 <div>
     <ng-include src="'views/goods/download.html'"></ng-include>
@@ -124,19 +132,21 @@
                         <div class="media-body product-cur-name-new">
                             {{product.name}}
                         </div>
-                        <div>
-                            <div class="pull-left">
-                                <div class="product-price-new">
-                                    <span class="promotePriceNew" style="margin-left: -0.2em;">￥{{product.promotePrice}}</span> 
-                                    <span class="shopPriceNew" style="float:none;margin-top: 0em;" ng-if="(product.shopPrice && product.shopPrice!=0 && product.shopPrice!='0' && product.shopPrice!='0.0' && product.shopPrice!='0.00')">￥{{product.shopPrice}}</span>
-                                </div>
-                            </div>
-                            <div class="pull-left">
-                                <div class="product-price-new"> 
-                                    <span class="shopPriceNew" style="line-height:2.2em;float:none;text-decoration:none;">&nbsp;&nbsp;约：NT$ {{product.twPrice}}</span>
-                                </div>
-                            </div>
+
+                        <div class="product-price-new" style="margin-top:10px;">
+                            <span style="font-weight:normal;font-size:.9em;color:#999;">平台价：</span>
+                            <span style="display:inline;">￥{{product.promotePrice}}</span>
                         </div>
+
+                         <div class="product-price-new">
+                            <span style="font-weight:normal;font-size:.9em;color:#999;">领队价：</span>
+                            <span class="promotePriceNew" style="display:inline;">￥{{product.discountPrice || product.promotePrice}}</span>
+                            <span class="discount-des" ng-if="product.discountDesc">
+                                {{product.discountDesc}}
+                            </span>
+                        </div>
+
+                        
                     </div>
                 </div>
                 <div class="background-white" ng-if="product.activity && product.activity.length>0">

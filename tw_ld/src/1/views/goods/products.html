@@ -92,9 +92,17 @@
 		color: #ffffff;
 		background-color: #FEB33E;
 		padding: 4px;
-		border-radius: 5px;
+		border-radius: 0px;
 		box-shadow: 1px 1px 0px #ddd;
-    	
+    	font-size: .8em;
+    }
+    .discount-des{
+    	color: #ffffff;
+		background-color: #FEB33E;
+		padding: 3px;
+		border-radius: 0px;
+		box-shadow: 1px 1px 0px #ddd;
+    	font-size: .8em;
     }
 
 </style>
@@ -161,8 +169,14 @@
 										</span><br/>
 										<span class="list-show-product-brief-1">
 											{{product.discountPrice || product.promotePrice | currency:'￥'}}
-											<span>{{product.shopPrice | currency:'￥'}}</span>
-										</span><br/>
+											<!--
+												<span>{{product.shopPrice | currency:'￥'}}</span>
+											-->
+										</span>
+										<span class="discount-des" ng-if="product.discountDesc">
+											{{product.discountDesc}}
+										</span>
+										<br/>
 										<span class="list-show-product-brief-2">
 											已售{{product.saleNum}}件
 										</span><br/>
