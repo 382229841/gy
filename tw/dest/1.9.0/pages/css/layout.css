@@ -46,6 +46,9 @@ app {
 	width:400%;
 	transition: all .5s linear;
 	-webkit-transition: all .5s ease-in-out;
+	-ms-transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
 }
 .item{
 	width:25%;
@@ -54,7 +57,7 @@ app {
 .item1{
 	background-image: url('../images/1.png');
 	background-position: center center;
-	background-size: contain;
+	background-size: 75%;
 	background-repeat: no-repeat;
 	background-color: #F0F0F0;
 }
@@ -62,23 +65,40 @@ app {
 .item2{
 	background-image: url('../images/2.png');
 	background-position: center center;
-	background-size: contain;
+	background-size: 80%;
 	background-repeat: no-repeat;
 	background-color: #F0F0F0;
 }
 .item3{
 	background-image: url('../images/3.png');
 	background-position: center center;
-	background-size: contain;
+	background-size: 80%;
 	background-repeat: no-repeat;
 	background-color: #F0F0F0;
 }
 .item4{
 	background-image: url('../images/4.png');
 	background-position: center center;
-	background-size: contain;
+	background-size: 80%;
 	background-repeat: no-repeat;
 	background-color: #F0F0F0;
+}
+
+@media only screen and (min-width: 479px){
+
+	.item1{
+		background-size: 50%;
+	}
+	.item2{
+		background-size: 55%;
+	}
+	.item3{
+		background-size: 55%;
+	}
+	.item4{
+		background-size: 55%;
+	}
+
 }
 .next{
 	position:absolute;

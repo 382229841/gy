@@ -419,6 +419,9 @@ body, div, p, span, ul, li {
 .function_list li:first-child {
   margin-left: 0;
 }
+
+
+
 .function_list li {
   width: 230px;
   height: 140px;
@@ -426,7 +429,11 @@ body, div, p, span, ul, li {
   padding: 30px;
   float: left;
   margin-left: 13px;
+  margin-bottom: 13px;
   position: relative;
+}
+.function_list_first{
+	margin-left: 0!important;
 }
 .function_list li:hover .item_detail {
   display: block;
@@ -449,6 +456,10 @@ body, div, p, span, ul, li {
   margin: 80px auto 0;
   border: 1px solid #fff;
   display: block;
+}
+
+.clear{
+	clear:both;
 }
 #monetize .btn_detail:hover {
   color: #3199f4;
