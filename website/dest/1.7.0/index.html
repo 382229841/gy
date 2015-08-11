@@ -57,7 +57,7 @@
 				<div class="uk-navbar-flip">
 					<ul class="uk-navbar-nav">						
 						<li><a href="">登录</a></li>						
-						<li><a href="">帮助文档</a></li>
+						<li><a href=""><!-- 帮助文档 --></a></li>
 						<li><a href=""></a></li>
 						<li><a href=""></a></li>
 						<li><a href=""></a></li>
@@ -512,7 +512,9 @@
 					font-size: .7em;
 					padding: 1px 20px;
 					margin-left: 10%;  
-					border-radius: 30px;outline: none;">立即体验</button>
+					border-radius: 30px;outline: none;"
+					onclick="ljty();"
+					>立即体验</button>
 				</div>
 				<div class="appd_wrap_close uk-close uk-close-alt"></div>				 
 			</div>
@@ -587,7 +589,9 @@
 		$(".introduce .items .item3").click(function(){
 			$.scrollTo('#anchorScroll3',1000);
 		});		
-		
+		function ljty(){
+			window.location.href="http://app.yhiker.com";
+		}
 	  </script>
   </body>
 </html>
