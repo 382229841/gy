@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="EasyBuy" ng-controller="mainController">
 <head>
-    <meta charset="utf8" />
+    <meta charset="utf-8" />
     <title>购轻松</title>
     <meta name="keywords" content="购轻松,购轻松台湾,购轻松手机,旅游,台湾">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -14,7 +14,7 @@
 	<link type="image/x-icon" rel="shortcut icon" href="image/favicon.png">
     <!-- CSS================================================== -->
 	<?php
-		$preventCache=201507221242;
+		$preventCache=201507251923;
 	?>
     <link href="css/easybuy.min.css?<?php echo $preventCache;?>" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/landscape.css" media="all and (orientation:landscape)" type="text/css">	
@@ -22,7 +22,7 @@
 	<script src="lib/angular.min.js?<?php echo $preventCache;?>" type="text/javascript"></script>
 	<script src="lib/libs.min.js?<?php echo $preventCache;?>" type="text/javascript"></script>
     <script src="js/config.js?<?php echo $preventCache;?>" type="text/javascript"></script>
-	<script src="js/config-test.js?<?php echo $preventCache;?>" type="text/javascript"></script>
+	
     <script src="js/app.min.js?<?php echo $preventCache;?>" type="text/javascript"></script>
     <script src="js/mains.min.js?<?php echo $preventCache;?>" type="text/javascript"></script>
     <script src="js/controller/shoppingController.min.js?<?php echo $preventCache;?>" type="text/javascript"></script>

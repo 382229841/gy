@@ -80,12 +80,12 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
         .when('/dividedPay/success', { templateUrl: "views/pay/success2.html?"+preventCache })
         .when('/address/:payid', { templateUrl: "views/order/address.html?"+preventCache
 			,resolve: {
-				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
+				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
 			}
         })
         .when('/address/:payid/:buyType', { templateUrl: "views/order/address2.html?"+preventCache
 			,resolve: {
-				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
+				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
 			}
         })
         .when('/success/:ordersn/:mobile/:address/:time', { templateUrl: "views/pay/success.html?"+preventCache })
@@ -155,7 +155,7 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 		.when('/airportServiceNew', { templateUrl: "views/order/airportServiceNew.html?"+preventCache })
 		.when('/airportServiceOrder', { templateUrl: "views/order/airportServiceOrder.html?"+preventCache
 			,resolve: {
-				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
+				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
 			}
 		})
 
@@ -480,7 +480,9 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
 			 var offset=$("#scroller2ul li").width()*mod;
 			 //myScroll.scrollerStyle['transform'] = 'translate(-'+offset+'px,0px)translateZ(0)';
 			
-			myScroll.scrollTo(-offset, 0);
+			if(cat.length>3){
+				myScroll.scrollTo(-offset, 0);
+			 }
 
 			 //myScroll.scrollTo(100, 0, 500, 'quadratic')
         };
@@ -551,7 +553,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
     httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 		if (result && result.code == statusCode.Success) {
 			var cat=result.result;			
-			$rootScope.categories=cat.slice(1);
+			$rootScope.categories=cat;//.slice(1);
 		}else{ 
 			alertWarning(result.msg);
 		}

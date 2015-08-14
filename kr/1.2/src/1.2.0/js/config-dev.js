@@ -7,7 +7,7 @@ var appDownloadUrl = {
     android: "http://www.yhiker.com/download/app/goeasy_tw.apk",
     ios: "https://itunes.apple.com/cn/app/gou-qing-song-tai-wan/id916120583?mt=8",//"https://itunes.apple.com/cn/app/hai-you/id651283761?mt=8",
     webchat: "http://a.app.qq.com/o/simple.jsp?pkgname=com.yhiker.gou.korea",
-	allPlatform:"http://www.yhiker.com/download/app/scan.php",
+	allPlatform:"http://app.yhiker.com/download/app/scan.php",
 	weixinIos:"http://mp.weixin.qq.com/mp/redirect?url=https%3A%2F%2Fitunes.apple.com%2Fcn%2Fapp%2Fgou-qing-song-tai-wan%2Fid916120583%3Fmt%3D8"
 };
 var webchatOauth=function(state,type){

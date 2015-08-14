@@ -152,7 +152,7 @@ app.controller('productsController', function ($rootScope, $scope, httpRequest,d
             httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
                 if (result && result.code == statusCode.Success) {
                     var cat=result.result; 
-                    cat.slice(1);
+                    //cat.slice(1);
                     
                     $scope.categories=cat;
                     $rootScope.categoryId=0;
@@ -289,10 +289,10 @@ app.controller('productListController', function ($rootScope, $scope, httpReques
                 $(".nav-menu #wrapper ul").css("margin-left","0");
             }
         }else{
-            httpRequest.APIPOST('/goods/category', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
                 if (result && result.code == statusCode.Success) {
                     var cat=result.result;   
-                    cat.slice(1);
+                    //cat.slice(1);
                     var rate=(cat.length / 4)*100+25+"%";
                     if(cat.length<4){
                         $scope.width="25%";
@@ -638,7 +638,7 @@ app.controller('commentController', function ($rootScope, $scope, httpRequest, d
     $(".scrollable-content").scroll(function () {
         if ($("#divProductComments").length > 0) {
             if ($scope.isloading == false && $scope.page) {
-                advanceLoad("#divProductComments", loadObj, $scope.pageNum < $scope.page.totalPage);
+                advanceLoadCommon("#divProductComments", loadObj, $scope.pageNum < $scope.page.totalPage);
             }
         }
     });
@@ -651,7 +651,8 @@ app.controller('commentController', function ($rootScope, $scope, httpRequest, d
                 $scope.commentInfo = result.result;
                 $scope.page = result.page;
                 if ($scope.commentInfo) {
-                    $(".rateTotal").raty({ path: "image/raty", size: 15, score: $scope.commentInfo.avgStar, readOnly: true });
+                    if($(".rateTotal img").length<1)
+                        $(".rateTotal").raty({ path: "image/raty", size: 15, score: $scope.commentInfo.avgStar, readOnly: true });
                 }
                 var comments = $scope.commentInfo.comments;
                 if (comments) {
@@ -665,8 +666,9 @@ app.controller('commentController', function ($rootScope, $scope, httpRequest, d
                     }
                     setTimeout(function () {
                         $scope.$apply($scope.comments);
-                        $.each($(".product-item-comment:eq(" + index + ")").nextAll().andSelf(), function (i, item) {
-                            $(item).find(".itemRate").raty({ path: "image/raty", size: 15, score: parseInt($(item).find(".itemRate").attr("score")), readOnly: true });
+                        $.each($(".product-item-comment"), function (i, item) {
+                            if($(item).find(".itemRate img").length<1)
+                                $(item).find(".itemRate").raty({ path: "image/raty", size: 15, score: parseInt($(item).find(".itemRate").attr("score")), readOnly: true });
                         });
                     }, 0);
                 }

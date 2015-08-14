@@ -80,14 +80,14 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
         .when('/dividedPay/success', { templateUrl: "views/pay/success2.html?"+preventCache })
         .when('/address/:payid', { templateUrl: "views/order/address.html?"+preventCache
 			,resolve: {
-				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
+				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
 			}
         })
-        .when('/address/:payid/:buyType', { templateUrl: "views/order/address2.html?"+preventCache
+        /* .when('/address/:payid/:buyType', { templateUrl: "views/order/address2.html?"+preventCache
 			,resolve: {
 				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
 			}
-        })
+        }) */
         .when('/success/:ordersn/:mobile/:address/:time', { templateUrl: "views/pay/success.html?"+preventCache })
         .when('/success/:ordersn/:token', { templateUrl: "views/pay/success.html?"+preventCache })
         .when('/success/:ordersn', { templateUrl: "views/pay/success.html?"+preventCache })
@@ -101,15 +101,15 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
         .when('/orderList', { templateUrl: "views/order/orderList.html?"+preventCache })
         .when('/orderList/:token', { templateUrl: "views/order/orderList.html?"+preventCache })
         
-        .when('/orderInquiry', { templateUrl: "views/order/orderInquiry.html?"+preventCache })
+        /* .when('/orderInquiry', { templateUrl: "views/order/orderInquiry.html?"+preventCache }) */
         .when('/product/:id', { templateUrl: "views/goods/productApp.html?"+preventCache,controller:'productAppController'})
         .when('/product/:id/:from', { templateUrl: "views/goods/productApp.html?"+preventCache,controller:'productAppController'})
         .when('/product/:id/:from/:type', { templateUrl: "views/goods/productApp.html?"+preventCache,controller:'productAppController'})
         
-        .when('/productDetail/:id', { templateUrl: "views/goods/productDetail.html?"+preventCache })
+        /* .when('/productDetail/:id', { templateUrl: "views/goods/productDetail.html?"+preventCache }) */
         .when('/cart', { templateUrl: "views/cart/cart.html?"+preventCache })
-        .when('/airport', { templateUrl: "views/order/airportSelect.html?"+preventCache })
-        .when('/airport/:id', { templateUrl: "views/order/airportSelect.html?"+preventCache })
+       /*  .when('/airport', { templateUrl: "views/order/airportSelect.html?"+preventCache })
+        .when('/airport/:id', { templateUrl: "views/order/airportSelect.html?"+preventCache }) */
         
         
         .when('/comment/:id', { templateUrl: "views/app/comment.html?"+preventCache })
@@ -135,17 +135,17 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 			  }
 		})
 
-		.when('/wechat/myPhone', { templateUrl: "views/wechat/myPhone.html?"+preventCache })
+		/* .when('/wechat/myPhone', { templateUrl: "views/wechat/myPhone.html?"+preventCache })
 		.when('/wechat/myWiFi', { templateUrl: "views/wechat/myWiFi.html?"+preventCache })
-		.when('/wechat/myAirportInfo', { templateUrl: "views/wechat/myAirportInfo.html?"+preventCache })
+		.when('/wechat/myAirportInfo', { templateUrl: "views/wechat/myAirportInfo.html?"+preventCache }) */
 		
-		.when('/airportService', { templateUrl: "views/order/airportService.html?"+preventCache })
+		/* .when('/airportService', { templateUrl: "views/order/airportService.html?"+preventCache })
 		.when('/airportServiceNew', { templateUrl: "views/order/airportServiceNew.html?"+preventCache })
 		.when('/airportServiceOrder', { templateUrl: "views/order/airportServiceOrder.html?"+preventCache
 			,resolve: {
 				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
 			}
-		})
+		}) */
 		.otherwise({
             redirectTo: '/products'
         });
@@ -169,18 +169,6 @@ app.run( function($rootScope, $location) {
     			removeToken();
     		}
     	}
-
-        if(next.templateUrl){
-            if(next.templateUrl=="views/activity/activity-01.html"){
-                $rootScope.goeasy="台湾直购，正品低价，万元红包等你来抢！！";                
-            }else{
-                $rootScope.goeasy="购轻松";                
-            }
-        }
-        if(current && current.loadedTemplateUrl && current.loadedTemplateUrl=="views/activity/activity-01.html"){
-            location.reload(); 
-        }
-        $(document).attr("title",$rootScope.goeasy); 
         hideLoading();                          
     });
 });
@@ -297,7 +285,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
     httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 		if (result && result.code == statusCode.Success) {
 			var cat=result.result;			
-			$rootScope.categories=cat.slice(1);
+			$rootScope.categories=cat;//.slice(1);
 		}else{ 
 			alertWarning(result.msg);
 		}

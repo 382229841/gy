@@ -90,18 +90,22 @@ module.exports = function (grunt) {
 							[
 								'src/<%= pkg.version%>/lib/mobiscroll.custom-2.6.2.js',
 							],
+				'dest/<%= pkg.version%>/lib/mobiscroll.zepto.js': 
+							[
+								'src/<%= pkg.version%>/lib/mobiscroll.zepto.js',
+							],
 			    'dest/<%= pkg.version%>/lib/libs.min.js': 
 							[								
 							   'src/<%= pkg.version%>/lib/script.min.js',
 							   'src/<%= pkg.version%>/lib/angular-route.min.js',
 							   'src/<%= pkg.version%>/lib/angular-touch.min.js',
 							   'src/<%= pkg.version%>/lib/mobile-angular-ui.js',
-							   'src/<%= pkg.version%>/lib/jquery/jquery-2.1.1.min.js',
+							   'src/<%= pkg.version%>/lib/jquery/zepto.min.js',
 							   'src/<%= pkg.version%>/lib/jquery/jquery.md5.js',
 							   'src/<%= pkg.version%>/lib/jquery/jquery.sha1.js', 
-							   'src/<%= pkg.version%>/lib/jquery/jquery.raty.min.js', 
-							   'src/<%= pkg.version%>/lib/date.format.js',
-							   'src/<%= pkg.version%>/lib/jgestures.min.js'
+							   'src/<%= pkg.version%>/lib/jquery/jquery.raty.js', 
+							   'src/<%= pkg.version%>/lib/date.format.js'//,
+							   //'src/<%= pkg.version%>/lib/jgestures.min.js'
 						   ],
 					'dest/<%= pkg.version%>/js/mains.min.js': 
 							[
@@ -168,7 +172,7 @@ module.exports = function (grunt) {
         options: {
           hostname: '0.0.0.0',
           port: 3002,
-          base: ['.', 'src/1'],
+          base: ['.', 'dest/1'],
           keepalive: true
         }
       }

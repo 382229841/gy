@@ -220,6 +220,9 @@ app.controller('paymentAppController', function ($rootScope, $scope, httpRequest
                         window.location.href = serviceUrl + "/order/pay/orderid/" + result.result.orderNum+"/amount/"+result.result.totalPrice+"/address/"+address+"/time/"+returnTime;
                     }else{
                         if(easybuy.isWechat){
+                            var t=getToken() || {};
+                            t.isReload=0;
+                            setToken(t);
                             window.location.hash="#/dividedPay/"+result.result.orderNum+"/"+result.result.totalPrice;
                             //$location.path("/dividedPay/"+result.result.orderNum+"/"+result.result.totalPrice);
                         }else{
@@ -330,6 +333,15 @@ app.controller('dividedPayController', function ($rootScope, $scope, httpRequest
         window.location.href = paymentUrl+ "callback=2&out_trade_no=" + $scope.order.orderNum + "&total_fee=" + $scope.order.fee;        
     };
     $scope.isWechat=easybuy.isWechat;
+    $scope.isReload=0;
+    var t=getToken() || {};
+    if(!t.isReload && $scope.isWechat){
+        location.reload();
+        t.isReload=1;
+        setToken(t);
+    }else{
+        $scope.isReload=1;
+    }
 });
 
 app.controller('successController', function ($rootScope, $scope, httpRequest, analytics, $location, $window, $routeParams) {

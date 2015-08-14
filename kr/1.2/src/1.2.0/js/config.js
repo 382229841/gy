@@ -4,7 +4,7 @@ var imageServiceUrl = "http://ops.yhiker.com";
 var javaServiceUrl = "http://buy.yhiker.com/api_kr";
 var paymentUrl="http://buy.yhiker.com/pay_kr/alipayapi.jsp?";
 var appDownloadUrl = {
-    android: "http://app.yhiker.com/kr/goeasy_kr.apk",
+    android: "http://app.yhiker.com/goeasy_kr.apk",
     ios: "https://itunes.apple.com/cn/app/gou-qing-song-han-guo/id990483128?ls=1&mt=8",
     webchat: "http://a.app.qq.com/o/simple.jsp?pkgname=com.yhiker.gou.korea",
 	allPlatform:"http://www.yhiker.com/download/app/scan.php",
