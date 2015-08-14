@@ -299,6 +299,12 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs('js/controller/activity/fullGive.js')
 			  }
 		})
+		
+		.when('/activity/dutyFree', { templateUrl: "views/activity/dutyFree.html?"+preventCache 
+			  ,resolve: {
+				load: app.asyncjs('js/controller/activity/activityDown.js')
+			  }
+		})
 		/* 活动 ***/
 		.otherwise({
             redirectTo: '/products'

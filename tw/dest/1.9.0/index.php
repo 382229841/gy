@@ -14,7 +14,7 @@
 	<link type="image/x-icon" rel="shortcut icon" href="image/favicon.png">
     <!-- CSS================================================== -->
 	<?php
-		$preventCache=201507251923;
+		$preventCache=201507251924;
 	?>
     <link href="css/easybuy.min.css?<?php echo $preventCache;?>" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/landscape.css" media="all and (orientation:landscape)" type="text/css">	

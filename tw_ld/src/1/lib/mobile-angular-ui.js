@@ -1328,87 +1328,6 @@ angular.module("mobile-angular-ui.directives.capture", [])
         }
     ]);
 
-angular.module('mobile-angular-ui.directives.carousel', [])
-
-    .run(["$rootScope", function ($rootScope) {
-
-        $rootScope.carouselPrev = function (id) {
-            $rootScope.$emit("mobile-angular-ui.carousel.prev", id);
-        };
-
-        $rootScope.carouselNext = function (id) {
-            $rootScope.$emit("mobile-angular-ui.carousel.next", id);
-        };
-
-        var carouselItems = function (id) {
-            var elem = angular.element(document.getElementById(id));
-            var res = angular.element(elem.children()[0]).children();
-            elem = null;
-            return res;
-        };
-
-        var findActiveItemIndex = function (items) {
-            var idx = -1;
-            var found = false;
-
-            for (var _i = 0; _i < items.length; _i++) {
-                item = items[_i];
-                idx += 1;
-                if (angular.element(item).hasClass('active')) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found) {
-                return idx;
-            } else {
-                return -1;
-            }
-
-        };
-
-        $rootScope.$on("mobile-angular-ui.carousel.prev", function (e, id) {
-            var items = carouselItems(id);
-            var idx = findActiveItemIndex(items);
-            var lastIdx = items.length - 1;
-
-            if (idx !== -1) {
-                angular.element(items[idx]).removeClass("active");
-            }
-
-            if (idx <= 0) {
-                angular.element(items[lastIdx]).addClass("active");
-            } else {
-                angular.element(items[idx - 1]).addClass("active");
-            }
-
-            items = null;
-            idx = null;
-            lastIdx = null;
-        });
-
-        $rootScope.$on("mobile-angular-ui.carousel.next", function (e, id) {
-            var items = carouselItems(id);
-            var idx = findActiveItemIndex(items);
-            var lastIdx = items.length - 1;
-
-            if (idx !== -1) {
-                angular.element(items[idx]).removeClass("active");
-            }
-
-            if (idx === lastIdx) {
-                angular.element(items[0]).addClass("active");
-            } else {
-                angular.element(items[idx + 1]).addClass("active");
-            }
-
-            items = null;
-            idx = null;
-            lastIdx = null;
-        });
-    }
-    ]);
 
 // Provides touch events via fastclick.js
 angular.module('mobile-angular-ui.fastclick', [])
@@ -1451,76 +1370,6 @@ angular.module('mobile-angular-ui.fastclick', [])
         };
     })
 
-angular.module('mobile-angular-ui.directives.forms', [])
-
-    .directive("bsFormControl", function () {
-        var bs_col_classes = {};
-        var bs_col_sizes = ['xs', 'sm', 'md', 'lg'];
-
-        for (var i = 0; i < bs_col_sizes.length; i++) {
-            for (var j = 1; j <= 12; j++) {
-                bs_col_classes['col-' + bs_col_sizes[i] + "-" + j] = true;
-            }
-        }
-        ;
-
-        function separeBsColClasses(clss) {
-            var intersection = "";
-            var difference = "";
-
-            for (var i = 0; i < clss.length; i++) {
-                var v = clss[i];
-                if (v in bs_col_classes) {
-                    intersection += (v + " ");
-                } else {
-                    difference += (v + " ");
-                }
-            }
-
-            return {i: intersection.trim(), d: difference.trim()};
-        }
-
-        return {
-            replace: true,
-            require: "ngModel",
-            link: function (scope, elem, attrs) {
-
-                if (attrs.labelClass == null) {
-                    attrs.labelClass = "";
-                }
-
-                if (attrs.id == null) {
-                    attrs.id = attrs.ngModel.replace(".", "_") + "_input";
-                }
-
-                if ((elem[0].tagName == "SELECT") || ((elem[0].tagName == "INPUT" || elem[0].tagName == "TEXTAREA") && (attrs.type != "checkbox" && attrs.type != "radio"))) {
-                    elem.addClass("form-control");
-                }
-
-                var label = angular.element("<label for=\"" + attrs.id + "\" class=\"control-label\">" + attrs.label + "</label>");
-                var w1 = angular.element("<div class=\"form-group row\"></div>");
-                var w2 = angular.element("<div class=\"form-control-wrapper\"></div>");
-
-                var labelColClasses = separeBsColClasses(attrs.labelClass.split(/\s+/));
-                if (labelColClasses.i == "") {
-                    label.addClass("col-xs-12");
-                }
-                label.addClass(attrs.labelClass);
-
-                var elemColClasses = separeBsColClasses(elem[0].className.split(/\s+/));
-                elem.removeClass(elemColClasses.i);
-                w2.addClass(elemColClasses.i);
-                if (elemColClasses.i == "") {
-                    w2.addClass("col-xs-12");
-                }
-                elem.wrap(w1).wrap(w2);
-                elem.parent().parent().prepend(label);
-                elem.attr('id', attrs.id);
-
-                label = w1 = w2 = labelColClasses = elemColClasses = null;
-            }
-        };
-    })
 
     .directive("switch", function () {
         return {
@@ -1582,58 +1431,6 @@ angular.module('mobile-angular-ui.directives.navbars', [])
             }
         };
     });
-angular.module('mobile-angular-ui.directives.overlay', []).directive('overlay', [
-    "$compile", function ($compile) {
-        return {
-            link: function (scope, elem, attrs) {
-                var active = "";
-                var body = elem.html();
-                var id = attrs.overlay;
-
-                if (attrs["default"] != null) {
-                    var active = "default='" + attrs["default"] + "'";
-                }
-
-                var html = "<div class=\"overlay\" id=\"" + id + "\" toggleable " + active + " parent-active-class=\"overlay-in\" active-class=\"overlay-show\">\n  <div class=\"overlay-inner\">\n    <div class=\"overlay-background\"></div>\n    <a href=\"#" + id + "\" toggle=\"off\" class=\"overlay-dismiss\">\n      <i class=\"fa fa-times-circle-o\"></i>\n    </a>\n    <div class=\"overlay-content\">\n      <div class=\"overlay-body\">\n        " + body + "\n      </div>\n    </div>\n  </div>\n</div>";
-                elem.remove();
-
-                var sameId = angular.element(document.getElementById(id));
-
-                if (sameId.length > 0 && sameId.hasClass('overlay')) {
-                    sameId.remove();
-                }
-
-                body = angular.element(document.body);
-                body.prepend($compile(html)(scope));
-
-                if (attrs["default"] === "active") {
-                    body.addClass('overlay-in');
-                }
-            }
-        };
-    }
-]);
-
-angular.module("mobile-angular-ui.directives.panels", [])
-
-    .directive("bsPanel", function () {
-        return {
-            restrict: 'EA',
-            replace: true,
-            scope: false,
-            transclude: true,
-            link: function (scope, elem, attrs) {
-                elem.removeAttr('title');
-            },
-            template: function (elems, attrs) {
-                var heading = "";
-                if (attrs.title) {
-                    heading = "<div class=\"panel-heading\">\n  <h2 class=\"panel-title\">\n    " + attrs.title + "\n  </h2>\n</div>";
-                }
-                return "<div class=\"panel\">\n  " + heading + "\n  <div class=\"panel-body\">\n     <div ng-transclude></div>\n  </div>\n</div>";
-            }
-        };
-    });
 angular.module('mobile-angular-ui.pointer-events', []).run([
     '$document', function ($document) {
         return angular.element($document).on("click tap", function (e) {
@@ -1673,74 +1470,7 @@ angular.module("mobile-angular-ui.scrollable", [])
             };
         }
     ]);
-angular.module('mobile-angular-ui.directives.sidebars', [])
 
-    .directive('sidebar', ['$document', '$rootScope', function ($document, $rootScope) {
-        return {
-            replace: false,
-            restrict: "C",
-            link: function (scope, elem, attrs) {
-                var shouldCloseOnOuterClicks = true;
-
-                if (attrs.closeOnOuterClicks == 'false' || attrs.closeOnOuterClicks == '0') {
-                    shouldCloseOnOuterClicks = false;
-                }
-
-                if (elem.hasClass('sidebar-left')) {
-                    elem.parent().addClass('has-sidebar-left');
-                }
-
-                if (elem.hasClass('sidebar-right')) {
-                    elem.parent().addClass('has-sidebar-right');
-                }
-
-                var isAncestorOrSelf = function (element, target) {
-                    var parent = element;
-
-                    while (parent.length > 0) {
-                        if (parent[0] === target[0]) {
-                            parent = null;
-                            return true;
-                        }
-                        parent = parent.parent();
-                    }
-
-                    parent = null;
-                    return false;
-                };
-
-                var closeOnOuterClicks = function (e) {
-                    if (!isAncestorOrSelf(angular.element(e.target), elem)) {
-                        $rootScope.toggle(attrs.id, 'off');
-                        e.preventDefault()
-                        return false;
-                    }
-                }
-
-                var clearCb1 = angular.noop();
-
-                if (shouldCloseOnOuterClicks) {
-                    clearCb1 = $rootScope.$on('mobile-angular-ui.toggle.toggled', function (e, id, active) {
-                        if (id == attrs.id) {
-                            if (active) {
-                                setTimeout(function () {
-                                    $document.on('click tap', closeOnOuterClicks);
-                                }, 300);
-                            } else {
-                                $document.unbind('click tap', closeOnOuterClicks);
-                            }
-                        }
-                    });
-                }
-
-                scope.$on('$destroy', function () {
-                    clearCb1();
-                    $document.unbind('click tap', closeOnOuterClicks);
-                });
-
-            }
-        };
-    }]);
 
 angular.module('mobile-angular-ui.directives.toggle', [])
 
@@ -1972,11 +1702,6 @@ angular.module("mobile-angular-ui", [
     'mobile-angular-ui.fastclick',
     'mobile-angular-ui.scrollable',
     'mobile-angular-ui.directives.toggle',
-    'mobile-angular-ui.directives.overlay',
-    'mobile-angular-ui.directives.forms',
-    'mobile-angular-ui.directives.panels',
     'mobile-angular-ui.directives.capture',
-    'mobile-angular-ui.directives.sidebars',
     'mobile-angular-ui.directives.navbars',
-    'mobile-angular-ui.directives.carousel'
 ]);

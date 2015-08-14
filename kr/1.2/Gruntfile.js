@@ -1,8 +1,20 @@
+var lodash = require('lodash');
 
 module.exports = function (grunt) {
   // 项目配置
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+	
+	concurrent: {
+      devel: {
+        tasks: ['connect:demo', 'watch'],
+        options: {
+          limit: 2,
+          logConcurrentOutput: true
+        }
+      }
+    },
+	
 	concat:{
 		combinea: {
 			options: {
@@ -167,14 +179,39 @@ module.exports = function (grunt) {
 				}
 			]
 		}
-	}
+	},
+	
+	watch: {
+      all: {
+        files: 'src/**/*',
+        tasks: ['build']
+      }
+    },
+	
+	connect: {
+      demo: {
+        options: {
+          hostname: '0.0.0.0',
+          port: 3005,
+          base: ['.', 'src/1.2.0'],
+          keepalive: true
+        }
+      }
+    }
   });
-  grunt.loadNpmTasks("grunt-contrib-concat");
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks("grunt-contrib-concat");  
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
+  
+  grunt.registerTask('build', [ 'concat:combinea','concat:combineb','concat:css','uglify:builda', 'uglify:buildb', 'cssmin','copy']);
+  grunt.registerTask('demo', ['concurrent:devel']);
 
   // 默认任务
-  grunt.registerTask('default', ['concat:combinea','concat:combineb','concat:css','uglify:builda', 'uglify:buildb', 'cssmin','copy']);
+  grunt.registerTask('default', ['concat:combinea','concat:combineb','concat:css','uglify:builda', 'uglify:buildb', 'cssmin','copy','concurrent:devel']);
 }
 //http://www.cnblogs.com/artwl/p/3449303.html

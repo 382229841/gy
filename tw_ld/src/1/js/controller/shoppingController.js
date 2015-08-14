@@ -6,6 +6,15 @@ app.controller('navbarController', function ($rootScope, $scope, analytics, $loc
 
 app.controller('productListController', function ($rootScope, $scope, httpRequest,dataStringify, analytics, $location, $window, $routeParams) {    
     var code=$routeParams.code || 0;
+	$scope.isSearchPage=false;
+	
+	$scope.showSearch=function(){
+		//$("#contentPage").hide();
+		$scope.isSearchPage=true;
+		$("#searchPage").addClass("current");
+	};
+	
+	
     $rootScope.categoryId=code;
     $scope.code=code;
     $scope.user=getToken();
@@ -18,79 +27,19 @@ app.controller('productListController', function ($rootScope, $scope, httpReques
     var getCategories = function(callback){
         var cat=$rootScope.categories; 
         if(cat && cat.length){
-            var rate=(cat.length / 4)*100+25+"%";
-            if(cat.length<4){
-                $scope.width="25%";
-                //$(".nav-menu ul li").css("width","20%");
-            }else{
-                //$(".nav-menu ul li").css("width","15%");
-                $scope.width="17.5%";
-            }
-            $(".nav-menu #wrapper ul").css("width",rate);
+            
             $scope.categories=cat;
             $rootScope.initNav(cat);
-            if(cat.length>=4){
-                for(var i=0;i<cat.length;i++){
-                    if(cat[i].code==code){
-                        var rateLi=i-1;
-                        if(rateLi>0){
-                            if(i==cat.length-1){
-                                rateLi=-(rateLi*25-40)+"%"
-                                $(".nav-menu #wrapper ul").css("margin-left",rateLi);
-                            }else{
-                               if(i<cat.length-2){
-                                    rateLi=-rateLi*25+"%"
-                                    $(".nav-menu #wrapper ul").css("margin-left",rateLi);
-                                }else{
-                                    rateLi=-(rateLi*25-17.5)+"%"
-                                    $(".nav-menu #wrapper ul").css("margin-left",rateLi);
-                                }
-                            }
-                        }
-                    }
-                }
-            }else{
-                $(".nav-menu #wrapper ul").css("margin-left","0");
-            }
+            
         }else{
             httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
                 if (result && result.code == statusCode.Success) {
                     var cat=result.result;   
                     //cat.slice(1);
-                    var rate=(cat.length / 4)*100+25+"%";
-                    if(cat.length<4){
-                        $scope.width="25%";
-                        //$(".nav-menu ul li").css("width","20%");
-                    }else{
-                        //$(".nav-menu ul li").css("width","15%");
-                        $scope.width="17.5%";
-                    }
-                    $(".nav-menu #wrapper ul").css("width",rate);
+                    
                     $scope.categories=cat;
                     $rootScope.initNav(cat);
-                    if(cat.length>=4){
-                        for(var i=0;i<cat.length;i++){
-                            if(cat[i].code==code){
-                                var rateLi=i-1;
-                                if(rateLi>0){
-                                    if(i==cat.length-1){
-                                        rateLi=-(rateLi*25-40)+"%"
-                                        $(".nav-menu #wrapper ul").css("margin-left",rateLi);
-                                    }else{
-                                       if(i<cat.length-2){
-                                            rateLi=-rateLi*25+"%"
-                                            $(".nav-menu #wrapper ul").css("margin-left",rateLi);
-                                        }else{
-                                            rateLi=-(rateLi*25-17.5)+"%"
-                                            $(".nav-menu #wrapper ul").css("margin-left",rateLi);
-                                        }
-                                    }                            
-                                }
-                            }
-                        }
-                    }else{
-                        $(".nav-menu #wrapper ul").css("margin-left","0");
-                    }                  
+                                
                 }else{ 
                     alertWarning(result.msg);
                 }
@@ -102,8 +51,8 @@ app.controller('productListController', function ($rootScope, $scope, httpReques
         var now=new Date().format("yyyy-mm-dd HH:MM:ss");
         $scope.isloading = true;
 		var paramCategory=code?"&category="+code : "";
-		var ldToken=$scope.user?"&token="+$scope.user.token : '';
-        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=10&now="+now), { "content-type": "application/x-www-form-urlencoded" },true).then(function (result) {
+		var ldToken=$scope.user?"&token="+$scope.user.token : '';		
+        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=10&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 if(pageNum>1){
                     $scope.products=$scope.products.concat(result.result);

@@ -104,12 +104,26 @@
 		box-shadow: 1px 1px 0px #ddd;
     	font-size: .8em;
     }
+	
+	.page {
+		-webkit-transition: all .2s ease-in-out;
+		transition: all .2s ease-in-out;
+		-webkit-transform: translateX(100%);
+		transform: translateX(100%);
+		background:#f7e7e7;
+	}
+	.page.current {
+		-webkit-transform: none;
+		transform: none;
+		display: block;
+		position: static;
+	}
 
 </style>
 <div ng-controller="productListController">
     <!-- Navbars -->
-    <div class="navbar navbar-app nav-main">
-        <div class="navbar-brand navbar-brand-center">
+    <div class="navbar navbar-app nav-main" ng-show="!isSearchPage">
+        <div class="navbar-brand navbar-brand-center" ng-click="showSearch();">
             购轻松
         </div>
         <div class="btn-group pull-left" ng-click="inquiry()">
@@ -127,7 +141,7 @@
             </div>
         </div>
     </div>
-    <div class="nav-menu">
+    <div class="nav-menu" ng-show="!isSearchPage">
          <!------ 导航 ------->
           <div id="wrapper2">
                 <div id="scroller2">
@@ -137,19 +151,10 @@
             </div>
 <!------ 导航 ------->
 
-
-        <ul style="display:none;">
-        	<li style="width:{{width}}">
-            	<a href="#/products">首页</a>
-            </li>
-            <li ng-repeat="cat in categories" style="width:{{width}}" ng-if="cat.name.indexOf('台湾必买')==-1">
-            	<a class="{{code==cat.code?'actived':''}}" href="#/products/{{cat.code}}">{{cat.name}}</a>
-            </li>
-        </ul>
     </div>
 
     <div class="scrollable product-list">
-        <div class="scrollable-content background-gray">            
+        <div id="contentPage" class="scrollable-content background-gray" ng-show="!isSearchPage">            
             <div id="divProductList">
                 <div class="nav-main-block"></div>
                 
@@ -208,5 +213,10 @@
             </div>
 			
         </div>
-    </div>
+		<div id="searchPage" class="scrollable-content background-gray page">
+			asdfsdf 
+		
+		
+		</div>
+	</div>
 </div>
