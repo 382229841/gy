@@ -1,9 +1,8 @@
-app.controller('productListController', function ($rootScope, $scope, httpRequest,dataStringify, analytics, $location, $window, $routeParams) {    
+app.controller('productListController', function ($rootScope,$templateCache, $scope, httpRequest,dataStringify, analytics, $location, $window, $routeParams) {    
     var code=$routeParams.code || 0;
 	$scope.isSearchPage=false;
 	
 	$scope.showSearch=function(){
-		//$("#contentPage").hide();
 		$scope.isSearchPage=true;
 		$("#searchPage").addClass("current");
 	};

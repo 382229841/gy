@@ -98,7 +98,10 @@
             	<img src="image/favicon.png" class="loading-spinner-logo"/>
                 <i class="loading-spinner fa fa-circle-o-notch fa-spin"></i>
             </div>                    
-            <ng-view class="app-content" ng-hide="loading"></ng-view> 
+            <ng-view class="app-content" ng-hide="loading || !isRootLogin"></ng-view>
+			
+			<div ng-include=" '../views/user/my.html' " ng-hide="isRootLogin"></div>
+			
         </div>
         <div class="loadingDiv">  
             <link href="css/load.css" rel="stylesheet" type="text/css" />         
@@ -124,12 +127,5 @@
     </div>
     
     <script src="js/load.js" type="text/javascript"></script>
-	<!--  
-    <script src="lib/mobiscroll.custom-2.6.2.js" type="text/javascript"></script>
-    -->
-    <!-- <script src="lib/touch.js" type="text/javascript"></script> -->
- <!--   <script src="lib/jquery/jquery.mobile.touch.js" type="text/javascript"></script>
-    <script src="lib/jquery/jquery.cycle.min.js" type="text/javascript"></script>
-    -->
 </body>
 </html>

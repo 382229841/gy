@@ -3,45 +3,7 @@ var app = angular.module('EasyBuy', [
     "ngTouch",
     "mobile-angular-ui"
 ]);
-/*var onlyWechatOauth=[];
-var isNotBindPhone=[];
-onlyWechatOauth["views/wechat/myOrder.html"]="myOrder";
-onlyWechatOauth["views/wechat/myFreeOrder.html"]="myFreeOrder";
-onlyWechatOauth["views/wechat/myInfo.html"]="myInfo";
-onlyWechatOauth["views/wechat/car.html"]="car";
-onlyWechatOauth["views/wechat/buyFree.html"]="buyFree";
-onlyWechatOauth["views/wechat/easyHandsInfo.html"]="easyHandsInfo";
-onlyWechatOauth["views/wechat/easyHandsInfoSuccess.html"]="easyHandsInfoSuccess";
-onlyWechatOauth["views/wechat/easyHandsAgent.html"]="easyHandsAgent";
-onlyWechatOauth["views/wechat/easyHandsDown.html"]="easyHandsDown";
-onlyWechatOauth["views/wechat/activity.html"]="activity";
-onlyWechatOauth["views/wechat/refinedProducts.html"]="refinedProducts";
 
-onlyWechatOauth["views/user/my.html"]="myProfile";
-onlyWechatOauth["views/order/airportServiceOrder.html"]="airportServiceOrder";
-onlyWechatOauth["views/activity/activity201501.html"]="activity-activityDetail";
-onlyWechatOauth["views/activity/down.html"]="activity-activityDown";
-onlyWechatOauth["views/user/myCoupon.html"]="myCoupon";
-onlyWechatOauth["views/user/myPhone.html"]="myPhone";
-onlyWechatOauth["views/wechat/myAirportInfo.html"]="wechat-myAirportInfo";
-onlyWechatOauth["views/wechat/myWiFi.html"]="wechat-myWiFi";
-//onlyWechatOauth["views/activity/activity201501.html"]="activity-activityDetail";
-
-isNotBindPhone["activity-activityDetail"]=true;
-isNotBindPhone["activity-activityDown"]=true;
-//isNotBindPhone["myCoupon"]=true;
-isNotBindPhone["myPhone"]=true;
-
-var baseOauth=[];
-baseOauth["activity-activityDetail"]=true;
-baseOauth["activity-activityDown"]=true;
-baseOauth["myPhone"]=true;
-baseOauth["myCoupon"]=true;
-baseOauth["orderList"]=true;
-baseOauth["wechat-myAirportInfo"]=true;
-baseOauth["wechat-myWiFi"]=true;
-var isContainFind=[];
-isContainFind["activity-activityDown"]=true;*/
 var preventCache=Math.random().toString(36);
 app.config(function ($routeProvider, $locationProvider,$controllerProvider,$compileProvider,$filterProvider,$provide) {
 	app.register = {
@@ -164,11 +126,14 @@ app.run( function($rootScope, $location) {
     	$rootScope.winWidth=$(window).width();
     	$rootScope.winHeight=$(window).height();
     	var tokenInfo=getToken();
-    	if(tokenInfo){
-    		if(!tokenInfo.openId){
-    			removeToken();
-    		}
-    	}
+    	$rootScope.isRootLogin=true;
+		if(!tokenInfo){
+			if($location.path()!=='/register'){
+				$rootScope.isRootLogin=false;
+				$rootScope.$emit("CtrlUserModule", $rootScope.isRootLogin);
+			}
+			
+		}
         hideLoading();                          
     });
 });
@@ -245,7 +210,8 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
 			//window.location.href="#/erroinfo";
 		}
         	       
-    });
+		
+	});
 	
     $rootScope.$on("$routeChangeSuccess", function (a,b) {
         $rootScope.loading = false;

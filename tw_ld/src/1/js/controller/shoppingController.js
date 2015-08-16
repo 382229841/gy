@@ -4,12 +4,11 @@ app.controller('navbarController', function ($rootScope, $scope, analytics, $loc
     }
 });
 
-app.controller('productListController', function ($rootScope, $scope, httpRequest,dataStringify, analytics, $location, $window, $routeParams) {    
+app.controller('productListController', function ($rootScope,$templateCache, $scope, httpRequest,dataStringify, analytics, $location, $window, $routeParams) {    
     var code=$routeParams.code || 0;
 	$scope.isSearchPage=false;
 	
 	$scope.showSearch=function(){
-		//$("#contentPage").hide();
 		$scope.isSearchPage=true;
 		$("#searchPage").addClass("current");
 	};
@@ -3067,7 +3066,12 @@ app.controller('wechatOauthController', function ($rootScope, $scope, httpReques
 
 /** added in 1.6**/
 app.controller('myController', function ($rootScope, $scope, httpRequest, $http, dataStringify, analytics, $location, $window, $routeParams) {
-    var from=$routeParams.from || "";
+    $rootScope.$on("CtrlUserModule", function (event, isLogin) {
+        $scope.isLogin = isLogin;
+    });
+	
+	
+	var from=$routeParams.from || "";
     $scope.isNeedBind=true;
     $scope.from=from;
     var loginFrom=1;
@@ -3121,6 +3125,13 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
                         $scope.user.bind=0;
                         $scope.isNeedBind=false;
                         setToken($scope.user);
+						
+						if($location.path()!="/myProfile"){
+							
+							$rootScope.isRootLogin=true;
+							return;
+						}
+						
                         if(from){
                             //alertSuccess("登录成功");
                             $location.path('/oauth2/'+$scope.user.openId+'/'+from).search({openId:$scope.user.openId,nickname:userInfo.nickname,headimgurl:userInfo.avatar,source:4,bind:$scope.user.bind}); 
@@ -3236,7 +3247,7 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
     }
 });
 app.controller('registerController', function ($rootScope, $scope, httpRequest, $http, dataStringify, analytics, $location, $window, $routeParams) {
-    $scope.register=function(){
+	$scope.register=function(){
         var u=$scope.username;
         var c=$scope.code;
         var p=$scope.password;
