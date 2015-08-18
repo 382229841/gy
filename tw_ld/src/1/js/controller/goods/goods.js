@@ -7,6 +7,14 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
 		$("#searchPage").addClass("current");
 	};
 	
+	$scope.$on("CtrlSearchPanel", function (event, isSearchPage) {
+		if(!isSearchPage){
+			$("#searchPage").removeClass("current");
+		}
+        $scope.isSearchPage = isSearchPage;
+		
+    });
+	
 	
     $rootScope.categoryId=code;
     $scope.code=code;
@@ -78,9 +86,87 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
     $scope.inquiry = function () {
         $location.path("/myProfile");
     }
+	
+	$scope.goProduct=function(id){
+        if(!id){
+            alertWarning("该商品已经下架，请选择其他商品购买^_^");
+            return;
+        }
+        if($scope.isApp){
+            window.location.href = easybuy.appActivity + "?action=1&goodId="+id;
+        }else{
+            $location.path("/product/"+id+"/1");
+        }
+        
+    };
+	
+	$scope.drawProductsPanel=function(){
+		$(".list-products-item .products-item-image").css("height",$(".list-products-item").width()+"px");
+		$(".list-products-item .products-item-title").css("height",$(".list-products-item").width()/1.67+"px");
+		
+		$(".list-products-item .products-item-title .products-item-name").css("height",$(".list-products-item").width()/4+"px");
+		
+		if($(".list-products-item .products-item-title .products-item-name").height()<$(".list-products-item .products-item-title .products-item-name span").height()){
+			//alert(1);
+		}
+		
+	};
+	$scope.drawProductsPanel();
+	$(window).resize(function(){
+		$scope.drawProductsPanel();
+	});
 });
 
-
+app.controller('searchPanelController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
+    $scope.cancelSearch=function(){
+		$scope.$emit("CtrlSearchPanel", false);
+		$scope.searchKeyword="";
+		$scope.isLocalKey=true;
+	};
+	
+	$scope.searchKeyword="";
+	
+	//setSearchLocalItems([{value:"凤梨酥"},{value:"郭元益凤梨酥"},{value:"凤梨酥350g"},{value:"凤梨酥350g"}]);
+	
+	$scope.searchLocalItems=getSearchLocalItems() || [];
+	$scope.searchItems=[{id:1,value:"凤梨酥"},{id:2,value:"郭元益凤梨酥"},{id:3,value:"凤梨酥350g0"}];
+	
+	$scope.isLocalKey=true;//显示搜索历史记录
+	$scope.searchKeyup=function(){
+		if($scope.searchKeyword.length>0){
+			$scope.isLocalKey=false;
+		}else{
+			$scope.isLocalKey=true;
+		}
+		
+	};
+	$scope.searchFocus=function(){
+		$(".search-result").addClass("focus");
+	};
+	
+	$scope.searchBlur=function(){
+		$(".search-result").removeClass("focus");
+	};
+	
+	$scope.saveSearchKeyword=function(value){
+		$scope.searchLocalItems.push({"value":value});
+		setSearchLocalItems($scope.searchLocalItems);
+	}
+	
+	$scope.removeSearchKeyword=function(){
+		setSearchLocalItems(null);
+		$scope.searchLocalItems=[];
+	};
+	$(".search-input").bind("keyup",function(e){
+		if(e.keyCode==13 && $scope.searchKeyword.length>0){
+			$scope.searchLocalItems.push({"value":$scope.searchKeyword});
+			setSearchLocalItems($scope.searchLocalItems);
+		}
+	})
+	
+	
+	
+});
 
 app.controller('cartNumController', function ($rootScope, $scope, analytics, $location) {
     $scope.cart = function () {
@@ -91,6 +177,7 @@ app.controller('cartNumController', function ($rootScope, $scope, analytics, $lo
         return getCartNum();
     }
 });
+
 
 
 app.controller('productAppController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {

@@ -53,11 +53,11 @@
 	outline: none;
 }
 </style>
-<div ng-controller="registerController">
+<div ng-controller="forgotController">
     <!-- Navbars -->
     <div class="navbar navbar-app nav-main">
         <div class="navbar-brand navbar-brand-center">
-            <span>注册</span>                    
+            <span>找回密码</span>                    
         </div>
         <div class="btn-group pull-left" ng-click="back()">
             <div class="btn btn-navbar sidebar-toggle">
@@ -92,35 +92,21 @@
                      </div>
 					 
 					 <div class="myPhone-item-text">
-                        <span class="col-xs-3" style="height: 3em;line-height: 3em;">密码</span>
+                        <span class="col-xs-3" style="height: 3em;line-height: 3em;">新密码</span>
 						<span class="col-xs-9"><input type="password" ng-model="password" id="myPhoneNumber" placeholder="6-20字母、数字和字符"/></span>
 						
 						<div class="clear"></div>
                      </div>
-					 
-					 <div class="myPhone-item-text">
-                        <span class="col-xs-3" style="height: 3em;line-height: 3em;">邀请码</span>
-						<span class="col-xs-9"><input type="password" ng-model="password" id="myPhoneNumber" placeholder="输入X为邀请码"/></span>
-						
-						<div class="clear"></div>
-                     </div>
-					<div class="myPhone-item-text">
-                        <span class="col-xs-3" style="height: 3em;line-height: 3em;">姓名</span>
-						<span class="col-xs-9"><input type="password" ng-model="password" id="myPhoneNumber" placeholder="您的真实姓名"/></span>
-						
-						<div class="clear"></div>
-                     </div>
-
                 </div> 
 				<div class="myPhone-item">
-                     <div class="myPhone-item-text" ng-if="!isSetMobile" style="text-align:center;margin-top:25px;">
+                     <div class="myPhone-item-text" style="text-align:center;margin-top:25px;">
                         <button class="btn" ng-click="register();" style="width:80%;background:#ff5757;border:#ff5757;">确定</button>
                      </div>
 
 
 
-                     <div class="myPhone-item-text" ng-if="!isSetMobile" style="text-align:center;margin-top:40px;margin-bottom:50px;">
-                        <a href="#/myProfile" style="color:#666;text-decoration: underline;">已有账号，直接登录</a>
+                     <div class="myPhone-item-text" ng-if="!isSetMobile" style="text-align:center;margin-top:40px;">
+                        
                      </div>
 				</div>
             </div>

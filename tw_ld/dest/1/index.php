@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="EasyBuy" ng-controller="mainController">
+<html ng-app="goeasy" ng-controller="mainController">
 <head>
     <meta charset="utf8" />
     <title>购轻松</title>
@@ -16,7 +16,7 @@
 	<?php
 		$preventCache=201507221242;
 	?>
-    <link href="css/easybuy.min.css?<?php echo $preventCache;?>" rel="stylesheet" type="text/css" />
+    <link href="css/goeasy.min.css?<?php echo $preventCache;?>" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/landscape.css" media="all and (orientation:landscape)" type="text/css">	
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>	
 	<script src="lib/angular.min.js?<?php echo $preventCache;?>" type="text/javascript"></script>
@@ -40,8 +40,9 @@
     <div class="app">
         <div class="app-body" ng-class="{loading: loading}">
             <div ng-show="loading" class="app-content-loading"><img src="image/favicon.png" class="loading-spinner-logo"/><i class="loading-spinner fa fa-circle-o-notch fa-spin"></i></div>
-            <ng-view class="app-content" ng-hide="loading"></ng-view>
-        </div>
+            <ng-view class="app-content" ng-hide="loading || !isRootLogin"></ng-view>
+			<div ng-include=" '../views/user/my.html' " ng-hide="isRootLogin"></div>
+		</div>
         <div class="loadingDiv">     
             <div id="floatingBarsG"><div class="blockG" id="rotateG_01"></div><div class="blockG" id="rotateG_02"></div><div class="blockG" id="rotateG_03"></div><div class="blockG" id="rotateG_04"></div><div class="blockG" id="rotateG_05"></div><div class="blockG" id="rotateG_06"></div><div class="blockG" id="rotateG_07"></div><div class="blockG" id="rotateG_08"></div></div>
         </div>                

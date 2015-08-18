@@ -1,0 +1,136 @@
+<style>
+	.btn-cancel{
+		background-image:none;
+		color:#fff;
+		top: 0em;
+		font-size: 1.1em;
+	}
+	@media only screen and (max-width: 350px)
+	{
+		.search-input{
+			width: 85%;
+		}
+	}
+	@media only screen and (max-width: 300px)
+	{
+		.search-input{
+			width: 80%;
+		}
+	}
+	@media only screen and (max-width: 250px)
+	{
+		.search-input{
+			width: 75%;
+		}
+	}
+	.hot-keyword{
+		background-color: #fff;
+		float: left;
+		display: inline-block;
+		padding: 6px 10px;
+		margin-left: 10px;
+		margin-top: 10px;
+		font-size:1.2em;
+		color:#666;
+	}
+	.search-result{
+		min-height: 100px;
+		position: absolute;
+		top: 50px;
+		z-index: 999;
+		width: 100%;
+		background-color: #fff;
+		padding: .5em .5em 1em .5em;
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
+		-webkit-transition: all .2s ease-in-out;
+		transition: all .2s ease-in-out;
+	}
+	
+	.search-result.focus{
+		-webkit-transform: none;
+		transform: none;
+	}
+	
+	.search-result div{
+		text-align:center;
+		line-height:2.3em;
+		font-size: 1.1em;
+	}
+	
+	.search-result div .search-result-item{
+		border-bottom:1px solid #eee;
+	}
+	.search-result div .search-result-btn{
+		padding-top:.5em;
+	}
+	
+	.search-result div span{
+		display:inline-block;
+		background:#f7f7f7;
+		width: 50%;
+	}
+
+</style>
+<div ng-controller="searchPanelController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-search" style="text-align:right;">
+            <input type="text" class="search-input" placeholder="商品名" 
+				ng-model="searchKeyword" 
+				ng-keyup="searchKeyup();"
+				ng-focus="searchFocus();"
+				ng-blur="searchBlur();"
+				/>
+        </div>
+        <div class="btn-group pull-left" ng-click="cancelSearch();">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-left btn-cancel">
+					取消
+                </div>
+            </div>
+        </div>
+		
+    </div>
+
+    <div class="scrollable product-list">
+        <div class="scrollable-content background-gray" style="padding-bottom:1em;">  
+			<div class="nav-main-block"></div>
+			
+            <span class="hot-keyword">雅诗兰黛</span>
+			<span class="hot-keyword">雪花秀商品</span>
+			<span class="hot-keyword">春节套装</span>
+			
+			<span class="hot-keyword">雅诗</span>
+			<span class="hot-keyword">雪花秀商品套装</span>
+			<span class="hot-keyword">春节套装</span>
+			
+			<span class="hot-keyword">雅诗</span>
+			<span class="hot-keyword">雪花秀</span>
+			<span class="hot-keyword">春节套装</span>
+			
+			<span class="hot-keyword">雅诗套装</span>
+			
+			 <span class="hot-keyword">雅诗兰黛</span>
+			<span class="hot-keyword">雪花秀商品</span>
+			<span class="hot-keyword">春节套装</span>
+			
+        </div>
+		
+		<div class="search-result">
+			<div ng-show="isLocalKey">
+				<div class="search-result-item" ng-repeat="item in searchLocalItems track by $index">{{item.value}}</div>				
+				
+				<div class="search-result-btn"><span ng-click="removeSearchKeyword();">清除历史记录</span></div>
+			</div>
+			
+			<div ng-hide="isLocalKey">
+				<div class="search-result-item" ng-repeat="item in searchItems track by $index" ng-click="saveSearchKeyword(item.value);">{{item.value}}</div>	
+				
+			</div>
+		
+		</div>
+		
+		
+	</div>
+</div>

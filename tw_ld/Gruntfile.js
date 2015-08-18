@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 		},
 		css: {
 			files: {
-			  "src/<%= pkg.version%>/temp/easybuy.css": 
+			  "src/<%= pkg.version%>/temp/goeasy.css": 
 							[
 								"src/<%= pkg.version%>/css/normalize.css",
 								"src/<%= pkg.version%>/css/mobile-angular-ui-base.css",

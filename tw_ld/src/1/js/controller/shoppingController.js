@@ -13,6 +13,14 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
 		$("#searchPage").addClass("current");
 	};
 	
+	$scope.$on("CtrlSearchPanel", function (event, isSearchPage) {
+		if(!isSearchPage){
+			$("#searchPage").removeClass("current");
+		}
+        $scope.isSearchPage = isSearchPage;
+		
+    });
+	
 	
     $rootScope.categoryId=code;
     $scope.code=code;
@@ -84,9 +92,87 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
     $scope.inquiry = function () {
         $location.path("/myProfile");
     }
+	
+	$scope.goProduct=function(id){
+        if(!id){
+            alertWarning("该商品已经下架，请选择其他商品购买^_^");
+            return;
+        }
+        if($scope.isApp){
+            window.location.href = easybuy.appActivity + "?action=1&goodId="+id;
+        }else{
+            $location.path("/product/"+id+"/1");
+        }
+        
+    };
+	
+	$scope.drawProductsPanel=function(){
+		$(".list-products-item .products-item-image").css("height",$(".list-products-item").width()+"px");
+		$(".list-products-item .products-item-title").css("height",$(".list-products-item").width()/1.67+"px");
+		
+		$(".list-products-item .products-item-title .products-item-name").css("height",$(".list-products-item").width()/4+"px");
+		
+		if($(".list-products-item .products-item-title .products-item-name").height()<$(".list-products-item .products-item-title .products-item-name span").height()){
+			//alert(1);
+		}
+		
+	};
+	$scope.drawProductsPanel();
+	$(window).resize(function(){
+		$scope.drawProductsPanel();
+	});
 });
 
-
+app.controller('searchPanelController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
+    $scope.cancelSearch=function(){
+		$scope.$emit("CtrlSearchPanel", false);
+		$scope.searchKeyword="";
+		$scope.isLocalKey=true;
+	};
+	
+	$scope.searchKeyword="";
+	
+	//setSearchLocalItems([{value:"凤梨酥"},{value:"郭元益凤梨酥"},{value:"凤梨酥350g"},{value:"凤梨酥350g"}]);
+	
+	$scope.searchLocalItems=getSearchLocalItems() || [];
+	$scope.searchItems=[{id:1,value:"凤梨酥"},{id:2,value:"郭元益凤梨酥"},{id:3,value:"凤梨酥350g0"}];
+	
+	$scope.isLocalKey=true;//显示搜索历史记录
+	$scope.searchKeyup=function(){
+		if($scope.searchKeyword.length>0){
+			$scope.isLocalKey=false;
+		}else{
+			$scope.isLocalKey=true;
+		}
+		
+	};
+	$scope.searchFocus=function(){
+		$(".search-result").addClass("focus");
+	};
+	
+	$scope.searchBlur=function(){
+		$(".search-result").removeClass("focus");
+	};
+	
+	$scope.saveSearchKeyword=function(value){
+		$scope.searchLocalItems.push({"value":value});
+		setSearchLocalItems($scope.searchLocalItems);
+	}
+	
+	$scope.removeSearchKeyword=function(){
+		setSearchLocalItems(null);
+		$scope.searchLocalItems=[];
+	};
+	$(".search-input").bind("keyup",function(e){
+		if(e.keyCode==13 && $scope.searchKeyword.length>0){
+			$scope.searchLocalItems.push({"value":$scope.searchKeyword});
+			setSearchLocalItems($scope.searchLocalItems);
+		}
+	})
+	
+	
+	
+});
 
 app.controller('cartNumController', function ($rootScope, $scope, analytics, $location) {
     $scope.cart = function () {
@@ -97,6 +183,7 @@ app.controller('cartNumController', function ($rootScope, $scope, analytics, $lo
         return getCartNum();
     }
 });
+
 
 
 app.controller('productAppController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
@@ -3091,7 +3178,12 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
              $scope.isLogin=false;
         }
     }
-
+	
+	$scope.forgot=function(){
+		$location.path("/forgot");
+		
+	};
+	
     $scope.login=function(){
         var u=$scope.username;
         var p=$scope.password;
@@ -3247,6 +3339,103 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
     }
 });
 app.controller('registerController', function ($rootScope, $scope, httpRequest, $http, dataStringify, analytics, $location, $window, $routeParams) {
+	$scope.register=function(){
+        var u=$scope.username;
+        var c=$scope.code;
+        var p=$scope.password;
+        var ic=$scope.inviteCode;
+		
+        if (!u || (u && u.length<1)) {
+            alertWarning("请输入手机号");
+            return;
+        }
+
+        if (u.length!=11) {
+            alertWarning("请输入11位的手机号码");
+            return;
+        }
+
+        if (!c || c.toString().length < 4 || c.toString().length > 8) {
+            alertWarning("请输入验证码");
+            return;
+        } 
+        if (!p || p.length<4 || p.length>20) {
+            alertWarning("请输入4~20位的密码");
+            return;
+        }
+		
+		if (!ic || ic.length<4 || ic.length>20) {
+            alertWarning("请输入4~20位的密码");
+            return;
+        }
+        $scope.wait=0;
+        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic;
+        httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            if (result && result.code == statusCode.Success) {
+                var token=result.result.token;
+                var data2="platform=all&token="+token;
+                httpRequest.APIPOST('/mine/index', dataStringify(data2), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+                    if (result && result.code == statusCode.Success) {
+                        var userInfo=result.result;
+                        $scope.user={};
+                        $scope.user.token=token;               
+                        $scope.user.openId="0";
+                        $scope.user.source=4;
+                        $scope.user.nickname=userInfo.nickname;
+                        $scope.user.headimgurl=userInfo.avatar;
+                        $scope.user.mobile=userInfo.mobible;
+                        $scope.user.bind=userInfo.bind || 0;
+                        setToken($scope.user);
+                        $location.path("/myProfile");
+                    }else{
+                        alertWarning(result.msg);
+                    }
+                });
+            }else{
+                alertWarning(result.msg);
+            }
+        });
+    }
+    $scope.back = function () {
+        $location.path("/myProfile");
+    }
+    $scope.validNum = function () {
+        $scope.username = validInteger($scope.username);
+    }
+    $scope.wait=60;
+    var time=function() {  
+        if ($scope.wait == 0) {  
+            $scope.wait=60; 
+            $("#codeClock").css("display","none");
+        } else {
+             $scope.wait--;
+             $scope.$apply($scope.wait);
+            setTimeout(function() {  
+                time();
+            },  
+            1000)  
+        }  
+    };
+    $scope.getCheckCode=function(){
+        if (!$scope.username || $scope.username.toString().length < 9 || $scope.username.toString().length > 13) {
+            alertWarning("请输入9~13位的手机号码");
+            return;
+        }
+        $("#codeClock").css("display","inline-block");
+        time();
+        var data="platform=all&type=1&mobile="+$scope.username;
+        httpRequest.APIPOST('/sms/getVerifyCode', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            if (result && result.code == statusCode.Success) {
+                 
+            }else{
+                alertWarning(result.msg);
+            }
+        });
+    };
+});
+
+
+app.controller('forgotController', function ($rootScope, $scope, httpRequest, $http, dataStringify, analytics, $location, $window, $routeParams) {
 	$scope.register=function(){
         var u=$scope.username;
         var c=$scope.code;

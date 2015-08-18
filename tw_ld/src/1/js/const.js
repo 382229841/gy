@@ -4,7 +4,23 @@
     //_const.xx = xx;
     easybuy.version="1.8.5";
     
-    easybuy.Storage = { OrderProducts: "Order.OrderProducts", Address: "Global.Address", AddressTemp: "Address.Temp", MobileInquiry: "Inquiry.Mobile", UserInfo: "Global.UserInfo",UserInfoService:"Global.UserInfoService", Cart: "Global.Cart", DownloadAppClose: "Global.DownloadAppClose", oAuth: "Global.oAuth", Order:"Global.Order", Token:"Global.Token",AppToken:"Global.AppToken", WxSdkToken:"Global.WxSdkToken", Find:"Global.Find"};
+    easybuy.Storage = { 
+		OrderProducts: "Order.OrderProducts", 
+		Address: "Global.Address", 
+		AddressTemp: "Address.Temp", 
+		MobileInquiry: "Inquiry.Mobile", 
+		UserInfo: "Global.UserInfo",
+		UserInfoService:"Global.UserInfoService", 
+		Cart: "Global.Cart", 
+		DownloadAppClose: "Global.DownloadAppClose", 
+		oAuth: "Global.oAuth", 
+		Order:"Global.Order", 
+		Token:"Global.Token",
+		AppToken:"Global.AppToken", 
+		WxSdkToken:"Global.WxSdkToken", 
+		Find:"Global.Find",
+		SearchLocalItems:"Index.SearchLocalItems"
+	};
 
     easybuy.PaymentMethods = { AlipayWallet: 0, AlipayWeb: 1, WechatPay: 2 };
 

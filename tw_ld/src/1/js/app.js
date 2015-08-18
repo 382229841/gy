@@ -1,4 +1,4 @@
-var app = angular.module('EasyBuy', [
+var app = angular.module('goeasy', [
     "ngRoute",
     "ngTouch",
     "mobile-angular-ui"
@@ -45,11 +45,6 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
 			}
         })
-        /* .when('/address/:payid/:buyType', { templateUrl: "views/order/address2.html?"+preventCache
-			,resolve: {
-				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
-			}
-        }) */
         .when('/success/:ordersn/:mobile/:address/:time', { templateUrl: "views/pay/success.html?"+preventCache })
         .when('/success/:ordersn/:token', { templateUrl: "views/pay/success.html?"+preventCache })
         .when('/success/:ordersn', { templateUrl: "views/pay/success.html?"+preventCache })
@@ -83,6 +78,7 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 
 		/** add in 1.6 **/
 		.when('/register', { templateUrl: "views/user/register.html?"+preventCache })
+		.when('/forgot', { templateUrl: "views/user/forgot.html?"+preventCache })
 		.when('/myProfile', { templateUrl: "views/user/my.html?"+preventCache })
 		.when('/myProfile/:from', { templateUrl: "views/user/my.html?"+preventCache })
 		.when('/myCoupon', { templateUrl: "views/user/myCoupon.html?"+preventCache })
@@ -96,18 +92,6 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs('js/controller/activity/activity.js')
 			  }
 		})
-
-		/* .when('/wechat/myPhone', { templateUrl: "views/wechat/myPhone.html?"+preventCache })
-		.when('/wechat/myWiFi', { templateUrl: "views/wechat/myWiFi.html?"+preventCache })
-		.when('/wechat/myAirportInfo', { templateUrl: "views/wechat/myAirportInfo.html?"+preventCache }) */
-		
-		/* .when('/airportService', { templateUrl: "views/order/airportService.html?"+preventCache })
-		.when('/airportServiceNew', { templateUrl: "views/order/airportServiceNew.html?"+preventCache })
-		.when('/airportServiceOrder', { templateUrl: "views/order/airportServiceOrder.html?"+preventCache
-			,resolve: {
-				load: app.asyncjs('lib/mobiscroll.custom-2.6.2.js')
-			}
-		}) */
 		.otherwise({
             redirectTo: '/products'
         });
@@ -128,7 +112,7 @@ app.run( function($rootScope, $location) {
     	var tokenInfo=getToken();
     	$rootScope.isRootLogin=true;
 		if(!tokenInfo){
-			if($location.path()!=='/register'){
+			if($location.path()!=='/register' && $location.path()!=='/forgot'){
 				$rootScope.isRootLogin=false;
 				$rootScope.$emit("CtrlUserModule", $rootScope.isRootLogin);
 			}
@@ -147,7 +131,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
 	$rootScope.initNav=function(cat){
 		
         $("#scroller2ul").html("");
-        var actived="border-bottom: 3px solid #F14F57;color:#F14F57;";
+        var actived="border-bottom: 2px solid #F14F57;color:#F14F57;";
         var lis=$rootScope.categoryId==0?"<li style=\""+actived+"\">" : "<li style=\"\">";
         lis=lis+"<a href=\"#/products\">全部</a></li>";
         var liCount=1;
@@ -167,7 +151,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
         $("#scroller2ul").html(lis);
         $("#scroller2").css("width",liCount*25+"%");
         $("#scroller2ul").css("width",liCount*25+"%");
-        $("#scroller2ul li").css("width",100/liCount+"%");
+        $("#scroller2ul li").css("width",90/liCount+"%");
         var generateScroll=function(){
         	var myScroll = new IScroll('#wrapper2', 
 			 { 
@@ -179,7 +163,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
 			 var mod=parseInt($rootScope.categoryIndex/4);
 			 var offset=$("#scroller2ul li").width()*mod;
 			 if(cat.length>3){
-				myScroll.scrollTo(-offset, 0);
+				myScroll.scrollTo(-offset/1.5, 0);
 			 }
 			 
         };
@@ -215,32 +199,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
 	
     $rootScope.$on("$routeChangeSuccess", function (a,b) {
         $rootScope.loading = false;
-    });	 
-    $scope.audioControls=$("#audioControls")[0];    
-    $rootScope.hideOverlay=function(){
-    	$rootScope.loading = false;    	
-    };
-    $scope.initPlay=function(){
-    	if(location.hash=="" || location.hash=="#/products"){
-    		var ctr=$scope.audioControls;
-    		ctr.play();
-    	}    	
-    };
-    $scope.play=function(){
-    	var ctr=$scope.audioControls;
-    	//alert(ctr.paused);
-    	if(ctr.paused){
-    		ctr.play();
-    		$("#div-nav-music-controls").removeClass("div-nav-music-pause");
-    		$("#div-nav-music-controls").addClass("div-nav-music");
-    	}else{
-    		ctr.pause();
-    		$("#div-nav-music-controls").removeClass("div-nav-music");
-    		$("#div-nav-music-controls").addClass("div-nav-music-pause");
-    	}    	
-    };
-
-    $scope.imageServiceUrl = imageServiceUrl;
+    });	
     $rootScope.isOauth2=false;
     $rootScope.oauth2=function(state,type){  
         $window.location=webchatOauth(state,type);

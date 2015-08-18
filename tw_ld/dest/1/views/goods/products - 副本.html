@@ -118,79 +118,13 @@
 		display: block;
 		position: static;
 	}
-	#scroller2ul li a.active{
-		color:#ff5757;
-	}
-	.list-products-item{
-		min-height: 100px;
-		width: 49%;
-		float:left;
-		background-color:#fff;
-		margin-bottom:10px;
-	}
-	.list-products{
-		min-height: 100px;
-		padding: 0 8px;
-	}
-	.list-products-item:nth-child(odd){
-		margin-right:2%;
-		
-	}
-	.products-item-image{
-		background-position: center 0;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
-	.list-show-product-brief-0{
-		color:#333;
-		font-size:.85em;
-	}
-	.products-item-title{
-		padding:0 .5em;
-		position:relative;
-	}
-	.products-item-price{
-		position: absolute;
-		bottom: 0em;
-		padding-top:.2em;
-		padding-bottom:.3em;
-		width: 90%;
-		background-color: #fff;
-	}
-	
-	.products-item-title hr {
-		margin-top: 10px;
-		margin-bottom: 10px;
-	}
-	.price.promotePrice {
-		font-size: 1em;
-		color: #ec3f35;
-	}
-	.price.shopPrice {
-		font-size: .9em;
-		color: #999;
-	}
-	.price{
-		text-align:center;
-		line-height:1.3;
-	}
-	@media only screen and (min-width: 500px)
-    {
-        .price{
-			line-height:2;
-		}
-		
-		.products-item-price{
-			padding-bottom: 1em;
-			padding-top:.5em;
-		}
-    }
+
 </style>
 <div ng-controller="productListController">
     <!-- Navbars -->
     <div class="navbar navbar-app nav-main" ng-show="!isSearchPage">
-        <div class="navbar-brand navbar-brand-search" ng-click="showSearch();">
-            <input type="text" class="search-input-index" placeholder="输入商品名"/>
+        <div class="navbar-brand navbar-brand-center" ng-click="showSearch();">
+            购轻松
         </div>
         <div class="btn-group pull-left" ng-click="inquiry()">
             <div class="btn btn-navbar sidebar-toggle">
@@ -227,7 +161,7 @@
                 <div class="nav-sort-block"></div>
                 
                 <div id="divProducts" style="margin-top: 15px;">
-                   <!--<div class="list-group list-show-product-group">
+                   <div class="list-group list-show-product-group">
                         <div class="list-group-item list-show-product-item" ng-repeat="product in products">
                             <div class="list-show-product">
                                 <a href="#/product/{{product.id}}">
@@ -240,6 +174,9 @@
 										</span><br/>
 										<span class="list-show-product-brief-1">
 											{{product.discountPrice || product.promotePrice | currency:'￥'}}
+											<!--
+												<span>{{product.shopPrice | currency:'￥'}}</span>
+											-->
 										</span>
 										<span class="discount-des" ng-if="product.discountDesc">
 											{{product.discountDesc}}
@@ -257,40 +194,7 @@
                                 </a>                                
                             </div>
                         </div>
-                    </div> -->
-					
-					<div class="list-products">
-						<div class="list-products-item" ng-repeat="product in products" ng-click="goProduct(product.id);">
-							<div class="products-item-image" style="background-image:url({{product.img}})"></div>
-							
-							<div class="products-item-title">
-								<hr/>
-								<div class="products-item-name">
-									<span class="list-show-product-brief-0">
-										{{product.name}}
-									</span>
-								</div>
-								
-								<div class="products-item-price">
-									<div class="shopPrice price">￥{{product.shopPrice}}</div>								
-									<div class="promotePrice price">￥{{product.promotePrice}}</div>								
-								</div>
-								
-							
-							</div>
-							
-							
-							
-							
-							
-							<span style="display:none;" ng-if="$last">
-								{{drawProductsPanel();}}
-							</span>
-						</div>
-						
-						<div class="clear"></div>
-					
-					</div>
+                    </div>                        
                 </div> 
 
 
@@ -312,7 +216,7 @@
 		
 		<div id="searchPage" class="scrollable-content background-gray page">
 			
-			<div ng-include="'views/goods/searchPanel.html'"></div>
+			<div ng-include=" 'views/searchPanel.html' "></div>
 		
 		
 		</div>
