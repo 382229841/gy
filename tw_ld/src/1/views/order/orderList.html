@@ -1,23 +1,19 @@
 <style>
-.app-body .btn.btn-go.btn-pay {
-    padding-left: 15px;
-    padding-right: 15px;
-    float: right;
-    margin-top: -12px;
-    height: 38px;
-    line-height: 38px;
-    font-size: 1.1em;
-    margin-bottom: 0px;
-    padding-top: 0px;
-    background-color: #db5565;
-    border: 1px solid #db5565;
+.span-btn-pay{
+	color: #fff !important;
+	background-color: #f75757;
+	padding: .5em .8em;
+	border-radius: 5px;
+	min-width: 5em;
+	display: inline-block;
+	text-align: center;
 }
 </style>
 <div ng-controller="orderListController">
     <!-- Navbars -->
     <div class="navbar navbar-app nav-main">
         <div class="navbar-brand navbar-brand-center">
-            订单
+            我的订单
         </div>
         <div class="btn-group pull-left" ng-click="back()">
             <div class="btn btn-navbar sidebar-toggle">
@@ -25,46 +21,10 @@
                 </div>
             </div>
         </div>
-        <div class="btn-group pull-right" ng-controller="cartNumController" ng-click="cart()">
-            <div class="btn btn-navbar">
-                <div class="btn-nav-cart">
-                    <div class="cart-mark" ng-show="cartNum() > 0">
-                        {{cartNum()}}</div>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="scrollable">
-        <div class="scrollable-content">
+        <div class="scrollable-content background-gray">
             <div class="nav-main-block">
-            </div>
-            
-            <div class="pay-area" id="pay-area" style="display:none;">
-                <!--<div class="list-head">
-                    支付方式
-                </div>-->
-                <div class="list-group">
-                    <div class="list-group-item media product-item border-bottom-0" style="{{$last?'border-bottom:0px;':'border-bottom-style:dashed'}}" ng-repeat="payment in Payments">
-                        <div class="pull-right check-area" style="height: 2.5em;">
-                            <div value="{{payment.id}}" class="checkbox radio {{payment.checked? 'checked':''}}">
-                            </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="product-area">
-                                <div class="pull-left">
-                                    <img alt="" src="image/{{payment.img}}" class="payment-image" />
-                                </div>
-                                <div class="media-body payment-instruction">
-                                    <div class="payment-title">
-                                        {{payment.name}}
-                                    </div>
-                                </div>
-                                <div class="clear">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div ng-if="!orders || !token">
@@ -84,59 +44,51 @@
             <div ng-repeat="order in orders" class="order-list" ng-if="orders">
              
                 <div class="pay-area" style="padding-top:0;padding-bottom:.8em;">
-                    <div class="list-head normal-font" style="background:#EEEEEE;">
-                        <!--<div>取货时间：{{order.pickupTime}}</div>
-                        <div>取货地址：{{order.pickupAddress}}</div>-->
-                        <div style="color:{{(order.status==1 || order.status==2)?'red':''}}">
+                    <div class="list-head normal-font">
+                        <div style="color:#f75757;font-size: 1.1em;">
                             {{getOrderStatus(order.status,order.category)}}
                         </div>
                     </div>
-                    <!--<div class="list-head normal-font" style="background:#EEEEEE;text-align:center;" ng-if="order.orderType==2">
-                        <div><b>朋友代购</b></div>
-                    </div>-->
+					
                     <a href="/#/orderDetail/{{order.orderId}}/{{mobile}}">   
-                    <div class="list-group">
-                        <div class="list-group-item media border-bottom-0 product-item" ng-repeat="product in order.goodsList">
-                            <div class="product-body">
-                                <div class="pull-left">
-                                    <img alt="" src="{{product.img}}" class="product-image" />
-                                </div>
-                                <div class="media-body product-instruction product-detail order-product-detail">
-                                    <div class="product-name">
-                                        {{product.name}}
-                                    </div>
-                                    <div class="product-instruction-bottom">
-                                        <div class="order-num">
-                                            {{product.buyPrice| currency:'￥'}}<br />
-                                            <span class="product-num">×{{product.quantity}}</span>
-                                        </div>
-                                        <div class="subtotal-right">
-                                            {{product.buyPrice * product.quantity | currency:'￥'}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<div class="list-group">
+							<div class="list-group-item media border-bottom-0 product-item" ng-repeat="product in order.goodsList">
+								<div class="product-body">
+									<div class="pull-left">
+										<img alt="" src="{{product.img}}" class="product-image" />
+									</div>
+									<div class="media-body product-instruction product-detail order-product-detail">
+										<div class="product-name">
+											{{product.name}}
+										</div>
+										<div class="product-instruction-bottom">
+											<div class="order-num">
+												{{product.buyPrice| currency:'￥'}}<br />
+												<span class="product-num">×{{product.quantity}}</span>
+											</div>
+											<div class="subtotal-right">
+												{{product.buyPrice * product.quantity | currency:'￥'}}</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
                     </a>
-                    <div class="product-detail-total" style="line-height: 33px;">
-                        共<span>{{order.goodsNum}}</span>件 实付
-                        <span class="order-amount-total" ng-if="order.category!=3">{{order.totalPrice | currency:'￥'}}</span>
-                        <span class="order-amount-total" ng-if="order.category==3">{{order.totalPrice | currency:'￥'}}</span>
-
-                        <button  ng-if="order.status==1 || 1==1" type="button" class="btn btn-default btn-go btn-pay" ng-click="pay(order.orderNum,order.totalPrice,order.pickupAddress,order.pickupTime,order.orderId)">
-                        付款</button>
-                        <!--
-                        <button  ng-if="order.status<3 && order.category!=3" type="button" class="btn btn-default btn-go btn-pay" ng-click="cancelOrder(order.orderId,$index)">
-                        取消</button>&nbsp;
-                        <button  ng-if="order.status>2" type="button" class="btn btn-default btn-go btn-pay" ng-click="deleteOrder(order.orderId,$index)">
-                        删除</button>&nbsp;
-                        <button  ng-if="order.status==2 && order.category!=3" type="button" class="btn btn-default btn-go btn-pay" ng-click="takeOverOrder(order.orderId,$index)">
-                        确认收货</button>
-                        -->
+                    <div style="background-color: #fff;padding: .8em .6em;">
+                        <span class="col-xs-8">实付:
+							<span class="order-amount-total cash" ng-if="order.category!=3">{{order.totalPrice | currency:''}}</span>
+							<span class="order-amount-total cash" ng-if="order.category==3">{{order.totalPrice | currency:''}}</span>						
+							<span style="color:#999;font-size:.9em;padding-left:.3em;">共<span style="color:#999;">{{order.goodsNum}}</span>件</span>
+						</span>
+						<span class="col-xs-4 text-right">
+							<span  
+								ng-if="order.status==1 || 1==1"
+								class="span-btn-pay"								
+								ng-click="pay(order.orderNum,order.totalPrice,order.pickupAddress,order.pickupTime,order.orderId)">
+							付款</span>
+						</span>
+						<div class="clear"></div>
                     </div>
-                    <!--<div class="product-detail-total" style="border-top: 1px solid #E0E1DB;color:{{(order.status==1 || order.status==2)?'red':''}}">
-                        状态：{{getOrderStatus(order.status)}}
-                    </div>-->
                 </div>
 
             </div>

@@ -57,41 +57,25 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 
         .when('/orderList', { templateUrl: "views/order/orderList.html?"+preventCache })
         .when('/orderList/:token', { templateUrl: "views/order/orderList.html?"+preventCache })
-        
-        /* .when('/orderInquiry', { templateUrl: "views/order/orderInquiry.html?"+preventCache }) */
+		
         .when('/product/:id', { templateUrl: "views/goods/productApp.html?"+preventCache,controller:'productAppController'})
         .when('/product/:id/:from', { templateUrl: "views/goods/productApp.html?"+preventCache,controller:'productAppController'})
         .when('/product/:id/:from/:type', { templateUrl: "views/goods/productApp.html?"+preventCache,controller:'productAppController'})
         
-        /* .when('/productDetail/:id', { templateUrl: "views/goods/productDetail.html?"+preventCache }) */
+		
         .when('/cart', { templateUrl: "views/cart/cart.html?"+preventCache })
-       /*  .when('/airport', { templateUrl: "views/order/airportSelect.html?"+preventCache })
-        .when('/airport/:id', { templateUrl: "views/order/airportSelect.html?"+preventCache }) */
-        
         
         .when('/comment/:id', { templateUrl: "views/app/comment.html?"+preventCache })
-        
-        .when('/oauth2/:openId/:state', { templateUrl: "views/wechat/oauth2.html?"+preventCache })   
-        .when('/wechatOauth/:state', { templateUrl: "views/wechat/wechatOauth.html?"+preventCache })
-        
-		
 
 		/** add in 1.6 **/
 		.when('/register', { templateUrl: "views/user/register.html?"+preventCache })
 		.when('/forgot', { templateUrl: "views/user/forgot.html?"+preventCache })
 		.when('/myProfile', { templateUrl: "views/user/my.html?"+preventCache })
 		.when('/myProfile/:from', { templateUrl: "views/user/my.html?"+preventCache })
-		.when('/myCoupon', { templateUrl: "views/user/myCoupon.html?"+preventCache })
-		.when('/myCoupon/:token', { templateUrl: "views/user/myCoupon.html?"+preventCache })
+		.when('/myInfo', { templateUrl: "views/user/myInfo.html?"+preventCache })
+		.when('/myIncome', { templateUrl: "views/user/myIncome.html?"+preventCache })
+		.when('/myWish', { templateUrl: "views/user/myWish.html?"+preventCache })
 		
-		.when('/myPhone', { templateUrl: "views/user/myPhone.html?"+preventCache })
-		.when('/myPhone/:mobile', { templateUrl: "views/user/myPhone.html?"+preventCache })
-		.when('/myPhone/:mobile/:token', { templateUrl: "views/user/myPhone.html?"+preventCache })
-		.when('/activity201501', { templateUrl: "views/activity/activity201501.html?"+preventCache 
-			  ,resolve: {
-				load: app.asyncjs('js/controller/activity/activity.js')
-			  }
-		})
 		.otherwise({
             redirectTo: '/products'
         });

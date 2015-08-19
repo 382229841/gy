@@ -130,7 +130,7 @@
             <div class="my-content" ng-if="isLogin">              
                 <div id="divMy" class="my-content">  
                     <div class="nav-main-block"></div>
-                    <div class="my-bg" ng-click="myInfo();">
+                    <div class="my-bg">
 						<img src="image/confirm payment_03.png" style="width: .8em;min-height: .5em;position: absolute;right: 10px;top: 40%;"/>
                         <img src="/image/my_bg.png" />
                         <div class="my-profile">
@@ -149,19 +149,19 @@
 							<span>我的订单</span>
 							<span class="right-span"><img src="/image/public_ico_arrow.png" /></span></div>
                         </a>  
-                        <a href="#/myWish">
+                        <a href="#/myCoupon/{{user.token}}">
                             <div class="my-item-1"><img src="/image/my/my_ico_wish.png">
 							<span>心愿单</span>
 							<span class="right-span"><img src="/image/public_ico_arrow.png" /></span></div>
                         </a>  
-						<a href="#/myIncome">
+						<a href="#/myCoupon/{{user.token}}">
                             <div class="my-item-2"><img src="/image/my/my_ico_income.png">
 							<span>返现收益</span>
 							<span class="right-span">￥1500.00<img src="/image/public_ico_arrow.png" /></span></div>
                         </a>
                     </div>
                     
-                    <!-- <div class="my-item" ng-if="isNeedBind">
+                    <div class="my-item" ng-if="isNeedBind">
                         <a href="#/myPhone/{{user.mobile}}/{{user.token}}">                            
                             <div class="my-item-2">
                                 <img src="/image/my_2.png">
@@ -171,7 +171,11 @@
                                 <span class="right-span1" style="color:#da5664;" ng-if="user.mobile=='0'"></span>
                             </div>
                         </a>
-                    </div> -->
+                    </div>
+
+                    <div class="mySet-item-text" ng-if="isShowLogoutBtn">
+                        <button class="btn" ng-click="logout();">退出登录</button>
+                     </div>
                 </div>
             </div>
         </div>

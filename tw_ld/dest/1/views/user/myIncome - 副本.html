@@ -1,0 +1,227 @@
+<style>
+    .tab-navigation{
+        padding:0px 0px;
+        padding-left:0;
+    }
+    .tab-navigation ul{
+         width:100%;         
+    }
+    .tab-navigation ul li{
+         width:33.33333333333333%;
+         text-align:center;
+    }
+    .nav > li > a{
+          padding:10px 15px;
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+          color: #F75757;
+          background-color: #FFFFFF;
+		  border: 0px;
+          border-bottom: 2px solid #F75757;
+          cursor: default;
+    }
+    .nav-tabs > li > a{
+          color: #333;
+          background-color: #ffffff;
+          border: 0px solid #F75757;
+          cursor: default;
+          font-size: 1.1em;
+          margin-right: 0px;
+    }
+    .nav-tabs > li:first-child > a{
+          border-radius: 4px 0 0 4px;
+    }
+    .nav-tabs > li:last-child > a{
+          border-radius: 0 4px 4px 0;
+    }
+	.withdraw-cash-title{
+		border-bottom:1px solid #eee;
+		padding: 1em 0;
+	}
+	.withdraw-cash-btn{
+		border:1px solid #f75757;
+		background-color:#f75757;
+		padding: .4em .7em;
+		color:#fff;
+		border-radius:4px;
+	}
+	
+	.withdraw-cash-status{
+		border:1px solid #eee;
+		background-color:#fff;
+		padding: .4em .7em;
+		color:#999;
+		border-radius:4px;
+	}
+	.withdraw-cash-item{
+		padding: .5em 0;
+		border-bottom: 1px dashed #eee;
+	}
+	.withdraw-cash-item .item1{
+		font-size: 1.3em;
+		padding: .2em 0em;
+	
+	}
+	.withdraw-cash-item .item2{
+		font-size: 1.1em;
+		padding: .2em 0em;
+		color: #999;
+	
+	}
+	.withdraw-cash-item::last-child{
+		border:0px;
+	}
+	.tab-content{
+		margin-top: .5em;
+		background-color: #fff;
+		padding: .5em;
+	}
+    @media only screen and (max-width: 450px)
+    {
+        
+    }
+    @media only screen and (max-width: 320px)
+    {
+        
+    }
+</style>
+<div ng-controller="myIncomeController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            返现收益
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-gray">
+            <div class="nav-main-block"></div>
+           
+            <div ng-show="step<2">
+                <div class="tab-navigation">
+                        <ul class="nav nav-tabs">                          
+                          <li><a href="#Tab1" toggle="on" parent-active-class="active">未提现</a></li>
+						  <li><a href="#Tab2" toggle="on" parent-active-class="active">申请中</a></li>
+                          <li><a href="#Tab3" toggle="on" parent-active-class="active">已提现</a></li>
+                        </ul>
+                </div>
+                <div class="tab-content">
+                     <div class="tab-pane"
+                          toggleable
+                          active-class="active"                          
+                          id="Tab1"
+						  default="active"
+                          exclusion-group="myTabs">
+							<div class="withdraw-cash-title">
+								<span class="col-xs-7 cash">196.00</span>
+								<span class="col-xs-5 text-right"><span class="withdraw-cash-btn" ng-click="withDraw(0);">申请提现</span></span>
+								
+								<div class="clear"></div>
+							</div>
+                            
+							<div class="withdraw-cash-item">
+								<div class="item1">
+									<span class="col-xs-7">GuideA</span>
+									<span class="col-xs-5 text-right" style="color:#666;">￥196.00</span>
+								</div>
+								<div class="item2">
+									<span class="col-xs-7">订单金额：￥1080.00</span>
+									<span class="col-xs-5 text-right">2015-12-01</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="withdraw-cash-item">
+								<div class="item1">
+									<span class="col-xs-7">GuideA</span>
+									<span class="col-xs-5 text-right" style="color:#666;">￥196.00</span>
+								</div>
+								<div class="item2">
+									<span class="col-xs-7">订单金额：￥1080.00</span>
+									<span class="col-xs-5 text-right">2015-12-01</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+                            <div ng-if="coupons.usedList.length<1" style="text-align:center;">目前没有要提现的</div>
+                            <br/>
+                      </div>
+
+                      <div class="tab-pane"
+                          toggleable
+                          active-class="active"                          
+                          id="Tab2"
+                          exclusion-group="myTabs">
+							<div class="withdraw-cash-title">
+								<span class="col-xs-7 cash">196.00</span>
+								<span class="col-xs-5 text-right"><span class="withdraw-cash-status">申请中</span></span>
+								
+								<div class="clear"></div>
+							</div>
+                            <div class="coupon" ng-repeat="c in coupons.usedList">
+                               
+                            </div>
+
+                            <div ng-if="coupons.usedList.length<1" style="text-align:center;">目前没有申请中提现的</div>
+                            <br/>
+                      </div>
+					  
+					  <div class="tab-pane"
+                          toggleable
+                          active-class="active"                          
+                          id="Tab3"
+                          exclusion-group="myTabs">
+						   <div class="withdraw-cash-title">
+								<span class="col-xs-7 cash">196.00</span>
+								<span class="col-xs-5 text-right"><span class="withdraw-cash-status">已提现</span></span>
+								
+								<div class="clear"></div>
+							</div>
+                            <div class="coupon" ng-repeat="c in coupons.usedList">
+                               
+                            </div>
+
+                            <div ng-if="coupons.usedList.length<1" style="text-align:center;">目前没有已提现的</div>
+                            <br/>
+                      </div>
+
+                </div>
+            </div>
+			
+			<div ng-show="step==2">
+				<div class="myPhone-item-text" style="  background-color: #fff;">
+					<span class="col-xs-4" style="height: 3em;line-height: 3em;text-align:left;">支付宝账号</span>
+					
+					<span class="col-xs-8">
+						<input type="text" ng-model="username" id="myPhoneNumber" placeholder="" onkeydown="checkNumber(this,false);"/>
+					
+					</span>
+					<div class="clear"></div>
+					
+					<span class="col-xs-4" style="height: 3em;line-height: 3em;text-align:left;">支付宝姓名</span>
+					<span class="col-xs-8">
+						 <input type="password" ng-model="password" id="myPhoneNumber" placeholder=""/>
+					
+					</span>
+					
+					<span class="col-xs-4" style="height: 3em;line-height: 3em;text-align:left;">手机号</span>
+					<span class="col-xs-8">
+						 <input type="password" ng-model="password" id="myPhoneNumber" placeholder=""/>
+					
+					</span>
+					
+					<div class="clear"></div>
+				 </div>
+				 
+				 <div class="myPhone-item-text" style="text-align:center;margin-top:25px;white-space:nowrap;">
+					<button class="btn" ng-click="withDraw();" style="width:80%;background:#ff5757;border:#ff5757;">申请提现</button>
+				 </div>
+			</div>
+            
+        </div>
+    </div>
+</div>

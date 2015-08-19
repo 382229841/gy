@@ -483,7 +483,7 @@ th {
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 
 html {
-  font-family: sans-serif;
+  font-family: arial,sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -719,7 +719,7 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif, Helvetica, "Helvetica Neue";
   font-size: 14px;
   line-height: 1.42857143;
   color: #333333;
@@ -5012,7 +5012,14 @@ body
 .list-group {
     margin-bottom: 0;
 }
-
+.cash {
+  color: #f75757;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.cash::before {
+  content:"￥";
+}
 .clear
 {
     clear: both;
@@ -5114,9 +5121,12 @@ label
 
 .btn-left.new
 {
-    width: 1em;
-    height: 1.5em;
-    background-image: url("../image/icon_left_red.png");
+	width: 3em;
+	height: 3em;
+	background-image: url("../image/details_img_back.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center 0;
 }
 
 .btn-to-back
@@ -6924,7 +6934,7 @@ input.input-datetime
 
 .product-detail-total span
 {
-    color:#f24a5b;
+    color:#f75757;
     margin:0 .1em;
 }
 
@@ -8268,11 +8278,12 @@ ul#pagination
 }
 .my-content .my-bg .my-profile .profile-titile{
     position:absolute;
-    top: 30%;
+    top: 0%;
     left:115%;
     width: 10em;
     font-weight:normal;
     font-size: 1.4em;
+	line-height:1.8;
 }
 .my-content .my-bg .my-profile img{
     width:100%;
@@ -8302,16 +8313,20 @@ ul#pagination
      margin-left:20px;
 }
 .my-item .my-item-1 img,.my-item .my-item-2 img{
-    height:25px;
+    height:28px;
     margin-left:5px;
 }
 .my-item .my-item-1 span,.my-item .my-item-2 span{
-    margin-left:5px;
+    margin-left:10px;
 }
 .my-item .my-item-1 .right-span1,.my-item .my-item-2 .right-span1{
     float:right;
     margin-right:5px;
     
+}
+.right-span{
+	float:right;
+	color:#999;
 }
 .my-item .my-item-1 .right-span2,.my-item .my-item-2 .right-span2{
     float:right;
@@ -8336,8 +8351,8 @@ ul#pagination
 .my-item .my-item-1 .right-span img,.my-item .my-item-2 .right-span img{
     float:right;
     margin-right:10px;
-    height:12px;
-    margin-top: 17px;
+    height:27px;
+    margin-top: 9px;
     
 }
 

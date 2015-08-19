@@ -1,0 +1,282 @@
+<style>
+    .tab-navigation{
+        padding:15px 0px;
+        padding-left:5%;
+    }
+    .tab-navigation ul{
+         width:95%;         
+    }
+    .tab-navigation ul li{
+         width:50%;
+         text-align:center;
+    }
+    .nav > li > a{
+          padding:10px 15px;
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+          color: #ffffff;
+          background-color: #DB5565;
+          border: 1px solid #DB5565;
+          cursor: default;
+    }
+    .nav-tabs > li > a{
+          color: #333;
+          background-color: #ffffff;
+          border: 1px solid #DB5565;
+          cursor: default;
+          
+          margin-right: 0px;
+    }
+    .nav-tabs > li:first-child > a{
+          border-radius: 4px 0 0 4px;
+    }
+    .nav-tabs > li:last-child > a{
+          border-radius: 0 4px 4px 0;
+    }
+    .coupon{
+        width:95%;
+        margin:0 auto;
+        position:relative;
+        max-width:50em;
+        margin-bottom:15px;
+    }
+    .coupon .coupon-content{
+        background:#FFF300;
+        height:8em;
+    }
+    .coupon .coupon-content .region{
+        background: #EE2213;
+        float: right;
+        margin-right: 2.5em;
+        height: 3.5em;
+        line-height: 3.5em;
+        width: 40%;
+        margin-top: .9em;
+        padding-left: .5em;
+    }
+    .coupon .coupon-content .region span{
+        font-weight:bolder;
+        font-size:1.3em;
+        color:#fff;
+    }
+    .coupon .coupon-content .amout{
+        float: left;
+        padding-left: 2em;
+        height:5em;
+        line-height:5em;
+    }
+    .coupon .coupon-content .amout .currency{
+        color:#000000;
+        font-size:3.5em;
+        font-weight:bolder;
+    }
+    .coupon .coupon-content .amout .value{
+        color:#000000;
+        font-size:4.8em;
+        font-weight:bolder;
+        margin-left: -6px;
+    }
+    .coupon .coupon-content .expired{
+        text-align:right;
+        padding:.5em 1em;
+        white-space:nowrap;
+    }
+    .coupon .coupon-content .expired span{
+        color:#000000;
+
+    }
+    .coupon .coupon-title{
+        background:#CC9900;
+        height:3em;
+        text-align:center;
+        color:#fff;
+        line-height:2.5em;
+        font-weight:bolder;
+    }
+    .coupon .coupon-title span{
+        font-size:1.5em;
+    }
+    .sawtooth{
+        position:absolute;
+        width:11em;
+        height:1em;
+        background:transparent;
+        background-image:-webkit-gradient(linear,50% 0,100% 100%,
+                                            from(transparent),
+                                            color-stop(.5,transparent),
+                                            color-stop(.5,#ffffff),
+                                            to(#ffffff)                                            
+                        ),-webkit-gradient(linear,50% 0,0 100%,
+                                            from(transparent),
+                                            color-stop(.5,transparent),
+                                            color-stop(.5,#ffffff),
+                                            to(#ffffff)    
+                        );
+        background-image:-moz-linear-gradient(50% 0 -45deg,
+                                    transparent,
+                                    transparent 50%,
+                                    #ffffff 50%,
+                                    #ffffff                                            
+                        ),-moz-linear-gradient(50% 0 -135deg,
+                                    transparent,
+                                    transparent 50%,
+                                    #ffffff 50%,
+                                    #ffffff                                            
+                        );                                
+        background-size:1em .6em;
+        background-repeat:repeat-x;
+        background-position:0 100%;             
+    }
+    .sawtooth-left{
+        transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+        -webkit-transform: rotate(90deg);
+        -o-transform: rotate(30deg);
+        -moz-transform: rotate(30deg);
+        bottom: 5em;
+        left: -5em;
+    }
+    .sawtooth-right{
+        transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+        -webkit-transform: rotate(-90deg);
+        -o-transform: rotate(30deg);
+        -moz-transform: rotate(30deg);
+        bottom: 5em;
+        right: -5em;
+    }
+    @media only screen and (max-width: 450px)
+    {
+        .coupon .coupon-content .region{
+            margin-right: 0.5em;
+            width:45%;
+        }
+        .coupon .coupon-content .amout{
+            padding-left: 0.5em;
+        }
+    }
+    @media only screen and (max-width: 320px)
+    {
+        .coupon .coupon-content .region{
+            width:45%;
+        }
+        .coupon .coupon-content .region span{
+            font-size: 1em;
+        }
+        
+        .coupon .coupon-content .amout .currency{
+            font-size:2.5em
+        }
+        .coupon .coupon-content .amout .value{
+            font-size:4em
+        }
+    }
+</style>
+<div ng-controller="myCouponController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            优惠券
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-white">
+            <div class="nav-main-block"></div>
+           
+            <div>
+                <div class="tab-navigation">
+                        <ul class="nav nav-tabs">                          
+                          <li><a href="#Tab2" toggle="on" parent-active-class="active">未使用({{coupons.unUseList.length}})</a></li>
+                          <li><a href="#Tab1" toggle="on" parent-active-class="active">已使用({{coupons.usedList.length}})</a></li>
+                        </ul>
+                </div>
+                <div class="tab-content">
+                     <div class="tab-pane"
+                          toggleable
+                          active-class="active"                          
+                          id="Tab1"
+                          exclusion-group="myTabs">
+                            <div class="coupon" ng-repeat="c in coupons.usedList">
+                                <div class="coupon-content">
+                                    <div class="expired">
+                                        <span>有效期：{{c.startTime.replace('-','.').replace('-','.')}} - {{c.endTime.replace('-','.').replace('-','.')}}</span>
+                                    </div>
+                                    <div class="amout">
+                                        <span class="currency">￥</span>
+                                        <span class="value">{{c.amount.split('.')[0]}}</span>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="region">
+                                        <span>{{c.typeDesc}}</span>
+                                        <i class="fa fa-play-circle" style="font-size:1.5em;color: #fff;float:right;margin-top:0.65em;margin-right:1em;"></i>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div class="coupon-title">
+                                     <span>满{{c.full}}使用</span>
+                                </div>
+                                <div class="sawtooth sawtooth-left"></div>
+                                <div class="sawtooth sawtooth-right"></div>
+                            </div>
+
+                            <div ng-if="coupons.usedList.length<1" style="text-align:center;">目前没有已使用的优惠券</div>
+                            <br/><br/><br/>
+                      </div>
+
+                      <div class="tab-pane"
+                          toggleable
+                          active-class="active"
+                          default="active"
+                          id="Tab2"
+                          exclusion-group="myTabs">
+                          
+                            <div class="coupon" ng-repeat="c in coupons.unUseList">
+                                <div class="coupon-content">
+                                    <div class="expired">
+                                        <span>有效期：{{c.startTime.replace('-','.').replace('-','.')}} - {{c.endTime.replace('-','.').replace('-','.')}}</span>
+                                    </div>
+                                    <div class="amout">
+                                        <span class="currency">￥</span>
+                                        <span class="value">{{c.amount.split('.')[0]}}</span>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="region">
+                                        <span>{{c.typeDesc}}</span>
+                                        <i class="fa fa-play-circle" style="font-size:1.5em;color: #fff;float:right;margin-top:0.65em;margin-right:1em;"></i>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div class="coupon-title">
+                                     <span>满{{c.full}}使用</span>
+                                </div>
+                                <div class="sawtooth sawtooth-left"></div>
+                                <div class="sawtooth sawtooth-right"></div>
+                            </div>
+                            
+
+                            <div ng-if="coupons.unUseList.length<1" style="text-align:center;">目前没有未使用的优惠券</div>
+                            <br/><br/><br/>
+                      </div>
+
+                </div>
+            </div>
+            
+            <!--
+            <div ng-if="coupons && coupons.length>0 " style="padding-bottom:2em">
+                <div ng-repeat="coupon in coupons">
+                    <a href="#/products" ng-repeat="r in coupon.repeatCount">
+                        <img src="image/coupon.png" style="padding:1em 1em 0 1em;width:100%;"/>
+                    </a>                    
+                </div>
+            </div>
+            -->
+            
+        </div>
+    </div>
+</div>

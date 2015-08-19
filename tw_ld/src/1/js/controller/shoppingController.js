@@ -3026,29 +3026,6 @@ app.controller('myCouponController', function ($rootScope, $scope, httpRequest, 
                  hideLoading();
                  $scope.coupons=result.result;
 
-
-                 /*$scope.coupons.usedList.push({"id": 13,
-                    "startTime": "2015-01-01",
-                    "amount": "20.00",
-                    "full": 199,
-                    "typeDesc": "全场适用",
-                    "couponId": 1,
-                    "endTime": "2015-03-31",
-                    "type": 1});
-                    */
-                 //$scope.coupons=[{id:1,remainNum:5}];//for test
-                 /*for(var i=0;i<$scope.coupons.length;i++){
-                     var repeatCount=[];
-                     for(var j=0;j<$scope.coupons[i].remainNum;j++){
-                         repeatCount.push(j);
-                         $scope.coupons[i].repeatCount=repeatCount;
-                     }
-                 }
-                 if($scope.coupons.length<1){
-                     $("#emptyStatus").css("display","block");
-                 }else{
-                     $("#emptyStatus").css("display","");
-                 }*/
             }else{
                 hideLoading();
                 alert(result.msg);
@@ -3063,6 +3040,40 @@ app.controller('myCouponController', function ($rootScope, $scope, httpRequest, 
         }else{
             $location.path("/myProfile");
         }        
+    }
+	
+});
+
+app.controller('myIncomeController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window,$routeParams) {
+    $scope.step=1;
+	
+	$scope.withDraw=function(t){
+		if(t==0){
+			$scope.step=2;
+			return;
+		}
+	};
+	$scope.back = function () {
+		if($scope.step>1){
+			$scope.step=1;
+			return;
+		}
+        $location.path("/myProfile");
+    }
+});
+
+app.controller('myWishController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window,$routeParams) {
+    $scope.step=1;
+	
+	$scope.wish=function(t){
+		$scope.step=2;
+	};
+	$scope.back = function () {
+		if($scope.step>1){
+			$scope.step=1;
+			return;
+		}
+        $location.path("/myProfile");
     }
 });
 
@@ -3184,6 +3195,10 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
 		
 	};
 	
+	$scope.myInfo=function(){
+		$location.path("/myInfo");
+	};
+	
     $scope.login=function(){
         var u=$scope.username;
         var p=$scope.password;
@@ -3247,38 +3262,6 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
         $location.path("/register");
     }
 
-    $scope.logout=function(){
-       var arrButton = ["取消", "确定"];
-        openDialog("您是否确认退出？", null, arrButton, null,
-            function (r) {
-                if (r) {                    
-                    if(loginFrom==4){
-                        var data="platform=all&token="+$scope.user.token;
-                        httpRequest.APIPOST('/user/logout', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                            if (result && result.code == statusCode.Success) {
-                                $scope.user={};
-                                removeToken();
-                                $scope.isLogin=false;
-                                $scope.$apply($scope.isLogin);
-                                $scope.$apply($scope.user);
-                                location.href=location.href.split('?')[0];
-                            }else{
-                                alertWarning(result.msg);
-                            }
-                        });
-                    }
-
-                    $scope.user={};
-                    removeToken();
-                    $scope.isLogin=false;
-                    $scope.$apply($scope.isLogin);  
-                    $scope.$apply($scope.user);
-
-                    
-                }
-        });
-         
-    }
     $scope.back = function () {
         $location.path("/products");
     }
@@ -3337,7 +3320,70 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
     $scope.validNum = function () {
         $scope.username = validInteger($scope.username);
     }
+	
+	$scope.drawProfie=function(){
+		$(".my-profile").css("height",$(window).width()*(640/242)+"px");
+	};
+	$scope.drawProfie();
+	$(window).resize(function(){
+		$scope.drawProfie();
+	});
 });
+
+app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $http, dataStringify, analytics, $location, $window, $routeParams) {
+    $scope.step=1;
+	$scope.updatePassword=function(){
+		$scope.step=3;
+		
+	};
+	
+	$scope.updateName=function(){
+		$scope.step=2;
+	};
+	
+	
+
+    $scope.logout=function(){
+       var arrButton = ["取消", "确定"];
+        openDialog("您是否确认退出？", null, arrButton, null,
+            function (r) {
+                if (r) {                    
+                    if(loginFrom==4){
+                        var data="platform=all&token="+$scope.user.token;
+                        httpRequest.APIPOST('/user/logout', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+                            if (result && result.code == statusCode.Success) {
+                                $scope.user={};
+                                removeToken();
+                                $scope.isLogin=false;
+                                $scope.$apply($scope.isLogin);
+                                $scope.$apply($scope.user);
+                                location.href=location.href.split('?')[0];
+                            }else{
+                                alertWarning(result.msg);
+                            }
+                        });
+                    }
+
+                    $scope.user={};
+                    removeToken();
+                    $scope.isLogin=false;
+                    $scope.$apply($scope.isLogin);  
+                    $scope.$apply($scope.user);
+
+                    
+                }
+        });
+         
+    }
+    $scope.back = function () {
+		if($scope.step>1){
+			$scope.step=1;
+			return;
+		}
+        $location.path("/myProfile");
+    }
+});
+
 app.controller('registerController', function ($rootScope, $scope, httpRequest, $http, dataStringify, analytics, $location, $window, $routeParams) {
 	$scope.register=function(){
         var u=$scope.username;
