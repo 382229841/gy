@@ -2648,12 +2648,17 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
     	var data="";
 		if($scope.takeoverMethod==2){
 		  data="platform=all&token="+$rootScope.tokenInfo.token
-				  +"&contact="+$scope.addressInfo.contact
-				  +"&cityId="+arrRegion[1]
-				  +"&detailAddress="+$scope.addressInfo.detailAddress
-				  +"&provinceId="+arrRegion[0]
-				  +"&districtId="+arrRegion[2]
-				  +"&mobile="+$scope.addressInfo.mobile;  
+				  +"&contact="+$scope.defaultAddress.contact
+				  +"&pickupWay=2"
+				  
+				  +"&hotelName="+$scope.defaultAddress.hotelName
+				  +"&hotelPhone="+$scope.defaultAddress.hotelPhone
+				  +"&hotelAddress="+$scope.defaultAddress.hotelAddress
+				  +"&pickupDate="+$scope.defaultAddress.hotelPickupDate
+				  
+				  +"&mobile="+$scope.defaultAddress.mobile
+				  +"&goodsId="+goodsId
+				  +"&quantity="+quantity; 
 		}else{
 			data="platform=all&token="+$rootScope.tokenInfo.token
 				  +"&pickupWay=1"
