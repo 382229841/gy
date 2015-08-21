@@ -1,65 +1,57 @@
 app.controller('cartController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
     $scope.products=[];
     $scope.empty=false;
-    var cartProducts = getCart();
+    var cartProducts = [];
     $scope.totalAmountValue=0;
-    if (cartProducts && cartProducts.length>0) {
-        var length=cartProducts.length;
-        var goodsId="";
-        var quantity="";
-        var checkeds="";
-        for(var i=0;i<length;i++){
-            var chk=cartProducts[i].checked?'1':'0';
-            if(i<length-1){               
-               goodsId=goodsId+cartProducts[i].id+",";
-               quantity=quantity+cartProducts[i].num+","; 
-               checkeds=checkeds+chk+",";
-            }else{
-               goodsId=goodsId+cartProducts[i].id;
-               quantity=quantity+cartProducts[i].num;  
-               checkeds=checkeds+chk;
-            }
-            
-        }
-        httpRequest.APIPOST('/cart/group', dataStringify("platform=all&goodsId=" + goodsId + "&quantity=" + quantity+"&checked="+checkeds), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            if (result && result.code == statusCode.Success) {
-                $scope.products=result.result.tw.concat(result.result.ch);
-                var tempCartProducts=[];
-                if ($scope.products) {
-                    for (var i = 0; i < $scope.products.length; i++) {
-                        for(var j=0;j<$scope.products[i].goodsList.length;j++){
-                            $scope.products[i].goodsList[j].checked=$scope.products[i].goodsList[j].checked?true:false;
-                            tempCartProducts.push({
-                                id:$scope.products[i].goodsList[j].id,
-                                num:$scope.products[i].goodsList[j].quantity,
-                                checked:$scope.products[i].goodsList[j].checked
-                            });
-                        }                        
-                    }
-                }
-                if(tempCartProducts.length==0){
-                    setCart(null);
-                }else{
-                    setCart(tempCartProducts);
-                }
-                if($scope.products){
-                    $scope.empty = false;                    
-                }else{
-                    $scope.empty = true;
-                }
-                if($scope.products && $scope.products.length>0){
-                    $scope.isAllChecked();
-                    $scope.totalAmount();
-                }
-            }else{
-                alertWarning(result.msg);
-            }
-        });        
-       
-    }
-    else {
-        $scope.empty = true;
-    }
+	
+	$scope.back=function(){
+		
+		//$scope.synCart();
+		history.back();
+	};
+	
+    var length=cartProducts.length;
+	var goodsId="";
+	var quantity="";
+	var checkeds="";
+	for(var i=0;i<length;i++){
+		var chk=cartProducts[i].checked?'1':'0';
+		if(i<length-1){               
+		   goodsId=goodsId+cartProducts[i].id+",";
+		   quantity=quantity+cartProducts[i].num+","; 
+		   checkeds=checkeds+chk+",";
+		}else{
+		   goodsId=goodsId+cartProducts[i].id;
+		   quantity=quantity+cartProducts[i].num;  
+		   checkeds=checkeds+chk;
+		}
+		
+	}
+	$scope.getCart=function(){
+		httpRequest.APIPOST('/cart/list_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.products=result.result.normal;
+				$scope.cartInfo=result.result;
+
+				if($scope.products){
+					if($scope.products.length<1){
+						$scope.empty = true;
+					}else{
+						$scope.empty = false;
+					}                 
+				}else{
+					$scope.empty = true;
+				}
+				/* if($scope.products && $scope.products.length>0){
+					$scope.isAllChecked();
+					$scope.totalAmount();
+				} */
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	$scope.getCart();
 
     if (getMobileType() == MobileTypes.iPhone || getMobileType() == MobileTypes.iPad) {
         window.onresize = function () {
@@ -68,46 +60,29 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         window.onresize();
     }
 
-    $scope.reduceNum = function (product,p,parentIndex,index) {
-        if (product.quantity > 1) {
-            product.quantity--;
-            product.checked=true;
-            setProductsNumInCart($scope.products);            
-            $scope.totalAmount(parentIndex,index);
-        }
+    $scope.reduceNum = function (index) {
+        $scope.products[index].quantity--;        
+		$scope.synCart
     }
 
-    $scope.addNum = function (product,p,parentIndex,index) {
-        product.quantity++;
-        product.checked=true;
-        setProductsNumInCart($scope.products);
-        $scope.totalAmount(parentIndex,index);
+    $scope.addNum = function (index) {
+		$scope.products[index].quantity++;
+        $scope.totalAmount();
     }
 
-    $scope.validNum = function (product, allowEmpty, parentIndex, index) {
-        product.quantity = validInteger(product.quantity);
-        if (!allowEmpty || product.quantity != '') {
-            var num = parseInt(product.quantity);
-            if (isNaN(num) || num < 1) {
-                product.quantity = 1;
-            }
-            else {
-                product.quantity = num;
-            }
-            product.checked=true;
-            setProductsNumInCart($scope.products);            
-            $scope.totalAmount(parentIndex,index);
-        }
+    $scope.validNum = function (index) {
+        $scope.products[index].quantity=validInteger($scope.products[index].quantity)==""?0:parseInt(validInteger($scope.products[index].quantity));
+		$scope.totalAmount();
     }
 
     $scope.checked = function (product,parentIndex,index) {
         if (product.checked) {
-            product.checked = false;
+            product.checked = 0;
         }
         else {
-            product.checked = true;
+            product.checked = 1;
         }
-        setProductsNumInCart($scope.products);
+        $scope.updateStatus();
         $scope.totalAmount(parentIndex,index);
     }
 
@@ -115,11 +90,9 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         var totalNum = 0;
         if ($scope.products) {
             for (var i = 0; i < $scope.products.length; i++) {
-               for(var j=0; j< $scope.products[i].goodsList.length; j++){ 
-                    if ($scope.products[i].goodsList[j].checked) {
-                        totalNum += $scope.products[i].goodsList[j].quantity;
-                    }
-               }
+               if ($scope.products[i].checked) {
+					totalNum += parseInt($scope.products[i].quantity)?parseInt($scope.products[i].quantity):0;
+				}
             }
         }
         return totalNum;
@@ -131,11 +104,9 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         }
 
         for (var i = 0; i < $scope.products.length; i++) {
-            for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                if ($scope.products[i].goodsList[j].checked == null || !$scope.products[i].goodsList[j].checked) {
-                    return false;
-                }
-            }
+            if ($scope.products[i].checked == null || !$scope.products[i].checked) {
+				return false;
+			}
         }
         return true;
     }
@@ -144,13 +115,11 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         if ($scope.products && $scope.products.length > 0) {  
             var isAllChecked = $scope.isAllChecked();          
             for (var i = 0; i < $scope.products.length; i++) {
-                for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                    $scope.products[i].goodsList[j].checked = !isAllChecked;
-                }                
+                $scope.products[i].checked = !isAllChecked;              
             }
-            setProductsNumInCart($scope.products);
-            $scope.getLocalCart();
-        }        
+        }
+        $scope.updateStatus();
+		$scope.totalAmount();
     }
 
     $scope.go = function () {        
@@ -158,6 +127,9 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
             alertWarning("您还没有选择商品哦");
             return;
         }
+		$scope.synCart();
+		
+		return;
         
         var user=$location.$$search;
         var currentUser=getToken();
@@ -245,44 +217,21 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         openDialog("确认从购物袋中删除所有选中的商品？", "删除商品", arrButton, null,
                 function (r) {
                     if (r) {
-                        if ($scope.products) {
-                            for (var i = $scope.products.length - 1; i >= 0; i--) {
-                               for(var j=$scope.products[i].goodsList.length-1;j>=0;j--){ 
-                                    if ($scope.products[i].goodsList[j].checked) {
-                                        $scope.products[i].goodsList.splice(j, 1);
-                                    }
-                               }
-                            }
-                            $scope.$apply($scope.products);
-                            var cartProductsTemp=[];
-                            for (var i = 0; i < $scope.products.length; i++) {
-                                for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                                    var cartProductTemp={};
-                                    cartProductTemp.id=$scope.products[i].goodsList[j].id;
-                                    cartProductTemp.num=$scope.products[i].goodsList[j].quantity;
-                                    cartProductTemp.checked=$scope.products[i].goodsList[j].checked;
-                                    cartProductsTemp.push(cartProductTemp);
-                                }
-                            }                            
-                        }
+                       
+						var goodsIds=[];
+						for(var i=0;i<$scope.products.length;i++){
+							if($scope.products[i].checked)
+								goodsIds.push($scope.products[i].id);
+						}
 
-                        if ($scope.products) {
-                            for (var i = 0; i < $scope.products.length; i++) {
-                                for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                                    var cartProductTemp={};
-                                    cartProductTemp.id=$scope.products[i].goodsList[j].id;
-                                    cartProductTemp.num=$scope.products[i].goodsList[j].quantity;
-                                    cartProductTemp.checked=$scope.products[i].goodsList[j].checked;
-                                    cartProductsTemp.push(cartProductTemp);
-                                }
-                            }
-                        }
+						var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+goodsIds.join(',');
+						httpRequest.APIPOST('/cart/delete', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+							if (result && result.code == statusCode.Success) {
+								$scope.getCart();
+							}
+						});
+						
 
-                        setCart(cartProductsTemp);
-                        if (cartProductsTemp.length == 0) {
-                            $scope.$apply($scope.empty = true);
-                        }
-                        $scope.$apply($scope.products);
                     }
                 });
     }   
@@ -290,113 +239,66 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
     $scope.totalAmount=function(parentIndex,index){
         $scope.totalAmountValue=0;
         var cartProducts = $scope.products;
-        if (cartProducts && cartProducts.length>0) {
-            var length=cartProducts.length;
-            var goodsId="";
-            var quantity="";
-            for(var i=0;i<length;i++){               
-                $scope.totalAmountValue=$scope.totalAmountValue+parseFloat(cartProducts[i].total);              
+		var goodsIds=[];
+		var goodsQuantity=[];
+		for(var i=0;i<$scope.products.length;i++){
+		    if($scope.products[i].checked){
+				goodsIds.push($scope.products[i].id);
+				goodsQuantity.push($scope.products[i].quantity);
+			}			
+		}
+		if(goodsIds.length==0){
+			$scope.cartInfo.total=0.00;
+			$scope.cartInfo.oldTotal=0.00;
+			$scope.cartInfo.js=0.00;
+			return;
+		}
+		
+        httpRequest.APIPOST('/cart/price_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token+"&goodsId=" + goodsIds.join(',') + "&quantity=" + goodsQuantity.join(',')), { "content-type": "application/x-www-form-urlencoded" },true).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.totalAmountValue=0;
+				$scope.cartInfo=result.result;					
+				
+			}else{
+				alert(result.msg);
+			}
+		});
+    };
+	
+	$scope.synCart=function(){
+		var goodsIds=[];
+		var goodsQuantity=[];
+		var checkeds=[];
+		for(var i=0;i<$scope.products.length;i++){
+			checkeds.push($scope.products[i].checked?1:0);
+			goodsIds.push($scope.products[i].id);
+		    goodsQuantity.push($scope.products[i].quantity);			
+		}
+		
+		var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+goodsIds.join(',')+"&quantity="+goodsQuantity.join(',');//+"&checked="+checkeds.join(',');
+		httpRequest.APIPOST('/cart/update', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+								
+			}
+		});
+	};
 
-            }
 
-            var isXJZero=true;
-            if(parentIndex!=undefined){
-                for(var i=0;i<cartProducts[parentIndex].goodsList.length;i++){
-                    if(cartProducts[parentIndex].goodsList[i].checked){
-                        isXJZero=false;
-                        if(i<cartProducts[parentIndex].goodsList.length-1){
-                           goodsId=goodsId+cartProducts[parentIndex].goodsList[i].id+",";
-                           quantity=quantity+cartProducts[parentIndex].goodsList[i].quantity+","; 
-                        }else{
-                           goodsId=goodsId+cartProducts[parentIndex].goodsList[i].id;
-                           quantity=quantity+cartProducts[parentIndex].goodsList[i].quantity;  
-                        }
-                    }
-                }
-            }
-            if(!goodsId || goodsId.length<1){
-                if(parentIndex!=undefined){
-                    $scope.products[parentIndex].js="0.00";
-                    $scope.products[parentIndex].total="0.00";
-                }                
-                return;
-            }
-            httpRequest.APIPOST('/cart/price', dataStringify("platform=all&goodsId=" + goodsId + "&quantity=" + quantity), { "content-type": "application/x-www-form-urlencoded" },true).then(function (result) {
-                if (result && result.code == statusCode.Success) {
-                    $scope.totalAmountValue=0;
-                    if(isXJZero){
-                            $scope.products[parentIndex].js="0.00";
-                            $scope.products[parentIndex].total="0.00";
-                        }else{
-                            $scope.products[parentIndex].js=result.result.js;
-                            $scope.products[parentIndex].total=result.result.xj;
-                        }
-                        for(var i=0;i<length;i++){
-                            //for(var j=0;j<cartProducts[i].goodsList.length;j++){
-                            //    if(cartProducts[i].goodsList[j].checked){
-                            //        $scope.totalAmountValue=$scope.totalAmountValue+parseFloat(cartProducts[i].total);
-                            //    }
-                            //} 
-                            $scope.totalAmountValue=$scope.totalAmountValue+parseFloat(cartProducts[i].total);              
 
-                        }
+	$scope.updateStatus=function(){
+		var goodsIds=[];
+		var checkeds=[];
+		for(var i=0;i<$scope.products.length;i++){
+			checkeds.push($scope.products[i].checked?1:0);
+			goodsIds.push($scope.products[i].id);
+		}
+		
+		var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+goodsIds.join(',')+"&checked="+checkeds.join(',');
+		httpRequest.APIPOST('/cart/status', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+								
+			}
+		});
+	};
 
-                }else{
-                    alert(result.msg);
-                }
-            });
-        }
-    }
-    $scope.getLocalCart=function(){
-        var products = $scope.products;
-        var cartProducts=[];
-        $scope.totalAmountValue=0;
-        if (products && products.length>0) {
-            for(var i=0;i<products.length;i++){
-                for(var j=0;j<products[i].goodsList.length;j++){
-                    cartProducts.push(products[i].goodsList[j]);
-                }
-            }
-            var length=cartProducts.length;
-            var goodsId="";
-            var quantity="";
-            var checkeds="";
-            for(var i=0;i<length;i++){
-                var chk=cartProducts[i].checked?'1':'0';
-                if(i<length-1){                   
-                   goodsId=goodsId+cartProducts[i].id+",";
-                   quantity=quantity+cartProducts[i].quantity+","; 
-                   checkeds=checkeds+chk+",";
-                }else{
-                   goodsId=goodsId+cartProducts[i].id;
-                   quantity=quantity+cartProducts[i].quantity;  
-                   checkeds=checkeds+chk;
-                }
-
-            }
-            httpRequest.APIPOST('/cart/local', dataStringify("platform=all&goodsId=" + goodsId + "&quantity=" + quantity+"&checked="+checkeds), { "content-type": "application/x-www-form-urlencoded" },true).then(function (result) {
-                if (result && result.code == statusCode.Success) {                    
-                    
-                    $scope.products=result.result;               
-                    if ($scope.products) {
-                        for (var i = 0; i < $scope.products.length; i++) {
-                            for(var j=0;j<$scope.products[i].goodsList.length;j++){
-                                $scope.products[i].goodsList[j].checked=$scope.products[i].goodsList[j].checked?true:false;
-                            }
-                        }
-                        $scope.isAllChecked();
-                        $scope.totalAmount();
-                    }else{
-                        $scope.empty = true;
-                    }
-                }else{
-                    alert(result.msg);
-                }
-            });        
-
-        }
-        else {
-            $scope.empty = true;
-        }
-    }
 });

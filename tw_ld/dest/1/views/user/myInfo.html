@@ -80,7 +80,7 @@
                         <a href="" ng-click="updateName();">
                             <div class="my-item-1">
 							<span>姓名</span>
-							<span class="right-span">练倪裳<img src="/image/public_ico_arrow.png" /></span></div>
+							<span class="right-span">{{tokenInfo.realName}}<img src="/image/public_ico_arrow.png" /></span></div>
                         </a>  
                         <a href=""  ng-click="updatePassword();">
                             <div class="my-item-1">
@@ -93,14 +93,25 @@
                         <span class="col-xs-3" style="height: 3em;line-height: 3em;text-align:right;">旧密码</span>
 						
 						<span class="col-xs-9">
-							<input type="text" ng-model="username" id="myPhoneNumber" placeholder="6-20字母、数字和字符" onkeydown="checkNumber(this,false);"/>
+							<input type="password" ng-model="password"
+							placeholder="6-20字母、数字和字符" onkeydown="checkNumber(this,false);"/>
 						
 						</span>
 						<div class="clear"></div>
 						
 						<span class="col-xs-3" style="height: 3em;line-height: 3em;text-align:right;">新密码</span>
 						<span class="col-xs-9">
-							 <input type="password" ng-model="password" id="myPhoneNumber" placeholder="6-20字母、数字和字符"/>
+							 <input type="password" ng-model="newpassword"
+							 placeholder="6-20字母、数字和字符"/>
+						
+						</span>
+						
+						<div class="clear"></div>
+						
+						<span class="col-xs-3" style="height: 3em;line-height: 3em;text-align:right;">确认密码</span>
+						<span class="col-xs-9">
+							 <input type="password" ng-model="newpassword2"
+							 placeholder="6-20字母、数字和字符"/>
 						
 						</span>
 						
@@ -111,8 +122,8 @@
                         <span class="col-xs-3" style="height: 3em;line-height: 3em;text-align:right;">姓名</span>
 						
 						<span class="col-xs-9">
-							<input type="text" ng-model="username" id="myPhoneNumber" placeholder="输入您的真实名字" onkeydown="checkNumber(this,false);"/>
-						
+							<input type="text" ng-model="username" placeholder="输入您的真实名字"/>
+						<!--  onkeydown="checkNumber(this,false);" -->
 						</span>						
 						<div class="clear"></div>
                     </div>

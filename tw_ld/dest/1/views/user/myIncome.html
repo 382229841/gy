@@ -121,37 +121,26 @@
                           id="Tab1"
 						  default="active"
                           exclusion-group="myTabs">
-							<div class="withdraw-cash-title">
-								<span class="col-xs-7 cash">196.00</span>
+							<div class="withdraw-cash-title" ng-if="incomeList1.list.length>0">
+								<span class="col-xs-7 cash">{{incomeList1.amount | currency:''}}</span>
 								<span class="col-xs-5 text-right"><span class="withdraw-cash-btn" ng-click="withDraw(0);">申请提现</span></span>
 								
 								<div class="clear"></div>
 							</div>
                             
-							<div class="withdraw-cash-item">
+							<div class="withdraw-cash-item" ng-repeat="income in incomeList1.list">
 								<div class="item1">
-									<span class="col-xs-7">GuideA</span>
-									<span class="col-xs-5 text-right" style="color:#666;">￥196.00</span>
+									<span class="col-xs-7">{{income.realName}}</span>
+									<span class="col-xs-5 text-right" style="color:#666;">￥{{income.incomeAmount | currency:''}}</span>
 								</div>
 								<div class="item2">
-									<span class="col-xs-7">订单金额：￥1080.00</span>
-									<span class="col-xs-5 text-right">2015-12-01</span>
-								</div>
-								<div class="clear"></div>
-							</div>
-							<div class="withdraw-cash-item">
-								<div class="item1">
-									<span class="col-xs-7">GuideA</span>
-									<span class="col-xs-5 text-right" style="color:#666;">￥196.00</span>
-								</div>
-								<div class="item2">
-									<span class="col-xs-7">订单金额：￥1080.00</span>
-									<span class="col-xs-5 text-right">2015-12-01</span>
+									<span class="col-xs-7">订单金额：￥{{income.orderAmount | currency:''}}</span>
+									<span class="col-xs-5 text-right">{{income.entrydate}}</span>
 								</div>
 								<div class="clear"></div>
 							</div>
 
-                            <div ng-if="coupons.usedList.length<1" style="text-align:center;">目前没有要提现的</div>
+                            <div ng-if="incomeList1.list.length<1" style="text-align:center;">目前没有要提现的</div>
                             <br/>
                       </div>
 
@@ -160,17 +149,25 @@
                           active-class="active"                          
                           id="Tab2"
                           exclusion-group="myTabs">
-							<div class="withdraw-cash-title">
-								<span class="col-xs-7 cash">196.00</span>
+							<div class="withdraw-cash-title" ng-if="incomeList2.list.length>0">
+								<span class="col-xs-7 cash">{{incomeList2.amount | currency:''}}</span>
 								<span class="col-xs-5 text-right"><span class="withdraw-cash-status">申请中</span></span>
 								
 								<div class="clear"></div>
 							</div>
-                            <div class="coupon" ng-repeat="c in coupons.usedList">
-                               
-                            </div>
+                            <div class="withdraw-cash-item" ng-repeat="income in incomeList2.list">
+								<div class="item1">
+									<span class="col-xs-7">{{income.realName}}</span>
+									<span class="col-xs-5 text-right" style="color:#666;">￥{{income.incomeAmount | currency:''}}</span>
+								</div>
+								<div class="item2">
+									<span class="col-xs-7">订单金额：￥{{income.orderAmount | currency:''}}</span>
+									<span class="col-xs-5 text-right">{{income.entrydate}}</span>
+								</div>
+								<div class="clear"></div>
+							</div>
 
-                            <div ng-if="coupons.usedList.length<1" style="text-align:center;">目前没有申请中提现的</div>
+                            <div ng-if="incomeList2.list.length<1" style="text-align:center;">目前没有申请中的提现</div>
                             <br/>
                       </div>
 					  
@@ -179,17 +176,25 @@
                           active-class="active"                          
                           id="Tab3"
                           exclusion-group="myTabs">
-						   <div class="withdraw-cash-title">
-								<span class="col-xs-7 cash">196.00</span>
+						   <div class="withdraw-cash-title" ng-if="incomeList3.list.length>0">
+								<span class="col-xs-7 cash">{{incomeList3.amount | currency:''}}</span>
 								<span class="col-xs-5 text-right"><span class="withdraw-cash-status">已提现</span></span>
 								
 								<div class="clear"></div>
 							</div>
-                            <div class="coupon" ng-repeat="c in coupons.usedList">
-                               
-                            </div>
+                            <div class="withdraw-cash-item" ng-repeat="income in incomeList3.list">
+								<div class="item1">
+									<span class="col-xs-7">{{income.realName}}</span>
+									<span class="col-xs-5 text-right" style="color:#666;">￥{{income.incomeAmount | currency:''}}</span>
+								</div>
+								<div class="item2">
+									<span class="col-xs-7">订单金额：￥{{income.orderAmount | currency:''}}</span>
+									<span class="col-xs-5 text-right">{{income.entrydate}}</span>
+								</div>
+								<div class="clear"></div>
+							</div>
 
-                            <div ng-if="coupons.usedList.length<1" style="text-align:center;">目前没有已提现的</div>
+                            <div ng-if="incomeList3.list.length<1" style="text-align:center;">目前没有已提现的</div>
                             <br/>
                       </div>
 
@@ -201,20 +206,20 @@
 					<span class="col-xs-4" style="padding-left:.5em;height: 3em;line-height: 3em;text-align:left;">支付宝账号</span>
 					
 					<span class="col-xs-8">
-						<input type="text" ng-model="username" id="myPhoneNumber" placeholder="" onkeydown="checkNumber(this,false);"/>
+						<input type="text" ng-model="account" id="myPhoneNumber" placeholder=""/>
 					
 					</span>
 					<div class="clear"></div>
 					
 					<span class="col-xs-4" style="padding-left:.5em;height: 3em;line-height: 3em;text-align:left;">支付宝姓名</span>
 					<span class="col-xs-8">
-						 <input type="password" ng-model="password" id="myPhoneNumber" placeholder=""/>
+						 <input type="text" ng-model="name" placeholder=""/>
 					
 					</span>
 					
 					<span class="col-xs-4" style="padding-left:.5em;height: 3em;line-height: 3em;text-align:left;">手机号</span>
 					<span class="col-xs-8">
-						 <input type="password" ng-model="password" id="myPhoneNumber" placeholder=""/>
+						 <input type="text" ng-model="mobile" placeholder="" onkeydown="checkNumber(this,false);"/>
 					
 					</span>
 					

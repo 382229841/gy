@@ -88,73 +88,53 @@
 </style>
 <div>
     <ng-include src="'views/goods/download.html'"></ng-include>
-    <!--<div class="btn-back new {{showDownload == true?'':''}}" ng-click="back()">-->
     <div class="btn-back new" ng-click="back()">
         <div class="btn-left new">
         </div>
     </div>
     <div class="scrollable">
         <div class="scrollable-content background-product">
-            <!--<div ng-show="showDownload == true" class="download-block">
-            </div>
-            <div class="slider_box">
-                <div id="slider" class="scroll_slider">
-                    <div class="pic_group">
-                    </div>
-                    <div class="pager_control new hide">
-                        <span id="spanCurPage">0</span> / <span id="spanTotalCount">0</span>
-                    </div>
-                </div>
-                <div class="slider-bar">
-                    <div class="div-favorite">
-                        <img src="image/icon_favorite.png" alt="" style="display:none;"/></div>
-                    <div class="div-share">
-                        <img src="image/icon_share.png" alt="" style="display:none;"/></div>
-                </div>
-            </div>-->
 
             <div id="viewport" class="preventDefault">
                 <div id="wrapper">
                     <div id="scroller">
                     </div>
-                    <div class="pager_control new hide">
+                    <div class="pager_control new hide" style="display:none;">
                         <span id="spanCurrPage">0</span> / <span id="spanTotalsCount">0</span>
                     </div>
                 </div>
             </div>
-            <div id="indicator" class="hide">
+            <div id="indicator">
                 <div id="dotty"></div>
             </div>
             
             <div class="list-group product-style" style="border-top: 1px solid #eee;">
-                <div class="background-white">
-                    <div class="list-group-item media" style="padding:10px 0;margin:0 15px;">                    
-                        <div class="media-body product-cur-name-new">{{product.name}}</div>
+                <div class="background-white" style="border-bottom:1px solid #eee;">
+                    <div class="list-group-item media" style="padding:10px 0;margin:0 15px;border:0;">                    
+                        <div class="media-body product-cur-name-new" style="padding-bottom:.5em;border-bottom:1px solid #eee;">{{product.name}}</div>
 
-                        <div class="product-price-new" style="margin-top:10px;">
-                            <span style="font-weight:normal;font-size:.9em;color:#999;">平台价：</span>
-                            <span style="display:inline;">￥{{product.promotePrice}}</span>
+						<div class="product-price-new" style="padding:.5em 0;font-size:1.1em;color:#666;">
+                            <span style="font-weight:normal;">乐天价</span>&nbsp;&nbsp;
+                            <span style="display:inline;font-weight:normal;">￥{{product.ltPrice}}</span>
+                        </div>
+						
+                        <div class="product-price-new" style="padding:.0em 0;font-size:1.1em;color:#666;">
+                            <span style="font-weight:normal;">平台价</span>&nbsp;&nbsp;
+                            <span style="display:inline;font-weight:normal;">￥{{product.promotePrice}}</span>
                         </div>
 
-                         <div class="product-price-new">
-                            <span style="font-weight:normal;font-size:.9em;color:#999;">领队价：</span>
-                            <span class="promotePriceNew" style="display:inline;">￥{{product.discountPrice || product.promotePrice}}</span>
-                            <span class="discount-des" ng-if="product.discountDesc">
-                                {{product.discountDesc}}
-                            </span>
+                         <div class="product-price-new" style="padding:.5em 0;font-size:1.1em;color:#D0261A;">
+                            <span style="font-weight:normal;">领队价</span>&nbsp;&nbsp;
+                            <span style="font-weight:normal;display:inline;font-size:1.2em;">
+							￥{{product.ldPrice || product.promotePrice}}<span style="font-weight:normal;display:inline;font-size:.7em;">(比平台价省{{product.js}}元)</span>
+							</span>
+                            
                         </div>
 
                         
                     </div>
                 </div>
-                <div class="background-white" ng-if="product.activity && product.activity.length>0">
-                    <div class="list-group-item media product-activities">
-                        <div class="product-activity" ng-repeat="a in product.activity">                   
-                            <span class="product-activity-title"><b>{{a.type}}</b></span>
-                            <span class="product-activity-content">{{a.tag}}</span>
-                        </div>
-                    </div>
-                </div>
+				
                 <div id="orderNumber" style="display:none;">
                     <div class="list-group-item media" style="width: 94%;margin-left: 3%;padding-left: 0;padding-right: 0;">
                         <div class="order-num fullwidth">
@@ -180,84 +160,16 @@
                         </div>
                         <button type="button" class="btn btn-default btn-add-cart-buy-cancel middlewidth" onclick="closeDialog()">
                                 取消</button>
-                        <button type="button" class="btn btn-default btn-add-cart-new middlewidth btn-add-to-cart">
+                        <button type="button" class="btn btn-default btn-add-cart-new middlewidth btn-add-to-cart" style="margin-top:7px;">
                         加入购物袋</button>
                     </div>
                 </div>
-                <!-- <div class="list-group-item media service-item">
-                    <ul>
-                        <li class="item">
-                            <div class="img-service img-free">
-                            </div>
-                            包邮至回程机场</li>
-                        <li class="item">
-                            <div class="img-service img-payout">
-                            </div>
-                            超时送达赔偿</li>
-                        <li class="item">
-                            <div class="img-service img-real">
-                            </div>
-                            正品保障</li>
-                        <li class="item">
-                            <div class="img-service img-refund">
-                            </div>
-                            支持退款</li>
-                    </ul>
-                </div> -->
+
             </div>
-            <!-- <div class="product-data-box content-margin-top">
-                <div class="btn-group justified">
-                    <div class="btn">
-                        <div>
-                            销量</div>
-                        <span>{{product.saleNum}}件</span>
-                    </div>
-                    <div class="btn">
-                        <div>
-                            分享</div>
-                        <span>{{product.shareNum}}次</span>
-                    </div>
-                    <div class="btn">
-                        <div>
-                            收藏</div>
-                        <span>{{product.favoriteNum}}次</span>
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="list-group product-style content-margin-top">
-                <a class="list-group-item item-title comment-title" ng-click="viewComments()">
-                    <div class="pull-right">
-                        <div class="div-right right-pos">
-                        </div>
-                    </div>
-                    <div class="media-body">
-                        评价详情 ({{product.commentNum}})
-                        <div class="div-rate-total" ng-show="product.commentNum > 0">
-                            <span class="span-rate-total">{{product.avgStar}}</span>
-                            <div class="rateTotal">
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <div class="list-group-item product-comment" ng-show="product.comment != null">
-                    <span class="dark-red avatar-name">{{product.comment.nickName}}</span>
-                    <div class="itemRate right">
-                    </div>
-                    <div class="comment-content">
-                        {{product.comment.content}}
-                    </div>
-                    <div>
-                        <span class="comment-date">{{product.comment.date}}</span></div>
-                    <div class="clear">
-                    </div>
-                    <div class="hide" ng-if="isGo()">
-                    {{go()}}
-                    </div>
-                </div>
-            </div> -->
+
             <div class="list-group product-style content-margin-top">
                 <div class="list-group-item item-title">
-                    产品介绍
+                    商品介绍
                 </div>
                 <div class="list-group-item product-content">
                 </div>
@@ -268,24 +180,26 @@
     </div>
     <div class="div-nav-cart-background">
     </div>
-    <div class="div-nav-cart" ng-controller="cartNumController" ng-click="cart()">
-        <div class="cart-num-mark" ng-show="cartNum() > 0">
-            {{cartNum()}}</div>
+    <div class="div-nav-cart" ng-click="cart()"><!--ng-controller="cartNumController"-->
+        <div class="cart-num-mark" ng-show="cartQuantity > 0">
+            {{cartQuantity}}</div>
         <div class="cart-name">
             购物袋</div>
     </div>
     <div class="nav-bottom-background">
     </div>
     <div class="nav-bottom new">
-        <div class="media">
-            <div class="pull-left div-add-cart">
+        <div class="media" style="line-height:65px;">
+            
+            <div class="col-xs-6">
+                <button type="button" class="btn btn-default btn-buy-new" ng-click="go(product.goodsNum)">
+                    立即购买</button>
+            </div>   
+			
+			<div class="col-xs-6">
                 <button type="button" class="btn btn-default btn-add-cart-new" ng-click="addToCart(product.goodsNum)">
                     加入购物袋</button>
             </div>
-            <div class="media-body">
-                <button type="button" class="btn btn-default btn-buy-new" ng-click="go(product.goodsNum)">
-                    立即购买</button>
-            </div>            
         </div>
     </div>
 </div>

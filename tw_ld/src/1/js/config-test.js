@@ -1,8 +1,8 @@
 //var serviceUrl = "http://ops.yhiker.com/api";
 var serviceUrl = "http://opstest.yhiker.com/api";
 var imageServiceUrl = "http://opstest.yhiker.com";
-var javaServiceUrl = "http://test.yhiker.com/api";
-var paymentUrl="http://test.yhiker.com/pay/alipayapi.jsp?";
+var javaServiceUrl = "http://test.yhiker.com/api_kr";
+var paymentUrl="http://test.yhiker.com/pay_kr/alipayapi.jsp?";
 var appDownloadUrl = {
     android: "http://www.yhiker.com/download/app/goeasy_tw.apk",
     ios: "https://itunes.apple.com/cn/app/gou-qing-song-tai-wan/id916120583?mt=8",//"https://itunes.apple.com/cn/app/hai-you/id651283761?mt=8",

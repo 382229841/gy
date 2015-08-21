@@ -46,7 +46,7 @@
                 <div class="pay-area" style="padding-top:0;padding-bottom:.8em;">
                     <div class="list-head normal-font">
                         <div style="color:#f75757;font-size: 1.1em;">
-                            {{getOrderStatus(order.status,order.category)}}
+                            {{getOrderStatus(order.status)}}
                         </div>
                     </div>
 					
@@ -76,8 +76,7 @@
                     </a>
                     <div style="background-color: #fff;padding: .8em .6em;">
                         <span class="col-xs-8">实付:
-							<span class="order-amount-total cash" ng-if="order.category!=3">{{order.totalPrice | currency:''}}</span>
-							<span class="order-amount-total cash" ng-if="order.category==3">{{order.totalPrice | currency:''}}</span>						
+							<span class="order-amount-total cash">{{order.discountPrice | currency:''}}</span>						
 							<span style="color:#999;font-size:.9em;padding-left:.3em;">共<span style="color:#999;">{{order.goodsNum}}</span>件</span>
 						</span>
 						<span class="col-xs-4 text-right">

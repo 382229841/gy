@@ -105,49 +105,70 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
         }
         
     };
-	
 	$scope.drawProductsPanel=function(){
-		$(".list-products-item .products-item-image").css("height",$(".list-products-item").width()+"px");
-		$(".list-products-item .products-item-title").css("height",$(".list-products-item").width()/1.67+"px");
-		
-		$(".list-products-item .products-item-title .products-item-name").css("height",$(".list-products-item").width()/4+"px");
-		
-		if($(".list-products-item .products-item-title .products-item-name").height()<$(".list-products-item .products-item-title .products-item-name span").height()){
-			//alert(1);
-		}
-		
+		$("#divProducts .list-products-item .products-item-image").css("height",$("#divProducts .list-products-item").width()+"px");
+		$("#divProducts .list-products-item .products-item-title").css("height",$("#divProducts .list-products-item").width()/1.67+"px");
+
+		$("#divProducts .list-products-item .products-item-title .products-item-name").css("height",$("#divProducts .list-products-item").width()/4+"px");
+
 	};
-	$scope.drawProductsPanel();
+	//$scope.drawProductsPanel();
 	$(window).resize(function(){
 		$scope.drawProductsPanel();
 	});
+	
+	
+	$scope.cart = function () {
+        $location.path("/cart");
+    }
+
+    $scope.cartNum = function () {
+        httpRequest.APIPOST('/cart/list_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			var num=0;
+			if (result && result.code == statusCode.Success) {
+				$scope.cartProducts=result.result.normal;
+				num=$scope.cartProducts.length;
+			}else{
+				alertWarning(result.msg);
+				num=0;
+			}
+			$scope.cartQuantity=num;
+		});  
+    }
+	
+	$scope.cartNum();
+
 });
 
 app.controller('searchPanelController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
-    $scope.cancelSearch=function(){
+	$scope.cancelSearch=function(){
 		$scope.$emit("CtrlSearchPanel", false);
 		$scope.searchKeyword="";
 		$scope.isLocalKey=true;
+		$scope.isQuery=false;
+		$scope.queryProducts=[];
 	};
-	
+	$scope.isQuery=false;
 	$scope.searchKeyword="";
 	
 	//setSearchLocalItems([{value:"凤梨酥"},{value:"郭元益凤梨酥"},{value:"凤梨酥350g"},{value:"凤梨酥350g"}]);
 	
 	$scope.searchLocalItems=getSearchLocalItems() || [];
-	$scope.searchItems=[{id:1,value:"凤梨酥"},{id:2,value:"郭元益凤梨酥"},{id:3,value:"凤梨酥350g0"}];
+	$scope.searchItems=[];//["凤梨酥","郭元益凤梨酥","凤梨酥350g0"];
 	
 	$scope.isLocalKey=true;//显示搜索历史记录
 	$scope.searchKeyup=function(){
 		if($scope.searchKeyword.length>0){
 			$scope.isLocalKey=false;
+			$scope.getSuggestKeywords($scope.searchKeyword);
 		}else{
 			$scope.isLocalKey=true;
 		}
 		
 	};
 	$scope.searchFocus=function(){
-		$(".search-result").addClass("focus");
+		if($scope.searchLocalItems.length>0)
+			$(".search-result").addClass("focus");
 	};
 	
 	$scope.searchBlur=function(){
@@ -157,6 +178,10 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	$scope.saveSearchKeyword=function(value){
 		$scope.searchLocalItems.push({"value":value});
 		setSearchLocalItems($scope.searchLocalItems);
+		
+		$scope.searchKeyword=value;
+
+		$scope.queryGoods(value,1);
 	}
 	
 	$scope.removeSearchKeyword=function(){
@@ -169,12 +194,85 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 			setSearchLocalItems($scope.searchLocalItems);
 		}
 	})
+
+	$scope.getShowKeywords=function(){
+		httpRequest.APIPOST('/keywords/getShow', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.hotKeywords=result.result;
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	$scope.getShowKeywords();
+	
+	$scope.getSuggestKeywords=function(q){
+		httpRequest.APIPOST('/solr/keywords/suggest', dataStringify("platform=all&q="+q), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.searchItems=result.result;
+				if($scope.searchItems.length>0){
+					$(".search-result").addClass("focus");
+				}else{
+					$(".search-result").removeClass("focus");
+				}
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	
+	$scope.queryGoods=function(q,pageNo){
+		$scope.searchKeyword=q;
+		httpRequest.APIPOST('/solr/goods/query', dataStringify("platform=all&q="+q+"&pageNo="+pageNo+"&pageSize=10"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.isQuery=true;
+				if(pageNo>1){
+                    $scope.queryProducts=$scope.queryProducts.concat(result.result);
+                    $scope.queryPageCount = result.page.totalPage;
+                    $scope.queryPageNum = pageNo;
+                }else{
+                    $scope.queryProducts=result.result;
+                    $scope.queryPageCount = result.page.totalPage;
+                    $scope.queryPageNum = result.page.pageNo;
+                }
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+
+	var loadObj = new loadControl('#queryLoadCanvas', function () {
+        $(".pull-loading").html("加载中...");
+        $scope.queryPageNum++;
+        $scope.queryGoods($scope.searchKeyword, $scope.queryPageNum);
+    });
+
+
+    $(".scrollable-content").scroll(function () {
+        if ($("#queryProducts").length > 0) {
+            if ($scope.queryPageCount) {
+                advanceQueryLoad("#queryProductList", loadObj, $scope.queryPageNum < $scope.queryPageCount);
+            }
+        }
+    });
+
+	
+	$scope.drawQueryPanel=function(){
+		$("#queryProducts .list-products-item .products-item-image").css("height",$("#queryProducts .list-products-item").width()+"px");
+		$("#queryProducts .list-products-item .products-item-title").css("height",$("#queryProducts .list-products-item").width()/1.67+"px");
+		
+		$("#queryProducts .list-products-item .products-item-title .products-item-name").css("height",$("#queryProducts .list-products-item").width()/4+"px");
+	
+	};
+	$(window).resize(function(){
+		$scope.drawQueryPanel();
+	});
 	
 	
 	
 });
 
-app.controller('cartNumController', function ($rootScope, $scope, analytics, $location) {
+/*app.controller('cartNumController', function ($rootScope, $scope, analytics, $location) {
     $scope.cart = function () {
         $location.path("/cart");
     }
@@ -182,7 +280,7 @@ app.controller('cartNumController', function ($rootScope, $scope, analytics, $lo
     $scope.cartNum = function () {
         return getCartNum();
     }
-});
+});*/
 
 
 
@@ -262,10 +360,18 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
         openPrompt("addToCart",function(num){
             var product=$.extend(true,{},$scope.product);
             product.num=num;
-            addToCart(product);
-            $scope.$apply($scope.$$childHead);
-            closeDialog();
-            alertSuccess("加入成功");
+			var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+product.id+"&quantity="+num;
+			httpRequest.APIPOST('/cart/add', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+				if (result && result.code == statusCode.Success) {
+					setCart(null);
+					setCart(result.result.normal);
+					//addToCart(product);
+					//$scope.$apply($scope.$$childHead);
+					closeDialog();
+					$scope.cartNum();
+					alertSuccess("加入成功");					
+				}
+			});
         });        
     }
     
@@ -297,84 +403,17 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
             alertWarning("库存已不足，请稍后购买");
             return;
         }
-
-        var user=$location.$$search;
-        var currentUser=getToken();
-        if((user && user.openId) || (currentUser && currentUser.token)){
-            if(!currentUser || (currentUser && !currentUser.token)){
-                var source=user.source;//用户来源，1：微信， 2：QQ， 3：微博
-                var data="platform=all&openid="+user.openId+"&nickname="+user.nickname
-                         +"&gender=0&avatar="+user.headimgurl+"&source="+source+"&channel=H5"
-                         +"&appVersion="+easybuy.version;
-                httpRequest.APIPOST('/user/thirdLogin', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                    if (result && result.code == statusCode.Success) {
-                        $scope.user=result.result;
-                        $scope.user.openId=user.openId;
-                        $scope.user.source=user.source;
-                        $scope.user.nickname=user.nickname;
-                        $scope.user.headimgurl=user.headimgurl;
-                        if($scope.user.mobile==null){
-                            $scope.user.mobile="0";
-                        }
-                        setToken($scope.user);
-                        
-                        var urlUser=$scope.user;
-                        openPrompt("go",function(num){
-                            var product=$.extend(true,{},$scope.product);
-                            product.num=num;            
-                            if ($scope.product) {
-                                removeOrder();
-                                setOrder([product]);
-                                var goodsArr = new Array();
-                                var goods = new Object();
-                                goods.id = product.id;
-                                goods.num = product.num;
-                                goodsArr.push(goods);
-
-                                closeDialog();
-                                $location.path("/pay/999").search({area:1,goods:JSON.stringify([product]),user:JSON.stringify(urlUser)});
-                                $scope.$apply($location);
-                            }
-                        }); 
-
-
-                    }else{
-                        alert(result.msg);
-                    }
-                });
-            }else{
-                var urlUser={};
-                if(currentUser && currentUser.token){
-                    urlUser=currentUser;
-                }else{
-                    urlUser=user;
-                }
-                openPrompt("go",function(num){
-                    var product=$.extend(true,{},$scope.product);
-                    product.num=num;            
-                    if ($scope.product) {
-                        removeOrder();
-                        setOrder([product]);
-                        var goodsArr = new Array();
-                        var goods = new Object();
-                        goods.id = product.id;
-                        goods.num = product.num;
-                        goodsArr.push(goods);
-
-                        closeDialog();
-                        $location.path("/pay/999").search({area:1,goods:JSON.stringify([product]),user:JSON.stringify(urlUser)});
-                        $scope.$apply($location);
-                    }
-                });  
-            }            
-        }else{
-            if(easybuy.isWechat){
-                $location.path("/wechatOauth/product-"+$routeParams.id);
-            }else{
-                $location.path("/myProfile/product-"+$routeParams.id);
-            }
-        }
-    }    
+		
+		openPrompt("go",function(num){
+			var product=$.extend(true,{},$scope.product);
+			product.num=num;          
+			if ($scope.product) {
+				closeDialog();
+				$location.path("/pay/999").search({goodsId:product.id,quantity:num});
+				$scope.$apply($location);
+			}
+		});
+    }
     $scope.viewComments = function () {
         if ($scope.product && $scope.product.commentNum > 0) {
             $location.path("/comment/" + $routeParams.id);
@@ -423,6 +462,26 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
         });
         
     };
+
+    $scope.cart = function () {
+        $location.path("/cart");
+    }
+
+    $scope.cartNum = function () {
+        httpRequest.APIPOST('/cart/list_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			var num=0;
+			if (result && result.code == statusCode.Success) {
+				$scope.cartProducts=result.result.normal;
+				num=$scope.cartProducts.length;
+			}else{
+				alertWarning(result.msg);
+				num=0;
+			}
+			$scope.cartQuantity=num;
+		});  
+    }
+	
+	$scope.cartNum();
 
 
 });
@@ -562,65 +621,57 @@ app.controller('downloadController', function ($rootScope, $scope, httpRequest, 
 app.controller('cartController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
     $scope.products=[];
     $scope.empty=false;
-    var cartProducts = getCart();
+    var cartProducts = [];
     $scope.totalAmountValue=0;
-    if (cartProducts && cartProducts.length>0) {
-        var length=cartProducts.length;
-        var goodsId="";
-        var quantity="";
-        var checkeds="";
-        for(var i=0;i<length;i++){
-            var chk=cartProducts[i].checked?'1':'0';
-            if(i<length-1){               
-               goodsId=goodsId+cartProducts[i].id+",";
-               quantity=quantity+cartProducts[i].num+","; 
-               checkeds=checkeds+chk+",";
-            }else{
-               goodsId=goodsId+cartProducts[i].id;
-               quantity=quantity+cartProducts[i].num;  
-               checkeds=checkeds+chk;
-            }
-            
-        }
-        httpRequest.APIPOST('/cart/group', dataStringify("platform=all&goodsId=" + goodsId + "&quantity=" + quantity+"&checked="+checkeds), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            if (result && result.code == statusCode.Success) {
-                $scope.products=result.result.tw.concat(result.result.ch);
-                var tempCartProducts=[];
-                if ($scope.products) {
-                    for (var i = 0; i < $scope.products.length; i++) {
-                        for(var j=0;j<$scope.products[i].goodsList.length;j++){
-                            $scope.products[i].goodsList[j].checked=$scope.products[i].goodsList[j].checked?true:false;
-                            tempCartProducts.push({
-                                id:$scope.products[i].goodsList[j].id,
-                                num:$scope.products[i].goodsList[j].quantity,
-                                checked:$scope.products[i].goodsList[j].checked
-                            });
-                        }                        
-                    }
-                }
-                if(tempCartProducts.length==0){
-                    setCart(null);
-                }else{
-                    setCart(tempCartProducts);
-                }
-                if($scope.products){
-                    $scope.empty = false;                    
-                }else{
-                    $scope.empty = true;
-                }
-                if($scope.products && $scope.products.length>0){
-                    $scope.isAllChecked();
-                    $scope.totalAmount();
-                }
-            }else{
-                alertWarning(result.msg);
-            }
-        });        
-       
-    }
-    else {
-        $scope.empty = true;
-    }
+	
+	$scope.back=function(){
+		
+		//$scope.synCart();
+		history.back();
+	};
+	
+    var length=cartProducts.length;
+	var goodsId="";
+	var quantity="";
+	var checkeds="";
+	for(var i=0;i<length;i++){
+		var chk=cartProducts[i].checked?'1':'0';
+		if(i<length-1){               
+		   goodsId=goodsId+cartProducts[i].id+",";
+		   quantity=quantity+cartProducts[i].num+","; 
+		   checkeds=checkeds+chk+",";
+		}else{
+		   goodsId=goodsId+cartProducts[i].id;
+		   quantity=quantity+cartProducts[i].num;  
+		   checkeds=checkeds+chk;
+		}
+		
+	}
+	$scope.getCart=function(){
+		httpRequest.APIPOST('/cart/list_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.products=result.result.normal;
+				$scope.cartInfo=result.result;
+
+				if($scope.products){
+					if($scope.products.length<1){
+						$scope.empty = true;
+					}else{
+						$scope.empty = false;
+					}                 
+				}else{
+					$scope.empty = true;
+				}
+				/* if($scope.products && $scope.products.length>0){
+					$scope.isAllChecked();
+					$scope.totalAmount();
+				} */
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	$scope.getCart();
 
     if (getMobileType() == MobileTypes.iPhone || getMobileType() == MobileTypes.iPad) {
         window.onresize = function () {
@@ -629,46 +680,29 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         window.onresize();
     }
 
-    $scope.reduceNum = function (product,p,parentIndex,index) {
-        if (product.quantity > 1) {
-            product.quantity--;
-            product.checked=true;
-            setProductsNumInCart($scope.products);            
-            $scope.totalAmount(parentIndex,index);
-        }
+    $scope.reduceNum = function (index) {
+        $scope.products[index].quantity--;        
+		$scope.synCart
     }
 
-    $scope.addNum = function (product,p,parentIndex,index) {
-        product.quantity++;
-        product.checked=true;
-        setProductsNumInCart($scope.products);
-        $scope.totalAmount(parentIndex,index);
+    $scope.addNum = function (index) {
+		$scope.products[index].quantity++;
+        $scope.totalAmount();
     }
 
-    $scope.validNum = function (product, allowEmpty, parentIndex, index) {
-        product.quantity = validInteger(product.quantity);
-        if (!allowEmpty || product.quantity != '') {
-            var num = parseInt(product.quantity);
-            if (isNaN(num) || num < 1) {
-                product.quantity = 1;
-            }
-            else {
-                product.quantity = num;
-            }
-            product.checked=true;
-            setProductsNumInCart($scope.products);            
-            $scope.totalAmount(parentIndex,index);
-        }
+    $scope.validNum = function (index) {
+        $scope.products[index].quantity=validInteger($scope.products[index].quantity)==""?0:parseInt(validInteger($scope.products[index].quantity));
+		$scope.totalAmount();
     }
 
     $scope.checked = function (product,parentIndex,index) {
         if (product.checked) {
-            product.checked = false;
+            product.checked = 0;
         }
         else {
-            product.checked = true;
+            product.checked = 1;
         }
-        setProductsNumInCart($scope.products);
+        $scope.updateStatus();
         $scope.totalAmount(parentIndex,index);
     }
 
@@ -676,11 +710,9 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         var totalNum = 0;
         if ($scope.products) {
             for (var i = 0; i < $scope.products.length; i++) {
-               for(var j=0; j< $scope.products[i].goodsList.length; j++){ 
-                    if ($scope.products[i].goodsList[j].checked) {
-                        totalNum += $scope.products[i].goodsList[j].quantity;
-                    }
-               }
+               if ($scope.products[i].checked) {
+					totalNum += parseInt($scope.products[i].quantity)?parseInt($scope.products[i].quantity):0;
+				}
             }
         }
         return totalNum;
@@ -692,11 +724,9 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         }
 
         for (var i = 0; i < $scope.products.length; i++) {
-            for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                if ($scope.products[i].goodsList[j].checked == null || !$scope.products[i].goodsList[j].checked) {
-                    return false;
-                }
-            }
+            if ($scope.products[i].checked == null || !$scope.products[i].checked) {
+				return false;
+			}
         }
         return true;
     }
@@ -705,13 +735,11 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         if ($scope.products && $scope.products.length > 0) {  
             var isAllChecked = $scope.isAllChecked();          
             for (var i = 0; i < $scope.products.length; i++) {
-                for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                    $scope.products[i].goodsList[j].checked = !isAllChecked;
-                }                
+                $scope.products[i].checked = !isAllChecked;              
             }
-            setProductsNumInCart($scope.products);
-            $scope.getLocalCart();
-        }        
+        }
+        $scope.updateStatus();
+		$scope.totalAmount();
     }
 
     $scope.go = function () {        
@@ -719,6 +747,9 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
             alertWarning("您还没有选择商品哦");
             return;
         }
+		$scope.synCart();
+		
+		return;
         
         var user=$location.$$search;
         var currentUser=getToken();
@@ -806,44 +837,21 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         openDialog("确认从购物袋中删除所有选中的商品？", "删除商品", arrButton, null,
                 function (r) {
                     if (r) {
-                        if ($scope.products) {
-                            for (var i = $scope.products.length - 1; i >= 0; i--) {
-                               for(var j=$scope.products[i].goodsList.length-1;j>=0;j--){ 
-                                    if ($scope.products[i].goodsList[j].checked) {
-                                        $scope.products[i].goodsList.splice(j, 1);
-                                    }
-                               }
-                            }
-                            $scope.$apply($scope.products);
-                            var cartProductsTemp=[];
-                            for (var i = 0; i < $scope.products.length; i++) {
-                                for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                                    var cartProductTemp={};
-                                    cartProductTemp.id=$scope.products[i].goodsList[j].id;
-                                    cartProductTemp.num=$scope.products[i].goodsList[j].quantity;
-                                    cartProductTemp.checked=$scope.products[i].goodsList[j].checked;
-                                    cartProductsTemp.push(cartProductTemp);
-                                }
-                            }                            
-                        }
+                       
+						var goodsIds=[];
+						for(var i=0;i<$scope.products.length;i++){
+							if($scope.products[i].checked)
+								goodsIds.push($scope.products[i].id);
+						}
 
-                        if ($scope.products) {
-                            for (var i = 0; i < $scope.products.length; i++) {
-                                for(var j=0; j< $scope.products[i].goodsList.length; j++){
-                                    var cartProductTemp={};
-                                    cartProductTemp.id=$scope.products[i].goodsList[j].id;
-                                    cartProductTemp.num=$scope.products[i].goodsList[j].quantity;
-                                    cartProductTemp.checked=$scope.products[i].goodsList[j].checked;
-                                    cartProductsTemp.push(cartProductTemp);
-                                }
-                            }
-                        }
+						var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+goodsIds.join(',');
+						httpRequest.APIPOST('/cart/delete', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+							if (result && result.code == statusCode.Success) {
+								$scope.getCart();
+							}
+						});
+						
 
-                        setCart(cartProductsTemp);
-                        if (cartProductsTemp.length == 0) {
-                            $scope.$apply($scope.empty = true);
-                        }
-                        $scope.$apply($scope.products);
                     }
                 });
     }   
@@ -851,115 +859,68 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
     $scope.totalAmount=function(parentIndex,index){
         $scope.totalAmountValue=0;
         var cartProducts = $scope.products;
-        if (cartProducts && cartProducts.length>0) {
-            var length=cartProducts.length;
-            var goodsId="";
-            var quantity="";
-            for(var i=0;i<length;i++){               
-                $scope.totalAmountValue=$scope.totalAmountValue+parseFloat(cartProducts[i].total);              
+		var goodsIds=[];
+		var goodsQuantity=[];
+		for(var i=0;i<$scope.products.length;i++){
+		    if($scope.products[i].checked){
+				goodsIds.push($scope.products[i].id);
+				goodsQuantity.push($scope.products[i].quantity);
+			}			
+		}
+		if(goodsIds.length==0){
+			$scope.cartInfo.total=0.00;
+			$scope.cartInfo.oldTotal=0.00;
+			$scope.cartInfo.js=0.00;
+			return;
+		}
+		
+        httpRequest.APIPOST('/cart/price_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token+"&goodsId=" + goodsIds.join(',') + "&quantity=" + goodsQuantity.join(',')), { "content-type": "application/x-www-form-urlencoded" },true).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.totalAmountValue=0;
+				$scope.cartInfo=result.result;					
+				
+			}else{
+				alert(result.msg);
+			}
+		});
+    };
+	
+	$scope.synCart=function(){
+		var goodsIds=[];
+		var goodsQuantity=[];
+		var checkeds=[];
+		for(var i=0;i<$scope.products.length;i++){
+			checkeds.push($scope.products[i].checked?1:0);
+			goodsIds.push($scope.products[i].id);
+		    goodsQuantity.push($scope.products[i].quantity);			
+		}
+		
+		var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+goodsIds.join(',')+"&quantity="+goodsQuantity.join(',');//+"&checked="+checkeds.join(',');
+		httpRequest.APIPOST('/cart/update', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+								
+			}
+		});
+	};
 
-            }
 
-            var isXJZero=true;
-            if(parentIndex!=undefined){
-                for(var i=0;i<cartProducts[parentIndex].goodsList.length;i++){
-                    if(cartProducts[parentIndex].goodsList[i].checked){
-                        isXJZero=false;
-                        if(i<cartProducts[parentIndex].goodsList.length-1){
-                           goodsId=goodsId+cartProducts[parentIndex].goodsList[i].id+",";
-                           quantity=quantity+cartProducts[parentIndex].goodsList[i].quantity+","; 
-                        }else{
-                           goodsId=goodsId+cartProducts[parentIndex].goodsList[i].id;
-                           quantity=quantity+cartProducts[parentIndex].goodsList[i].quantity;  
-                        }
-                    }
-                }
-            }
-            if(!goodsId || goodsId.length<1){
-                if(parentIndex!=undefined){
-                    $scope.products[parentIndex].js="0.00";
-                    $scope.products[parentIndex].total="0.00";
-                }                
-                return;
-            }
-            httpRequest.APIPOST('/cart/price', dataStringify("platform=all&goodsId=" + goodsId + "&quantity=" + quantity), { "content-type": "application/x-www-form-urlencoded" },true).then(function (result) {
-                if (result && result.code == statusCode.Success) {
-                    $scope.totalAmountValue=0;
-                    if(isXJZero){
-                            $scope.products[parentIndex].js="0.00";
-                            $scope.products[parentIndex].total="0.00";
-                        }else{
-                            $scope.products[parentIndex].js=result.result.js;
-                            $scope.products[parentIndex].total=result.result.xj;
-                        }
-                        for(var i=0;i<length;i++){
-                            //for(var j=0;j<cartProducts[i].goodsList.length;j++){
-                            //    if(cartProducts[i].goodsList[j].checked){
-                            //        $scope.totalAmountValue=$scope.totalAmountValue+parseFloat(cartProducts[i].total);
-                            //    }
-                            //} 
-                            $scope.totalAmountValue=$scope.totalAmountValue+parseFloat(cartProducts[i].total);              
 
-                        }
+	$scope.updateStatus=function(){
+		var goodsIds=[];
+		var checkeds=[];
+		for(var i=0;i<$scope.products.length;i++){
+			checkeds.push($scope.products[i].checked?1:0);
+			goodsIds.push($scope.products[i].id);
+		}
+		
+		var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+goodsIds.join(',')+"&checked="+checkeds.join(',');
+		httpRequest.APIPOST('/cart/status', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+								
+			}
+		});
+	};
 
-                }else{
-                    alert(result.msg);
-                }
-            });
-        }
-    }
-    $scope.getLocalCart=function(){
-        var products = $scope.products;
-        var cartProducts=[];
-        $scope.totalAmountValue=0;
-        if (products && products.length>0) {
-            for(var i=0;i<products.length;i++){
-                for(var j=0;j<products[i].goodsList.length;j++){
-                    cartProducts.push(products[i].goodsList[j]);
-                }
-            }
-            var length=cartProducts.length;
-            var goodsId="";
-            var quantity="";
-            var checkeds="";
-            for(var i=0;i<length;i++){
-                var chk=cartProducts[i].checked?'1':'0';
-                if(i<length-1){                   
-                   goodsId=goodsId+cartProducts[i].id+",";
-                   quantity=quantity+cartProducts[i].quantity+","; 
-                   checkeds=checkeds+chk+",";
-                }else{
-                   goodsId=goodsId+cartProducts[i].id;
-                   quantity=quantity+cartProducts[i].quantity;  
-                   checkeds=checkeds+chk;
-                }
-
-            }
-            httpRequest.APIPOST('/cart/local', dataStringify("platform=all&goodsId=" + goodsId + "&quantity=" + quantity+"&checked="+checkeds), { "content-type": "application/x-www-form-urlencoded" },true).then(function (result) {
-                if (result && result.code == statusCode.Success) {                    
-                    
-                    $scope.products=result.result;               
-                    if ($scope.products) {
-                        for (var i = 0; i < $scope.products.length; i++) {
-                            for(var j=0;j<$scope.products[i].goodsList.length;j++){
-                                $scope.products[i].goodsList[j].checked=$scope.products[i].goodsList[j].checked?true:false;
-                            }
-                        }
-                        $scope.isAllChecked();
-                        $scope.totalAmount();
-                    }else{
-                        $scope.empty = true;
-                    }
-                }else{
-                    alert(result.msg);
-                }
-            });        
-
-        }
-        else {
-            $scope.empty = true;
-        }
-    }
 });
 app.controller('addressController', function ($rootScope, $scope, dataStringify, httpRequest, analytics, $location, $window, $routeParams) {
     $scope.buyType=parseInt($routeParams.buyType) || 1;
@@ -1329,65 +1290,39 @@ app.controller('orderInquiryController', function ($rootScope, $scope, httpReque
 
         $location.path("/orderList/" + $scope.mobile);
 
-        
 
-        /*httpRequest.APIPOST('/user/h5Login', dataStringify("platform=all&account=" + $scope.mobile + "&password=" + $scope.mobile), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            if(result.msg==="success"){
-                var a=1;
-            }
-        });
-
-        httpRequest.POST('/order/index', JSON.stringify({ "mobile": $scope.mobile }), { "Content-Type": "application/json" }).then(function (result) {
-            if (result.status == 1) {
-                $location.path("/orderDetail/" + $scope.mobile);
-            } else {
-                alertWarning("当前没有订单，请重新输入手机号");
-            }
-        });*/
     }
 });
 
 app.controller('orderListController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
     $scope.token=$routeParams.token;
-    if(easybuy.isWechat && !$scope.token){
-        if(getToken() && getToken().token){
-            $scope.token=getToken().token;
-        }else{
-            $location.path("/wechatOauth/orderList");
-            return;
-        }
-    }
+    
     $scope.orders=[];
     $scope.go = function () {
         $location.path("/products");
     };
-    $scope.getOrderStatus=function(status,category){
-        if(status==1)
+    $scope.getOrderStatus=function(status){
+        if(status==1){
             return "等待付款";
-        if(status==2 && category && category==3){
-            return "进行中";
         }
-
-        if(status==2 && category!=3){
+        if(status==2){
             return "等待确认收货";
         }
-            
-        if(status==3 && category && category==3){
+        if(status==3){
             return "交易成功";
         }
-
-        if(status==3 && category!=3){
-            return "交易成功";
+        if(status==4){
+            return "已取消";
         }
-            
-        if(status==4)
-            return "订单已取消";
-        if(status==5 && category!=3)
+        if(status==5){
             return "退款中";
-        if(status==6 && category!=3)
-            return "退款成功";
-        if(status==7)
+        }
+        if(status==6){
+            return "已退款";
+        }
+        if(status==7){
             return "已失效";
+        }
     };
     var tokenInfo=getToken();
     if(tokenInfo && tokenInfo.token){
@@ -1400,7 +1335,7 @@ app.controller('orderListController', function ($rootScope, $scope, httpRequest,
     var pageSize=100;   
     var token=$scope.token? $scope.token : tokenInfo.token;
     showLoading();
-    httpRequest.APIPOST('/order/list', dataStringify("platform=all&token=" + token + "&category=1&pageNo="+pageNo+"&pageSize="+pageSize), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+    httpRequest.APIPOST('/orderLd/list', dataStringify("platform=all&token=" + token + "&category=1&pageNo="+pageNo+"&pageSize="+pageSize), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
         if(result.msg==="success"){
             $scope.orders=result.result;
             hideLoading();
@@ -1568,34 +1503,9 @@ app.controller('orderDetailController', function ($rootScope, $scope, httpReques
     };
 
     $scope.deleteOrder=function(id){
-        if(!checkToken()){
-            var tokenInfo=getToken();
-            if(tokenInfo && tokenInfo.token){
-                token=tokenInfo.token;
-                var arrButton = ["取消", "确定"];
-                openDialog("确认删除当前订单？", "", arrButton, null,
-                    function (r,pWay) {
-                        if (r) {
-                            showLoading();
-                            httpRequest.APIPOST('/order/delete', dataStringify("platform=all&token=" + token + "&orderId="+id), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                                if(result.msg==="success"){
-                                    alertSuccess("删除成功！");
-                                    $location.path("/orderList/"+token);
-                                }else {
-                                    hideLoading();
-                                    alert(result.msg);
-                                }
-                            });
-                        }
-                    });
-            }else{
-                if(easybuy.isWechat){
-                    $location.path("/wechatOauth/orderDetail-"+$routeParams.id);
-                }else{
-                    $location.path("/myProfile/orderDetail-"+$routeParams.id);
-                }
-            }
-        }else{
+        var tokenInfo=getToken();
+        if(tokenInfo && tokenInfo.token){
+            token=tokenInfo.token;
             var arrButton = ["取消", "确定"];
             openDialog("确认删除当前订单？", "", arrButton, null,
                 function (r,pWay) {
@@ -1612,6 +1522,12 @@ app.controller('orderDetailController', function ($rootScope, $scope, httpReques
                         });
                     }
                 });
+        }else{
+            if(easybuy.isWechat){
+                $location.path("/wechatOauth/orderDetail-"+$routeParams.id);
+            }else{
+                $location.path("/myProfile/orderDetail-"+$routeParams.id);
+            }
         }
     }
 
@@ -1755,7 +1671,7 @@ app.controller('orderDetailController', function ($rootScope, $scope, httpReques
     if ($scope.orderId) {        
         //var tokenInfo=getToken();
         //var token=$scope.token?$scope.token:tokenInfo.token;
-        httpRequest.APIPOST('/order/detail', dataStringify("platform=all&category=1&orderId="+$scope.orderId), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/orderLd/detail', dataStringify("platform=all&&orderId="+$scope.orderId+"&token="+$scope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if(result.msg==="success"){                            
                 $scope.order=result.result;
                 if ($scope.order && $scope.order.goodsList && $scope.order.goodsList.length > 0) {
@@ -2479,6 +2395,285 @@ app.controller('airportServiceOrderController', function ($rootScope, $scope, ht
 
 });
 
+app.controller('paymentLDController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
+	$scope.step=1;
+	
+	$scope.toggleOn=false;
+	$scope.takeoverMethod=1;
+	$scope.toggleTakeover=function(){
+		$scope.toggleOn=$scope.toggleOn?false:true;
+		
+	};
+	var goodsId=$location.search().goodsId;
+	var quantity=$location.search().quantity;
+	$scope.selectTakeover=function(t){
+		$scope.toggleOn=false;
+		$scope.takeoverMethod=t;
+		
+	};
+	
+	$scope.enterAddress=function(s){
+		$scope.step=s;
+		$scope.addressInfo=$.extend(true, {}, $scope.defaultAddress);
+	    $("#appDateTime").val($scope.addressInfo.returnDate+" "+$scope.addressInfo.returnTime);
+	};
+	
+	$scope.goodsItems=function(){
+		$scope.step=4;
+	};
+	
+	$scope.back = function () {
+		if($scope.step>1){
+			$scope.step=1;
+			return;
+		}
+		history.back();
+    }
+
+	$scope.getOrderPrice=function(){
+		var data="platform=all&token="+$rootScope.tokenInfo.token+"&goodsId="+$location.search().goodsId+"&quantity="+$location.search().quantity;
+		httpRequest.APIPOST('/order/price', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.orderPrice=result.result;
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+
+	$scope.getDefaultAddress=function(){
+		var data="platform=all&token="+$rootScope.tokenInfo.token;
+		httpRequest.APIPOST('/address/default', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.defaultAddress=result.result;
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+
+	$scope.saveDefaultAddress=function(){
+		
+		if($scope.takeoverMethod==1){
+            if (!$scope.addressInfo.contact || $scope.addressInfo.contact.toString().trim() == '') {
+                alertWarning("请填写联系人姓名");
+                return;
+            }
+            if ($scope.addressInfo.contact.toString().length < 2 || $scope.addressInfo.contact.toString().length > 20) {
+                alertWarning("请输入2~20位的联系人姓名");
+                return;
+            }
+
+            if (!$scope.addressInfo.mobile || $scope.addressInfo.mobile == '') {
+                alertWarning("请填写手机号码");
+                return;
+            }
+            if ($scope.addressInfo.mobile.toString().length != 11) {
+                alertWarning("请输入11位的手机号码");
+                return;
+            }
+
+            var flightTime = $("#appDateTime").val();
+            if (!flightTime || flightTime == '') {
+                alertWarning("请选择回程日期");
+                return;
+            }else{
+                $scope.addressInfo.returnTime=flightTime;
+            }
+            if (!$scope.addressInfo.returnFlightno || $scope.addressInfo.returnFlightno == '') {
+                alertWarning("请输入回程航班号");
+                return;
+            }
+            if (new Date(flightTime.replace(/-/g, "/")) < $scope.minDateTime) {
+                alertWarning("起飞时间请选择1小时后");
+                return;
+            }            
+
+        }else{
+            if (!$scope.addressInfo.contact || $scope.addressInfo.contact.toString().trim() == '') {
+                alertWarning("请填写联系人姓名");
+                return;
+            }
+            if ($scope.addressInfo.contact.toString().length < 2 || $scope.addressInfo.contact.toString().length > 20) {
+                alertWarning("请输入2~20位的联系人姓名");
+                return;
+            }
+
+            if (!$scope.addressInfo.mobile || $scope.addressInfo.mobile == '') {
+                alertWarning("请填写手机号码");
+                return;
+            }
+            if ($scope.addressInfo.mobile.toString().length !==11) {
+                alertWarning("请输入11位的手机号码");
+                return;
+            }
+			
+            if (!$scope.addressInfo.hotelName || $scope.addressInfo.hotelName == '') {
+                alertWarning("请输入酒店名称");
+                return;
+            }
+			
+			if ($scope.addressInfo.hotelName.length<5 || $scope.addressInfo.hotelName.length>50) {
+                 alertWarning("请输入5-50位的酒店名称");
+                return;
+            }
+			
+			if (!$scope.addressInfo.hotelPickupDate || $scope.addressInfo.hotelPickupDate == '') {
+                alertWarning("请输入取货日期");
+                return;
+            }
+			
+			if (!$scope.addressInfo.hotelTel || $scope.addressInfo.hotelTel == '') {
+                alertWarning("请输入酒店电话");
+                return;
+            }
+			
+            if (!$scope.addressInfo.hotelAddress || $scope.addressInfo.hotelAddress.toString().trim() == '') {
+                alertWarning("请填写酒店地址");
+                return;
+            }
+            if ($scope.addressInfo.hotelAddress.toString().length < 5 || $scope.addressInfo.hotelAddress.toString().length > 100) {
+                alertWarning("请输入5~100位的酒店地址");
+                return;
+            }
+        }
+        
+        
+
+        $scope.search(function(){
+            var data="";
+            if($scope.takeoverMethod==2){
+              data="platform=all&token="+$rootScope.tokenInfo.token
+                      +"&contact="+$scope.addressInfo.contact
+                      +"&hotelName="+$scope.addressInfo.hotelName
+                      +"&hotelPickupDate="+$scope.addressInfo.hotelPickupDate
+                      +"&hotelTel="+$scope.addressInfo.hotelTel
+                      +"&hotelAddress="+$scope.addressInfo.hotelAddress
+                      +"&mobile="+$scope.addressInfo.mobile;  
+            }else{
+                data="platform=all&token="+$rootScope.tokenInfo.token
+                      +"&returnTime="+$("#appDateTime").val()
+                      +"&contact="+$scope.addressInfo.contact
+                      +"&returnAirportId="+$scope.addressInfo.returnAirportId
+                      +"&mobile="+$scope.addressInfo.mobile
+                      +"&returnFlightno="+$scope.addressInfo.returnFlightno; 
+            }
+            httpRequest.APIPOST('/address/add', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+                if(result.msg==="success"){
+                    $scope.step=1;
+                    $scope.$apply($scope.step);
+                    $scope.getDefaultAddress();
+                }else {
+                    alertWarning(result.msg);
+                }
+            });
+        });
+
+		
+
+	};
+
+	$scope.getDefaultAddress();
+	$scope.getOrderPrice();
+
+
+	var startdate = new Date();
+	startdate.setHours(startdate.getHours() + 1);
+	var m = startdate.getMinutes() % 5;
+	if (m != 0) {
+		startdate.setMinutes(startdate.getMinutes() + (5 - m));
+	}
+	startdate.setSeconds(0);
+	startdate.setMilliseconds(0);
+	$scope.minDateTime = startdate;
+
+	var enddate = new Date();
+	enddate.setMonth(enddate.getMonth() + 6);
+	enddate.setHours(23);
+	enddate.setMinutes(59);
+	enddate.setSeconds(59);
+	enddate.setMilliseconds(999);
+	$scope.maxDateTime = enddate;
+
+	opt.datetime = {dateOrder:'yymmdd',dateFormat:'yyyy-mm-dd', preset: 'datetime', minDate: startdate, maxDate: enddate, stepMinute: 5, 
+		onSelect: function (valueText, inst) {
+			//$scope.saveTemp();
+			$scope.time=$("#appDateTime").val();
+			//$scope.search();
+			event.stopPropagation();
+		}
+	};
+	var optDateTime = $.extend(opt['datetime'], opt['Default']);
+	var optTime = $.extend(opt['time'], opt['Default']);
+	$("#appDateTime").mobiscroll(optDateTime).date(optDateTime);
+	
+	$("#appDateTime2").mobiscroll(optDateTime).date(optDateTime);
+	$scope.search = function (callback) {
+		if($scope.takeoverMethod==2){
+			callback();
+			return;
+		}
+       // $scope.saveTemp();
+        var flightNo=$scope.addressInfo.returnFlightno;
+        if(flightNo==undefined)
+            flightNo="";
+        if(flightNo.length>=2 && $("#appDateTime").val()){
+            var data="platform=all&backFlightno="+flightNo+"&backDate="+$("#appDateTime").val();
+            httpRequest.APIPOST('/flight/back', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+                if (result && result.code == statusCode.Success) {
+                    $scope.addressInfo.returnAirportId=result.result.returnAirportId;
+                    $scope.addressInfo.returnAirport=result.result.returnAirport;
+                    $scope.addressInfo.returnTime=result.result.returnTime;
+                    if(!$scope.time){
+                        $scope.time="";
+                    }
+                    $("#appDateTime").val($("#appDateTime").val().split(' ')[0]+" "+result.result.returnTime);
+                    callback();
+                }else{
+                    $scope.addressInfo.returnAirportId=-1;
+                    $scope.addressInfo.returnAirport="";
+                    alertWarning(result.msg);
+                }
+            });
+        }
+    };
+	$scope.isGoPay=false;
+    $scope.generateOrder=function(){
+    	if($scope.isGoPay){
+    		return;
+    	}
+    	$scope.isGoPay=true;
+    	var data="";
+		if($scope.takeoverMethod==2){
+		  data="platform=all&token="+$rootScope.tokenInfo.token
+				  +"&contact="+$scope.addressInfo.contact
+				  +"&cityId="+arrRegion[1]
+				  +"&detailAddress="+$scope.addressInfo.detailAddress
+				  +"&provinceId="+arrRegion[0]
+				  +"&districtId="+arrRegion[2]
+				  +"&mobile="+$scope.addressInfo.mobile;  
+		}else{
+			data="platform=all&token="+$rootScope.tokenInfo.token
+				  +"&pickupWay=1"
+				  +"&contact="+$scope.defaultAddress.contact
+				  +"&mobile="+$scope.defaultAddress.mobile
+				  +"&returnTime="+$scope.defaultAddress.returnDate+" "+$scope.defaultAddress.returnTime
+				  +"&returnAirportId="+$scope.defaultAddress.returnAirportId					
+				  +"&returnFlightno="+$scope.defaultAddress.returnFlightno
+				  +"&goodsId="+goodsId
+				  +"&quantity="+quantity; 
+		}
+		httpRequest.APIPOST('/orderLd/add', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if(result.msg==="success"){
+				
+			}else {
+				alertWarning(result.msg);
+			}
+		});
+    };
+});
 app.controller('paymentAppController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
     $scope.isInCoupons=false;
     $scope.id = $routeParams.id;
@@ -3048,10 +3243,53 @@ app.controller('myIncomeController', function ($rootScope, $scope, httpRequest, 
     $scope.step=1;
 	
 	$scope.withDraw=function(t){
-		if(t==0){
+		if(t===0){
 			$scope.step=2;
 			return;
 		}
+
+		var account=$scope.account || '';
+		var name=$scope.name || '';
+		var mobile=$scope.mobile || '';
+		
+		if (!account) {
+            alertWarning("请输入支付宝账号");
+            return;
+        }
+
+        if (!name) {
+            alertWarning("请输入支付宝姓名");
+            return;
+        }
+
+		if (!mobile || (mobile && mobile.length<1)) {
+            alertWarning("请输入手机号");
+            return;
+        }
+
+        if (mobile.length!=11) {
+            alertWarning("请输入11位的手机号码");
+            return;
+        }
+
+		var data="platform=all&token="
+					+$rootScope.tokenInfo.token
+					+"&account="+account
+					+"&name="+name
+					+"&mobile="+mobile;
+
+		httpRequest.APIPOST('/ldIncome/apply', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				alertWarning("申请成功，请等待审核");
+				$scope.step=1;
+				$scope.getIncomeList(1);
+				$scope.getIncomeList(2);
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+
 	};
 	$scope.back = function () {
 		if($scope.step>1){
@@ -3060,14 +3298,94 @@ app.controller('myIncomeController', function ($rootScope, $scope, httpRequest, 
 		}
         $location.path("/myProfile");
     }
+
+	$scope.incomeList1=[];//未返现
+	$scope.incomeList2=[];//申请中
+	$scope.incomeList3=[];//已提现
+    $scope.getIncomeList=function(s){
+		httpRequest.APIPOST('/ldIncome/listByStatus', dataStringify("platform=all&token="+$rootScope.tokenInfo.token+"&status="+s), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				if(s==1)
+					$scope.incomeList1=result.result;
+				if(s==2)
+					$scope.incomeList2=result.result;
+				if(s==3)
+					$scope.incomeList3=result.result;
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	$scope.getIncomeList(1);
+	$scope.getIncomeList(2);
+	$scope.getIncomeList(3);
+	
 });
 
 app.controller('myWishController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window,$routeParams) {
     $scope.step=1;
-	
-	$scope.wish=function(t){
+
+
+	$scope.saveWish=function(wish){
+		if(!wish){
+			alertWarning("请输入心愿产品名称");
+			return;
+		}
+		if(!wish.name){
+			alertWarning("请输入心愿产品名称");
+			return;
+			//我的新肌面膜
+		}
+		if(!wish.feature){
+			alertWarning("请输入500位以内的产品特点");
+			return;
+		}
+
+		if(wish.name.length<5 || wish.name.length>100){
+			alertWarning("请输入5-100位以内的心愿产品名称");
+			return;
+		}
+		if(!wish.feature){
+			alertWarning("请输入500位以内的产品特点");
+			return;
+		}
+		if(wish.feature.length>500){
+			alertWarning("请输入500位以内的产品特点");
+			return;
+		}
+
+		wish.link=wish.link?wish.link:"";
+		var data="platform=all&token="+$rootScope.tokenInfo.token+"&name="+wish.name+"&link="+wish.link+"&feature="+wish.feature;
+		var apiUrl='/ldWish/add';
+		if(wish.id){
+			apiUrl='/ldWish/edit';
+			data="platform=all&token="+$rootScope.tokenInfo.token+"&name="+wish.name+"&link="+wish.link+"&feature="+wish.feature+"&id="+wish.id;
+		}
+		
+		httpRequest.APIPOST(apiUrl, dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				alertWarning("提交成功！");
+				$scope.getWishList();
+				$scope.step=2;
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+
+		
+	};
+	$scope.wishNow=function(){
 		$scope.step=2;
 	};
+
+	$scope.editWish=function(id,index){
+		$scope.wish=$scope.wishList[index];
+		$scope.step=2;
+	};
+
+	
+
 	$scope.back = function () {
 		if($scope.step>1){
 			$scope.step=1;
@@ -3075,91 +3393,19 @@ app.controller('myWishController', function ($rootScope, $scope, httpRequest, da
 		}
         $location.path("/myProfile");
     }
-});
 
+    $scope.getWishList=function(){
+		httpRequest.APIPOST('/ldWish/list', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.wishList=result.result;
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
 
-
-app.controller('oauth2Controller', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
-      var nickname=$location.$$search.nickname;
-      var headimgurl=$location.$$search.headimgurl;
-      var openId=$routeParams.openId;
-      var state=$routeParams.state;
-      var source=$location.$$search.source?$location.$$search.source:1;
-      $rootScope.isOauth2=true;
-      if(source==4){
-          var usertokenInfo=getToken();
-          var arr=state.split('-');
-          if(arr[0]=="orderDetail"){
-              $location.path("/orderDetail/"+arr[1]+"/"+usertokenInfo.token).search(usertokenInfo);
-              return;
-          }
-          if(arr.length<2){
-              $location.path("/"+state).search(usertokenInfo);
-              return;
-          }
-          if(arr.length==2){
-              $location.path("/"+arr[0]+'/'+arr[1]).search(usertokenInfo);
-              return;
-          }
-          if(arr.length==3){
-              $location.path("/"+arr[0]+'/'+arr[1]+'/'+arr[2]).search(usertokenInfo);
-              return;
-          }
-      }
-      var user={openId:openId,nickname:nickname,headimgurl:headimgurl,source:source};
-      var source=user.source;//用户来源，1：微信， 2：QQ， 3：微博
-      var data="platform=all&openid="+user.openId+"&nickname="+user.nickname
-             +"&gender=0&avatar="+user.headimgurl+"&source="+source+"&channel=H5"
-             +"&appVersion="+easybuy.version;
-      httpRequest.APIPOST('/user/thirdLogin', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-          if (result && result.code == statusCode.Success) {
-              $scope.currentUser=result.result;
-              $scope.currentUser.openId=user.openId;
-              $scope.currentUser.source=user.source;
-              $scope.currentUser.nickname=user.nickname;
-              $scope.currentUser.headimgurl=user.headimgurl;
-              
-              if(($scope.currentUser.mobile==null || !$scope.currentUser.mobile || ($scope.currentUser.mobile && $scope.currentUser.mobile.length<6)) &&  isNotBindPhone[state]!=true && ($scope.currentUser.source && $scope.currentUser.source!=4)){
-                  if($scope.currentUser.bind!=0 || $scope.currentUser.bind!="0")
-                    $location.path("/myPhone/0/"+$scope.currentUser.token).search({user:user,state:state});
-              }else{
-                  setToken($scope.currentUser);
-                  var arr=state.split('-');
-                  if(arr[0]=="orderDetail"){
-                      $location.path("/orderDetail/"+arr[1]+"/"+$scope.currentUser.token).search(user);
-                      return;
-                  }
-                  if(arr.length<2){                      
-                      $location.path("/"+state).search(user);
-                      return;
-                  }
-                  if(arr.length==2){
-                      if(arr[0]=="activity" && arr[1]=="activityDetail"){
-                          $location.path("/"+arr[0]+'/'+arr[1]);
-                      }else{
-                          $location.path("/"+arr[0]+'/'+arr[1]).search(user);
-                      }                      
-                      return;
-                  }
-                  if(arr.length==3){
-                      $location.path("/"+arr[0]+'/'+arr[1]+'/'+arr[2]).search(user);
-                      return;
-                  }
-                  
-              }
-          }else{
-              alert(result.msg);
-          }
-      });      
-});
-app.controller('wechatOauthController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
-     var state=$routeParams.state;
-     var from=($location.search() && $location.search().from)?$location.search().from:"";
-     if(baseOauth[state]===true && from!=="activity"){
-         $rootScope.oauth2(state,null);
-     }else{
-         $rootScope.oauth2(state,"userinfo");
-     }     
+    };
+    $scope.getWishList();
 });
 
 /** added in 1.6**/
@@ -3194,6 +3440,8 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
 		$location.path("/forgot");
 		
 	};
+
+	$scope.incomeAmount=$rootScope.tokenInfo?$rootScope.tokenInfo.incomeAmount || 0.00 : 0.00;
 	
 	$scope.myInfo=function(){
 		$location.path("/myInfo");
@@ -3214,7 +3462,7 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
         }
 
         var data="platform=all&account="+u+"&password="+p+"&category=2";
-        httpRequest.APIPOST('/user/login', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/user/login/ld', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
                 var data2="platform=all&token="+token;
@@ -3229,6 +3477,10 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
                         $scope.user.nickname=userInfo.nickname;
                         $scope.user.headimgurl=userInfo.avatar;
                         $scope.user.mobile=userInfo.mobible;
+						$scope.user.category=userInfo.category;
+						$scope.user.realName=userInfo.realName;
+						$scope.user.incomeAmount=userInfo.incomeAmount;
+						$scope.incomeAmount=userInfo.incomeAmount;
                         $scope.user.bind=0;
                         $scope.isNeedBind=false;
                         setToken($scope.user);
@@ -3342,7 +3594,7 @@ app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $h
 	};
 	
 	
-
+	var loginFrom=1;
     $scope.logout=function(){
        var arrButton = ["取消", "确定"];
         openDialog("您是否确认退出？", null, arrButton, null,
@@ -3367,14 +3619,89 @@ app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $h
                     $scope.user={};
                     removeToken();
                     $scope.isLogin=false;
+					$rootScope.isRootLogin=false;
                     $scope.$apply($scope.isLogin);  
                     $scope.$apply($scope.user);
+					$rootScope.$apply($rootScope.isRootLogin);
+					$location.path("/myProfile");
+					
+					$scope.$apply($location);  
 
                     
                 }
         });
          
     }
+	
+	$scope.username=$rootScope.tokenInfo.realName;
+	$scope.saveName=function(){
+		var name=$scope.username;
+		
+        if (!name || (name && name.length<1)) {
+            alertWarning("请输入您的真实姓名");
+            return;
+        }
+		
+        var data="platform=all&token="+$rootScope.tokenInfo.token+"&realname="+name;
+        httpRequest.APIPOST('/user/updateRealname', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            if (result && result.code == statusCode.Success) {
+                $rootScope.tokenInfo.realName=name;
+				var tokenInfo=getToken();
+				tokenInfo.realName=name;
+				setToken(tokenInfo);   
+				alertWarning("姓名修改成功。");
+				$scope.step=1;
+            }else{
+                alertWarning(result.msg);
+            }
+        });
+		
+	};
+	$scope.savePassword=function(){
+		var password=$scope.password;
+		var newPassword=$scope.newpassword;
+		var newPassword2=$scope.newpassword2;
+		
+		if (!password || password.length<6 || password.length>20) {
+            alertWarning("请输入正确的旧密码");
+            return;
+        }
+		
+        if (!newPassword || newPassword.length<6 || newPassword.length>20) {
+            alertWarning("请输入6~20位的密码");
+            return;
+        }
+		if (!newPassword2 || newPassword2.length<6 || newPassword2.length>20) {
+            alertWarning("请输入6~20位的密码");
+            return;
+        }
+		if(newPassword!=newPassword2){
+			alertWarning("新密码和确认密码不一致");
+            return;			
+		}
+		
+        var data="platform=all&token="+$rootScope.tokenInfo.token+"&oldPassword="+password+"&newPassword="+newPassword;
+        httpRequest.APIPOST('/user/updatePassword', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            if (result && result.code == statusCode.Success) {                  
+				alertWarning("密码修改成功。");
+				$scope.step=1;
+            }else{
+                alertWarning(result.msg);
+            }
+        });
+		
+	};
+	
+	$scope.save=function(){
+		if($scope.step==2){
+			$scope.saveName();
+		}
+		if($scope.step==3){
+			$scope.savePassword();
+		}
+	};
+	
+	
     $scope.back = function () {
 		if($scope.step>1){
 			$scope.step=1;
@@ -3390,6 +3717,7 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
         var c=$scope.code;
         var p=$scope.password;
         var ic=$scope.inviteCode;
+		var name=$scope.name;
 		
         if (!u || (u && u.length<1)) {
             alertWarning("请输入手机号");
@@ -3405,17 +3733,22 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
             alertWarning("请输入验证码");
             return;
         } 
-        if (!p || p.length<4 || p.length>20) {
-            alertWarning("请输入4~20位的密码");
+        if (!p || p.length<6 || p.length>20) {
+            alertWarning("请输入6~20位的密码");
             return;
         }
 		
-		if (!ic || ic.length<4 || ic.length>20) {
-            alertWarning("请输入4~20位的密码");
+		if (!ic || ic.length<7 || ic.length>20) {
+            alertWarning("请输入7位的邀请码");
+            return;
+        }
+		
+		if (!name || name.length<6 || name.length>20) {
+            alertWarning("请输入您的真实姓名");
             return;
         }
         $scope.wait=0;
-        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic;
+        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic+"&realname="+name;
         httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
@@ -3431,6 +3764,9 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
                         $scope.user.headimgurl=userInfo.avatar;
                         $scope.user.mobile=userInfo.mobible;
                         $scope.user.bind=userInfo.bind || 0;
+						$scope.user.category=userInfo.category;
+						$scope.user.realName=userInfo.realName;
+						$scope.user.incomeAmount=userInfo.incomeAmount;
                         setToken($scope.user);
                         $location.path("/myProfile");
                     }else{
@@ -3486,7 +3822,6 @@ app.controller('forgotController', function ($rootScope, $scope, httpRequest, $h
         var u=$scope.username;
         var c=$scope.code;
         var p=$scope.password;
-        var ic=$scope.inviteCode;
 		
         if (!u || (u && u.length<1)) {
             alertWarning("请输入手机号");
@@ -3507,33 +3842,12 @@ app.controller('forgotController', function ($rootScope, $scope, httpRequest, $h
             return;
         }
 		
-		if (!ic || ic.length<4 || ic.length>20) {
-            alertWarning("请输入4~20位的密码");
-            return;
-        }
         $scope.wait=0;
-        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic;
-        httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        var data="platform=all&mobile="+u+"&password="+p+"&code="+c;
+        httpRequest.APIPOST('/user/password', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
-                var token=result.result.token;
-                var data2="platform=all&token="+token;
-                httpRequest.APIPOST('/mine/index', dataStringify(data2), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                    if (result && result.code == statusCode.Success) {
-                        var userInfo=result.result;
-                        $scope.user={};
-                        $scope.user.token=token;               
-                        $scope.user.openId="0";
-                        $scope.user.source=4;
-                        $scope.user.nickname=userInfo.nickname;
-                        $scope.user.headimgurl=userInfo.avatar;
-                        $scope.user.mobile=userInfo.mobible;
-                        $scope.user.bind=userInfo.bind || 0;
-                        setToken($scope.user);
-                        $location.path("/myProfile");
-                    }else{
-                        alertWarning(result.msg);
-                    }
-                });
+                alertWarning("新密码设置成功！");
+				$location.path("/products");
             }else{
                 alertWarning(result.msg);
             }
@@ -3566,7 +3880,7 @@ app.controller('forgotController', function ($rootScope, $scope, httpRequest, $h
         }
         $("#codeClock").css("display","inline-block");
         time();
-        var data="platform=all&type=1&mobile="+$scope.username;
+        var data="platform=all&type=2&mobile="+$scope.username;
         httpRequest.APIPOST('/sms/getVerifyCode', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                  

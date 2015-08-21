@@ -36,8 +36,16 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
     $routeProvider
         .when('/products', { templateUrl: "views/goods/products.html?"+preventCache })
         .when('/products/:code', { templateUrl: "views/goods/products.html?"+preventCache })
-        .when('/pay/:id', { templateUrl: "views/pay/payment.html?"+preventCache })
-        .when('/pay/:id/:from', { templateUrl: "views/pay/payment.html?"+preventCache })
+        .when('/pay/:id', { templateUrl: "views/pay/paymentLD.html?"+preventCache 
+			,resolve: {
+				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
+			}
+        })
+        .when('/pay/:id/:from', { templateUrl: "views/pay/paymentLD.html?"+preventCache 
+			,resolve: {
+				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
+			}
+        })
         .when('/dividedPay/:orderNum/:fee', { templateUrl: "views/pay/dividedPay.html?"+preventCache })
         .when('/dividedPay/success', { templateUrl: "views/pay/success2.html?"+preventCache })
         .when('/address/:payid', { templateUrl: "views/order/address.html?"+preventCache
@@ -99,8 +107,9 @@ app.run( function($rootScope, $location) {
 			if($location.path()!=='/register' && $location.path()!=='/forgot'){
 				$rootScope.isRootLogin=false;
 				$rootScope.$emit("CtrlUserModule", $rootScope.isRootLogin);
-			}
-			
+			}			
+		}else{
+			$rootScope.tokenInfo=tokenInfo;
 		}
         hideLoading();                          
     });

@@ -93,39 +93,88 @@
 		
     </div>
 
-    <div class="scrollable product-list">
+    <div class="scrollable product-list product-list-query">
+    	
         <div class="scrollable-content background-gray" style="padding-bottom:1em;">  
 			<div class="nav-main-block"></div>
 			
-            <span class="hot-keyword">雅诗兰黛</span>
-			<span class="hot-keyword">雪花秀商品</span>
-			<span class="hot-keyword">春节套装</span>
-			
-			<span class="hot-keyword">雅诗</span>
-			<span class="hot-keyword">雪花秀商品套装</span>
-			<span class="hot-keyword">春节套装</span>
-			
-			<span class="hot-keyword">雅诗</span>
-			<span class="hot-keyword">雪花秀</span>
-			<span class="hot-keyword">春节套装</span>
-			
-			<span class="hot-keyword">雅诗套装</span>
-			
-			 <span class="hot-keyword">雅诗兰黛</span>
-			<span class="hot-keyword">雪花秀商品</span>
-			<span class="hot-keyword">春节套装</span>
+            <span ng-show="!isQuery"
+            	class="hot-keyword" 
+            	ng-repeat="word in hotKeywords" 
+            	ng-click="saveSearchKeyword(word);">{{word}}</span>
+            <div ng-show="isQuery">
+				<div id="queryProductList">
+
+					<div id="queryProducts" style="margin-top: 15px;">
+						<div class="list-products">
+							<div class="list-products-item" ng-repeat="p in queryProducts" ng-click="goProduct(p.id);">
+								<div class="products-item-image" style="background-image:url({{p.img}})"></div>
+
+								<div class="products-item-title">
+									<hr/>
+									<div class="products-item-name">
+										<span class="list-show-product-brief-0">
+											{{p.name}}
+										</span>
+									</div>
+
+									<div class="products-item-price">
+										<div class="shopPrice price">￥{{p.promotePrice}}</div>								
+										<div class="promotePrice price">￥{{p.ldPrice || p.promotePrice}}</div>								
+									</div>
+
+
+								</div>
+
+
+
+
+
+								<span style="display:none;" ng-if="$last">
+									{{drawQueryPanel();}}
+								</span>
+							</div>
+
+							<div class="clear"></div>
+
+						</div>
+					</div> 
+
+
+					<div class="load-bar" ng-hide="(queryPageNum == null || queryPageNum == queryPageCount || queryProducts.length==0)">
+						<div class="pull-loading query">
+							上拉加载
+						</div>
+						<canvas id="queryLoadCanvas" width="70px" height="70px;"></canvas>
+					</div>
+					<div class="complete-bar-words" ng-show="(queryPageNum != null && queryPageNum == queryPageCount)">
+						已经到底了哦~
+					</div>
+					<div class="complete-bar-words" ng-show="(queryProducts.length==0)">
+						没有查询到您要的商品~
+					</div>
+				</div>
+
+            </div>
 			
         </div>
 		
 		<div class="search-result">
 			<div ng-show="isLocalKey">
-				<div class="search-result-item" ng-repeat="item in searchLocalItems track by $index">{{item.value}}</div>				
+				<div 
+					class="search-result-item" 
+					ng-repeat="item in searchLocalItems track by $index"
+					ng-click="queryGoods(item.value,1);"
+					>{{item.value}}</div>				
 				
 				<div class="search-result-btn"><span ng-click="removeSearchKeyword();">清除历史记录</span></div>
 			</div>
 			
 			<div ng-hide="isLocalKey">
-				<div class="search-result-item" ng-repeat="item in searchItems track by $index" ng-click="saveSearchKeyword(item.value);">{{item.value}}</div>	
+				<div 
+					class="search-result-item" 
+					ng-repeat="item in searchItems track by $index" 
+					ng-click="saveSearchKeyword(item);" style="{{$last?'border:0':''}}">{{item}}</div>	
 				
 			</div>
 		

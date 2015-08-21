@@ -75,6 +75,29 @@ function advanceLoad(contentSelector, loadObj, noEnd) {
     }
 }
 
+function advanceQueryLoad(contentSelector, loadObj, noEnd) {
+    if (noEnd) {
+        if ($(contentSelector).height() - $(".product-list-query>.scrollable-content").scrollTop() - $('#queryLoadCanvas').height() > $(".product-list-query>.scrollable-content").height()) {
+            loadObj.clear();
+            $(".query.pull-loading").html("上拉加载");
+        }
+        else {
+            if ($(contentSelector).height() - $(".product-list-query>.scrollable-content").scrollTop() - $('#queryLoadCanvas').height() * 7 / 8 <= $(".product-list-query>.scrollable-content").height()) {
+                loadObj.action(loadObj.GetStepCount() / 6);
+            }
+            if ($(contentSelector).height() - $(".product-list-query>.scrollable-content").scrollTop() - $('#queryLoadCanvas').height() / 2 <= $(".product-list-query>.scrollable-content").height()) {
+                loadObj.action(loadObj.GetStepCount() / 2);
+            }
+            if ($(contentSelector).height() - $(".product-list-query>.scrollable-content").scrollTop() - $('#queryLoadCanvas').height() * 3 / 8 <= $(".product-list-query>.scrollable-content").height()) {
+                loadObj.action(loadObj.GetStepCount() * 3 / 4);
+            }
+            if ($(contentSelector).height() - $(".product-list-query>.scrollable-content").scrollTop() - 5 <= $(".product-list-query>.scrollable-content").height()) {
+                loadObj.action(loadObj.GetStepCount());
+            }
+        }
+    }
+}
+
 function advanceLoadCommon(contentSelector, loadObj, noEnd) {
     if (noEnd) {
         if ($(contentSelector).height() - $(".scrollable-content").scrollTop() - $('#myLoadCanvas').height() > $(".scrollable-content").height()) {

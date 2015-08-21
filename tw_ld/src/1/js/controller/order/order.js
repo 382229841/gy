@@ -366,65 +366,39 @@ app.controller('orderInquiryController', function ($rootScope, $scope, httpReque
 
         $location.path("/orderList/" + $scope.mobile);
 
-        
 
-        /*httpRequest.APIPOST('/user/h5Login', dataStringify("platform=all&account=" + $scope.mobile + "&password=" + $scope.mobile), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            if(result.msg==="success"){
-                var a=1;
-            }
-        });
-
-        httpRequest.POST('/order/index', JSON.stringify({ "mobile": $scope.mobile }), { "Content-Type": "application/json" }).then(function (result) {
-            if (result.status == 1) {
-                $location.path("/orderDetail/" + $scope.mobile);
-            } else {
-                alertWarning("当前没有订单，请重新输入手机号");
-            }
-        });*/
     }
 });
 
 app.controller('orderListController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
     $scope.token=$routeParams.token;
-    if(easybuy.isWechat && !$scope.token){
-        if(getToken() && getToken().token){
-            $scope.token=getToken().token;
-        }else{
-            $location.path("/wechatOauth/orderList");
-            return;
-        }
-    }
+    
     $scope.orders=[];
     $scope.go = function () {
         $location.path("/products");
     };
-    $scope.getOrderStatus=function(status,category){
-        if(status==1)
+    $scope.getOrderStatus=function(status){
+        if(status==1){
             return "等待付款";
-        if(status==2 && category && category==3){
-            return "进行中";
         }
-
-        if(status==2 && category!=3){
+        if(status==2){
             return "等待确认收货";
         }
-            
-        if(status==3 && category && category==3){
+        if(status==3){
             return "交易成功";
         }
-
-        if(status==3 && category!=3){
-            return "交易成功";
+        if(status==4){
+            return "已取消";
         }
-            
-        if(status==4)
-            return "订单已取消";
-        if(status==5 && category!=3)
+        if(status==5){
             return "退款中";
-        if(status==6 && category!=3)
-            return "退款成功";
-        if(status==7)
+        }
+        if(status==6){
+            return "已退款";
+        }
+        if(status==7){
             return "已失效";
+        }
     };
     var tokenInfo=getToken();
     if(tokenInfo && tokenInfo.token){
@@ -437,7 +411,7 @@ app.controller('orderListController', function ($rootScope, $scope, httpRequest,
     var pageSize=100;   
     var token=$scope.token? $scope.token : tokenInfo.token;
     showLoading();
-    httpRequest.APIPOST('/order/list', dataStringify("platform=all&token=" + token + "&category=1&pageNo="+pageNo+"&pageSize="+pageSize), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+    httpRequest.APIPOST('/orderLd/list', dataStringify("platform=all&token=" + token + "&category=1&pageNo="+pageNo+"&pageSize="+pageSize), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
         if(result.msg==="success"){
             $scope.orders=result.result;
             hideLoading();
@@ -605,34 +579,9 @@ app.controller('orderDetailController', function ($rootScope, $scope, httpReques
     };
 
     $scope.deleteOrder=function(id){
-        if(!checkToken()){
-            var tokenInfo=getToken();
-            if(tokenInfo && tokenInfo.token){
-                token=tokenInfo.token;
-                var arrButton = ["取消", "确定"];
-                openDialog("确认删除当前订单？", "", arrButton, null,
-                    function (r,pWay) {
-                        if (r) {
-                            showLoading();
-                            httpRequest.APIPOST('/order/delete', dataStringify("platform=all&token=" + token + "&orderId="+id), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                                if(result.msg==="success"){
-                                    alertSuccess("删除成功！");
-                                    $location.path("/orderList/"+token);
-                                }else {
-                                    hideLoading();
-                                    alert(result.msg);
-                                }
-                            });
-                        }
-                    });
-            }else{
-                if(easybuy.isWechat){
-                    $location.path("/wechatOauth/orderDetail-"+$routeParams.id);
-                }else{
-                    $location.path("/myProfile/orderDetail-"+$routeParams.id);
-                }
-            }
-        }else{
+        var tokenInfo=getToken();
+        if(tokenInfo && tokenInfo.token){
+            token=tokenInfo.token;
             var arrButton = ["取消", "确定"];
             openDialog("确认删除当前订单？", "", arrButton, null,
                 function (r,pWay) {
@@ -649,6 +598,12 @@ app.controller('orderDetailController', function ($rootScope, $scope, httpReques
                         });
                     }
                 });
+        }else{
+            if(easybuy.isWechat){
+                $location.path("/wechatOauth/orderDetail-"+$routeParams.id);
+            }else{
+                $location.path("/myProfile/orderDetail-"+$routeParams.id);
+            }
         }
     }
 
@@ -792,7 +747,7 @@ app.controller('orderDetailController', function ($rootScope, $scope, httpReques
     if ($scope.orderId) {        
         //var tokenInfo=getToken();
         //var token=$scope.token?$scope.token:tokenInfo.token;
-        httpRequest.APIPOST('/order/detail', dataStringify("platform=all&category=1&orderId="+$scope.orderId), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/orderLd/detail', dataStringify("platform=all&&orderId="+$scope.orderId+"&token="+$scope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if(result.msg==="success"){                            
                 $scope.order=result.result;
                 if ($scope.order && $scope.order.goodsList && $scope.order.goodsList.length > 0) {

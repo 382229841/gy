@@ -170,7 +170,7 @@ function getCartNum() {
     var num = 0;
     if (cartProducts && cartProducts.length > 0) {
         for (var i = 0; i < cartProducts.length; i++) {
-            num += cartProducts[i].num;
+            num += cartProducts[i].quantity;
         }
     }
     return num;

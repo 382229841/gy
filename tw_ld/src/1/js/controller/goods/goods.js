@@ -99,49 +99,70 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
         }
         
     };
-	
 	$scope.drawProductsPanel=function(){
-		$(".list-products-item .products-item-image").css("height",$(".list-products-item").width()+"px");
-		$(".list-products-item .products-item-title").css("height",$(".list-products-item").width()/1.67+"px");
-		
-		$(".list-products-item .products-item-title .products-item-name").css("height",$(".list-products-item").width()/4+"px");
-		
-		if($(".list-products-item .products-item-title .products-item-name").height()<$(".list-products-item .products-item-title .products-item-name span").height()){
-			//alert(1);
-		}
-		
+		$("#divProducts .list-products-item .products-item-image").css("height",$("#divProducts .list-products-item").width()+"px");
+		$("#divProducts .list-products-item .products-item-title").css("height",$("#divProducts .list-products-item").width()/1.67+"px");
+
+		$("#divProducts .list-products-item .products-item-title .products-item-name").css("height",$("#divProducts .list-products-item").width()/4+"px");
+
 	};
-	$scope.drawProductsPanel();
+	//$scope.drawProductsPanel();
 	$(window).resize(function(){
 		$scope.drawProductsPanel();
 	});
+	
+	
+	$scope.cart = function () {
+        $location.path("/cart");
+    }
+
+    $scope.cartNum = function () {
+        httpRequest.APIPOST('/cart/list_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			var num=0;
+			if (result && result.code == statusCode.Success) {
+				$scope.cartProducts=result.result.normal;
+				num=$scope.cartProducts.length;
+			}else{
+				alertWarning(result.msg);
+				num=0;
+			}
+			$scope.cartQuantity=num;
+		});  
+    }
+	
+	$scope.cartNum();
+
 });
 
 app.controller('searchPanelController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
-    $scope.cancelSearch=function(){
+	$scope.cancelSearch=function(){
 		$scope.$emit("CtrlSearchPanel", false);
 		$scope.searchKeyword="";
 		$scope.isLocalKey=true;
+		$scope.isQuery=false;
+		$scope.queryProducts=[];
 	};
-	
+	$scope.isQuery=false;
 	$scope.searchKeyword="";
 	
 	//setSearchLocalItems([{value:"凤梨酥"},{value:"郭元益凤梨酥"},{value:"凤梨酥350g"},{value:"凤梨酥350g"}]);
 	
 	$scope.searchLocalItems=getSearchLocalItems() || [];
-	$scope.searchItems=[{id:1,value:"凤梨酥"},{id:2,value:"郭元益凤梨酥"},{id:3,value:"凤梨酥350g0"}];
+	$scope.searchItems=[];//["凤梨酥","郭元益凤梨酥","凤梨酥350g0"];
 	
 	$scope.isLocalKey=true;//显示搜索历史记录
 	$scope.searchKeyup=function(){
 		if($scope.searchKeyword.length>0){
 			$scope.isLocalKey=false;
+			$scope.getSuggestKeywords($scope.searchKeyword);
 		}else{
 			$scope.isLocalKey=true;
 		}
 		
 	};
 	$scope.searchFocus=function(){
-		$(".search-result").addClass("focus");
+		if($scope.searchLocalItems.length>0)
+			$(".search-result").addClass("focus");
 	};
 	
 	$scope.searchBlur=function(){
@@ -151,6 +172,10 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	$scope.saveSearchKeyword=function(value){
 		$scope.searchLocalItems.push({"value":value});
 		setSearchLocalItems($scope.searchLocalItems);
+		
+		$scope.searchKeyword=value;
+
+		$scope.queryGoods(value,1);
 	}
 	
 	$scope.removeSearchKeyword=function(){
@@ -163,12 +188,85 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 			setSearchLocalItems($scope.searchLocalItems);
 		}
 	})
+
+	$scope.getShowKeywords=function(){
+		httpRequest.APIPOST('/keywords/getShow', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.hotKeywords=result.result;
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	$scope.getShowKeywords();
+	
+	$scope.getSuggestKeywords=function(q){
+		httpRequest.APIPOST('/solr/keywords/suggest', dataStringify("platform=all&q="+q), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.searchItems=result.result;
+				if($scope.searchItems.length>0){
+					$(".search-result").addClass("focus");
+				}else{
+					$(".search-result").removeClass("focus");
+				}
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	
+	$scope.queryGoods=function(q,pageNo){
+		$scope.searchKeyword=q;
+		httpRequest.APIPOST('/solr/goods/query', dataStringify("platform=all&q="+q+"&pageNo="+pageNo+"&pageSize=10"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.isQuery=true;
+				if(pageNo>1){
+                    $scope.queryProducts=$scope.queryProducts.concat(result.result);
+                    $scope.queryPageCount = result.page.totalPage;
+                    $scope.queryPageNum = pageNo;
+                }else{
+                    $scope.queryProducts=result.result;
+                    $scope.queryPageCount = result.page.totalPage;
+                    $scope.queryPageNum = result.page.pageNo;
+                }
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+
+	var loadObj = new loadControl('#queryLoadCanvas', function () {
+        $(".pull-loading").html("加载中...");
+        $scope.queryPageNum++;
+        $scope.queryGoods($scope.searchKeyword, $scope.queryPageNum);
+    });
+
+
+    $(".scrollable-content").scroll(function () {
+        if ($("#queryProducts").length > 0) {
+            if ($scope.queryPageCount) {
+                advanceQueryLoad("#queryProductList", loadObj, $scope.queryPageNum < $scope.queryPageCount);
+            }
+        }
+    });
+
+	
+	$scope.drawQueryPanel=function(){
+		$("#queryProducts .list-products-item .products-item-image").css("height",$("#queryProducts .list-products-item").width()+"px");
+		$("#queryProducts .list-products-item .products-item-title").css("height",$("#queryProducts .list-products-item").width()/1.67+"px");
+		
+		$("#queryProducts .list-products-item .products-item-title .products-item-name").css("height",$("#queryProducts .list-products-item").width()/4+"px");
+	
+	};
+	$(window).resize(function(){
+		$scope.drawQueryPanel();
+	});
 	
 	
 	
 });
 
-app.controller('cartNumController', function ($rootScope, $scope, analytics, $location) {
+/*app.controller('cartNumController', function ($rootScope, $scope, analytics, $location) {
     $scope.cart = function () {
         $location.path("/cart");
     }
@@ -176,7 +274,7 @@ app.controller('cartNumController', function ($rootScope, $scope, analytics, $lo
     $scope.cartNum = function () {
         return getCartNum();
     }
-});
+});*/
 
 
 
@@ -256,10 +354,18 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
         openPrompt("addToCart",function(num){
             var product=$.extend(true,{},$scope.product);
             product.num=num;
-            addToCart(product);
-            $scope.$apply($scope.$$childHead);
-            closeDialog();
-            alertSuccess("加入成功");
+			var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+product.id+"&quantity="+num;
+			httpRequest.APIPOST('/cart/add', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+				if (result && result.code == statusCode.Success) {
+					setCart(null);
+					setCart(result.result.normal);
+					//addToCart(product);
+					//$scope.$apply($scope.$$childHead);
+					closeDialog();
+					$scope.cartNum();
+					alertSuccess("加入成功");					
+				}
+			});
         });        
     }
     
@@ -291,84 +397,17 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
             alertWarning("库存已不足，请稍后购买");
             return;
         }
-
-        var user=$location.$$search;
-        var currentUser=getToken();
-        if((user && user.openId) || (currentUser && currentUser.token)){
-            if(!currentUser || (currentUser && !currentUser.token)){
-                var source=user.source;//用户来源，1：微信， 2：QQ， 3：微博
-                var data="platform=all&openid="+user.openId+"&nickname="+user.nickname
-                         +"&gender=0&avatar="+user.headimgurl+"&source="+source+"&channel=H5"
-                         +"&appVersion="+easybuy.version;
-                httpRequest.APIPOST('/user/thirdLogin', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                    if (result && result.code == statusCode.Success) {
-                        $scope.user=result.result;
-                        $scope.user.openId=user.openId;
-                        $scope.user.source=user.source;
-                        $scope.user.nickname=user.nickname;
-                        $scope.user.headimgurl=user.headimgurl;
-                        if($scope.user.mobile==null){
-                            $scope.user.mobile="0";
-                        }
-                        setToken($scope.user);
-                        
-                        var urlUser=$scope.user;
-                        openPrompt("go",function(num){
-                            var product=$.extend(true,{},$scope.product);
-                            product.num=num;            
-                            if ($scope.product) {
-                                removeOrder();
-                                setOrder([product]);
-                                var goodsArr = new Array();
-                                var goods = new Object();
-                                goods.id = product.id;
-                                goods.num = product.num;
-                                goodsArr.push(goods);
-
-                                closeDialog();
-                                $location.path("/pay/999").search({area:1,goods:JSON.stringify([product]),user:JSON.stringify(urlUser)});
-                                $scope.$apply($location);
-                            }
-                        }); 
-
-
-                    }else{
-                        alert(result.msg);
-                    }
-                });
-            }else{
-                var urlUser={};
-                if(currentUser && currentUser.token){
-                    urlUser=currentUser;
-                }else{
-                    urlUser=user;
-                }
-                openPrompt("go",function(num){
-                    var product=$.extend(true,{},$scope.product);
-                    product.num=num;            
-                    if ($scope.product) {
-                        removeOrder();
-                        setOrder([product]);
-                        var goodsArr = new Array();
-                        var goods = new Object();
-                        goods.id = product.id;
-                        goods.num = product.num;
-                        goodsArr.push(goods);
-
-                        closeDialog();
-                        $location.path("/pay/999").search({area:1,goods:JSON.stringify([product]),user:JSON.stringify(urlUser)});
-                        $scope.$apply($location);
-                    }
-                });  
-            }            
-        }else{
-            if(easybuy.isWechat){
-                $location.path("/wechatOauth/product-"+$routeParams.id);
-            }else{
-                $location.path("/myProfile/product-"+$routeParams.id);
-            }
-        }
-    }    
+		
+		openPrompt("go",function(num){
+			var product=$.extend(true,{},$scope.product);
+			product.num=num;          
+			if ($scope.product) {
+				closeDialog();
+				$location.path("/pay/999").search({goodsId:product.id,quantity:num});
+				$scope.$apply($location);
+			}
+		});
+    }
     $scope.viewComments = function () {
         if ($scope.product && $scope.product.commentNum > 0) {
             $location.path("/comment/" + $routeParams.id);
@@ -417,6 +456,26 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
         });
         
     };
+
+    $scope.cart = function () {
+        $location.path("/cart");
+    }
+
+    $scope.cartNum = function () {
+        httpRequest.APIPOST('/cart/list_v1.4', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			var num=0;
+			if (result && result.code == statusCode.Success) {
+				$scope.cartProducts=result.result.normal;
+				num=$scope.cartProducts.length;
+			}else{
+				alertWarning(result.msg);
+				num=0;
+			}
+			$scope.cartQuantity=num;
+		});  
+    }
+	
+	$scope.cartNum();
 
 
 });

@@ -137,7 +137,7 @@
                             <img ng-src="{{user.headimgurl}}" ng-if="user.headimgurl"/>
                             <img src="/image/my/default_headimg.png" ng-if="!user.headimgurl"/>
                             <div class="profile-titile" style="color:#fff;">
-								{{user.nickname}}<br/>
+								{{user.realName}}<br/>
 								<span style="background-color: rgba(255,255,255,0.2);padding: .2em .5em;">V领队</span>
 							</div>
                             <div class="clear"></div>
@@ -157,21 +157,10 @@
 						<a href="#/myIncome">
                             <div class="my-item-2"><img src="/image/my/my_ico_income.png">
 							<span>返现收益</span>
-							<span class="right-span">￥1500.00<img src="/image/public_ico_arrow.png" /></span></div>
+							<span class="right-span">￥{{incomeAmount}}<img src="/image/public_ico_arrow.png" /></span></div>
                         </a>
                     </div>
-                    
-                    <!-- <div class="my-item" ng-if="isNeedBind">
-                        <a href="#/myPhone/{{user.mobile}}/{{user.token}}">                            
-                            <div class="my-item-2">
-                                <img src="/image/my_2.png">
-                                <span>手机号</span>                            
-                                <span class="right-span"><img src="/image/my_10.png" /></span>
-                                <span class="right-span1" style="color:#da5664;" ng-if="user.mobile!='0'">{{user.mobile}}</span>
-                                <span class="right-span1" style="color:#da5664;" ng-if="user.mobile=='0'"></span>
-                            </div>
-                        </a>
-                    </div> -->
+
                 </div>
             </div>
         </div>

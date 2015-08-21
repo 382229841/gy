@@ -52,8 +52,8 @@ function openDialog(content, title, buttonArray, type, fn) {
             dialogWrap.appendTo(dialog);            
             dialogWrap.append($('#orderNumber').html());
             if(content==="go"){
-                $(".dialog .btn-add-to-cart").css("background-color","#DB5565");
-                $(".dialog .btn-add-to-cart").css("border","1px solid #DF6977");   
+                $(".dialog .btn-add-to-cart").css("background-color","#f75757");
+                $(".dialog .btn-add-to-cart").css("border","1px solid #f75757");   
                 $(".dialog .btn-add-to-cart").text("立即购买");    
             }
             if ($(".dialog .btn-add-to-cart").length > 0) {

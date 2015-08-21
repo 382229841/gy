@@ -841,17 +841,15 @@ label
 .btn-buy-new
 {
     width:100%;
-    min-width:120px;
-    padding:12px 6px;
-    margin-top:7px;
-    border:1px solid #DF6977;
+    padding:9px 6px;
+    border:1px solid #FCA93F;
 }
 
 .btn.btn-buy-new
 {
     font-size:1.4em;
     color:#ffffff;
-    background-color:#DB5565;
+    background-color:#FCA93F;
 }
 
 .app-body .btn.btn-add-cart
@@ -877,16 +875,15 @@ label
 {
     width:100%;
     min-width:130px;
-    padding:12px 6px;
-    margin-top:7px;
-    border:1px solid #56C18A;
+    padding:9px 6px;
+    border:1px solid #f75757;
 }
 
 .btn.btn-add-cart-new
 {
     font-size:1.4em;
     color:#ffffff;
-    background-color:#51BF87;
+    background-color:#f75757;
 }
 
 /*dialog*/
@@ -1037,7 +1034,7 @@ label
 {
     padding:6px 6px;
     font-size:1.2em;
-    color:#63C694;
+    color:#f75757;
 }
 
 .dialog_footer .btn:not(:last-child)
@@ -2542,7 +2539,7 @@ ul#pagination
     -o-border-radius:4em; 
     border-radius:4em; 
     position: absolute;
-    bottom:7.5em;
+    bottom:6.5em;
     right:.5em;
 }
 

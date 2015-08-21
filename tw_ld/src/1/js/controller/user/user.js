@@ -151,10 +151,53 @@ app.controller('myIncomeController', function ($rootScope, $scope, httpRequest, 
     $scope.step=1;
 	
 	$scope.withDraw=function(t){
-		if(t==0){
+		if(t===0){
 			$scope.step=2;
 			return;
 		}
+
+		var account=$scope.account || '';
+		var name=$scope.name || '';
+		var mobile=$scope.mobile || '';
+		
+		if (!account) {
+            alertWarning("请输入支付宝账号");
+            return;
+        }
+
+        if (!name) {
+            alertWarning("请输入支付宝姓名");
+            return;
+        }
+
+		if (!mobile || (mobile && mobile.length<1)) {
+            alertWarning("请输入手机号");
+            return;
+        }
+
+        if (mobile.length!=11) {
+            alertWarning("请输入11位的手机号码");
+            return;
+        }
+
+		var data="platform=all&token="
+					+$rootScope.tokenInfo.token
+					+"&account="+account
+					+"&name="+name
+					+"&mobile="+mobile;
+
+		httpRequest.APIPOST('/ldIncome/apply', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				alertWarning("申请成功，请等待审核");
+				$scope.step=1;
+				$scope.getIncomeList(1);
+				$scope.getIncomeList(2);
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+
 	};
 	$scope.back = function () {
 		if($scope.step>1){
@@ -163,14 +206,94 @@ app.controller('myIncomeController', function ($rootScope, $scope, httpRequest, 
 		}
         $location.path("/myProfile");
     }
+
+	$scope.incomeList1=[];//未返现
+	$scope.incomeList2=[];//申请中
+	$scope.incomeList3=[];//已提现
+    $scope.getIncomeList=function(s){
+		httpRequest.APIPOST('/ldIncome/listByStatus', dataStringify("platform=all&token="+$rootScope.tokenInfo.token+"&status="+s), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				if(s==1)
+					$scope.incomeList1=result.result;
+				if(s==2)
+					$scope.incomeList2=result.result;
+				if(s==3)
+					$scope.incomeList3=result.result;
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+	}
+	$scope.getIncomeList(1);
+	$scope.getIncomeList(2);
+	$scope.getIncomeList(3);
+	
 });
 
 app.controller('myWishController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window,$routeParams) {
     $scope.step=1;
-	
-	$scope.wish=function(t){
+
+
+	$scope.saveWish=function(wish){
+		if(!wish){
+			alertWarning("请输入心愿产品名称");
+			return;
+		}
+		if(!wish.name){
+			alertWarning("请输入心愿产品名称");
+			return;
+			//我的新肌面膜
+		}
+		if(!wish.feature){
+			alertWarning("请输入500位以内的产品特点");
+			return;
+		}
+
+		if(wish.name.length<5 || wish.name.length>100){
+			alertWarning("请输入5-100位以内的心愿产品名称");
+			return;
+		}
+		if(!wish.feature){
+			alertWarning("请输入500位以内的产品特点");
+			return;
+		}
+		if(wish.feature.length>500){
+			alertWarning("请输入500位以内的产品特点");
+			return;
+		}
+
+		wish.link=wish.link?wish.link:"";
+		var data="platform=all&token="+$rootScope.tokenInfo.token+"&name="+wish.name+"&link="+wish.link+"&feature="+wish.feature;
+		var apiUrl='/ldWish/add';
+		if(wish.id){
+			apiUrl='/ldWish/edit';
+			data="platform=all&token="+$rootScope.tokenInfo.token+"&name="+wish.name+"&link="+wish.link+"&feature="+wish.feature+"&id="+wish.id;
+		}
+		
+		httpRequest.APIPOST(apiUrl, dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				alertWarning("提交成功！");
+				$scope.getWishList();
+				$scope.step=2;
+			}else{
+				alertWarning(result.msg);
+			}
+		});
+
+		
+	};
+	$scope.wishNow=function(){
 		$scope.step=2;
 	};
+
+	$scope.editWish=function(id,index){
+		$scope.wish=$scope.wishList[index];
+		$scope.step=2;
+	};
+
+	
+
 	$scope.back = function () {
 		if($scope.step>1){
 			$scope.step=1;
@@ -178,91 +301,19 @@ app.controller('myWishController', function ($rootScope, $scope, httpRequest, da
 		}
         $location.path("/myProfile");
     }
-});
 
+    $scope.getWishList=function(){
+		httpRequest.APIPOST('/ldWish/list', dataStringify("platform=all&token="+$rootScope.tokenInfo.token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.wishList=result.result;
+				
+			}else{
+				alertWarning(result.msg);
+			}
+		});
 
-
-app.controller('oauth2Controller', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
-      var nickname=$location.$$search.nickname;
-      var headimgurl=$location.$$search.headimgurl;
-      var openId=$routeParams.openId;
-      var state=$routeParams.state;
-      var source=$location.$$search.source?$location.$$search.source:1;
-      $rootScope.isOauth2=true;
-      if(source==4){
-          var usertokenInfo=getToken();
-          var arr=state.split('-');
-          if(arr[0]=="orderDetail"){
-              $location.path("/orderDetail/"+arr[1]+"/"+usertokenInfo.token).search(usertokenInfo);
-              return;
-          }
-          if(arr.length<2){
-              $location.path("/"+state).search(usertokenInfo);
-              return;
-          }
-          if(arr.length==2){
-              $location.path("/"+arr[0]+'/'+arr[1]).search(usertokenInfo);
-              return;
-          }
-          if(arr.length==3){
-              $location.path("/"+arr[0]+'/'+arr[1]+'/'+arr[2]).search(usertokenInfo);
-              return;
-          }
-      }
-      var user={openId:openId,nickname:nickname,headimgurl:headimgurl,source:source};
-      var source=user.source;//用户来源，1：微信， 2：QQ， 3：微博
-      var data="platform=all&openid="+user.openId+"&nickname="+user.nickname
-             +"&gender=0&avatar="+user.headimgurl+"&source="+source+"&channel=H5"
-             +"&appVersion="+easybuy.version;
-      httpRequest.APIPOST('/user/thirdLogin', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-          if (result && result.code == statusCode.Success) {
-              $scope.currentUser=result.result;
-              $scope.currentUser.openId=user.openId;
-              $scope.currentUser.source=user.source;
-              $scope.currentUser.nickname=user.nickname;
-              $scope.currentUser.headimgurl=user.headimgurl;
-              
-              if(($scope.currentUser.mobile==null || !$scope.currentUser.mobile || ($scope.currentUser.mobile && $scope.currentUser.mobile.length<6)) &&  isNotBindPhone[state]!=true && ($scope.currentUser.source && $scope.currentUser.source!=4)){
-                  if($scope.currentUser.bind!=0 || $scope.currentUser.bind!="0")
-                    $location.path("/myPhone/0/"+$scope.currentUser.token).search({user:user,state:state});
-              }else{
-                  setToken($scope.currentUser);
-                  var arr=state.split('-');
-                  if(arr[0]=="orderDetail"){
-                      $location.path("/orderDetail/"+arr[1]+"/"+$scope.currentUser.token).search(user);
-                      return;
-                  }
-                  if(arr.length<2){                      
-                      $location.path("/"+state).search(user);
-                      return;
-                  }
-                  if(arr.length==2){
-                      if(arr[0]=="activity" && arr[1]=="activityDetail"){
-                          $location.path("/"+arr[0]+'/'+arr[1]);
-                      }else{
-                          $location.path("/"+arr[0]+'/'+arr[1]).search(user);
-                      }                      
-                      return;
-                  }
-                  if(arr.length==3){
-                      $location.path("/"+arr[0]+'/'+arr[1]+'/'+arr[2]).search(user);
-                      return;
-                  }
-                  
-              }
-          }else{
-              alert(result.msg);
-          }
-      });      
-});
-app.controller('wechatOauthController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
-     var state=$routeParams.state;
-     var from=($location.search() && $location.search().from)?$location.search().from:"";
-     if(baseOauth[state]===true && from!=="activity"){
-         $rootScope.oauth2(state,null);
-     }else{
-         $rootScope.oauth2(state,"userinfo");
-     }     
+    };
+    $scope.getWishList();
 });
 
 /** added in 1.6**/
@@ -297,6 +348,8 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
 		$location.path("/forgot");
 		
 	};
+
+	$scope.incomeAmount=$rootScope.tokenInfo?$rootScope.tokenInfo.incomeAmount || 0.00 : 0.00;
 	
 	$scope.myInfo=function(){
 		$location.path("/myInfo");
@@ -317,7 +370,7 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
         }
 
         var data="platform=all&account="+u+"&password="+p+"&category=2";
-        httpRequest.APIPOST('/user/login', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/user/login/ld', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
                 var data2="platform=all&token="+token;
@@ -332,6 +385,10 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
                         $scope.user.nickname=userInfo.nickname;
                         $scope.user.headimgurl=userInfo.avatar;
                         $scope.user.mobile=userInfo.mobible;
+						$scope.user.category=userInfo.category;
+						$scope.user.realName=userInfo.realName;
+						$scope.user.incomeAmount=userInfo.incomeAmount;
+						$scope.incomeAmount=userInfo.incomeAmount;
                         $scope.user.bind=0;
                         $scope.isNeedBind=false;
                         setToken($scope.user);
@@ -445,7 +502,7 @@ app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $h
 	};
 	
 	
-
+	var loginFrom=1;
     $scope.logout=function(){
        var arrButton = ["取消", "确定"];
         openDialog("您是否确认退出？", null, arrButton, null,
@@ -470,14 +527,89 @@ app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $h
                     $scope.user={};
                     removeToken();
                     $scope.isLogin=false;
+					$rootScope.isRootLogin=false;
                     $scope.$apply($scope.isLogin);  
                     $scope.$apply($scope.user);
+					$rootScope.$apply($rootScope.isRootLogin);
+					$location.path("/myProfile");
+					
+					$scope.$apply($location);  
 
                     
                 }
         });
          
     }
+	
+	$scope.username=$rootScope.tokenInfo.realName;
+	$scope.saveName=function(){
+		var name=$scope.username;
+		
+        if (!name || (name && name.length<1)) {
+            alertWarning("请输入您的真实姓名");
+            return;
+        }
+		
+        var data="platform=all&token="+$rootScope.tokenInfo.token+"&realname="+name;
+        httpRequest.APIPOST('/user/updateRealname', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            if (result && result.code == statusCode.Success) {
+                $rootScope.tokenInfo.realName=name;
+				var tokenInfo=getToken();
+				tokenInfo.realName=name;
+				setToken(tokenInfo);   
+				alertWarning("姓名修改成功。");
+				$scope.step=1;
+            }else{
+                alertWarning(result.msg);
+            }
+        });
+		
+	};
+	$scope.savePassword=function(){
+		var password=$scope.password;
+		var newPassword=$scope.newpassword;
+		var newPassword2=$scope.newpassword2;
+		
+		if (!password || password.length<6 || password.length>20) {
+            alertWarning("请输入正确的旧密码");
+            return;
+        }
+		
+        if (!newPassword || newPassword.length<6 || newPassword.length>20) {
+            alertWarning("请输入6~20位的密码");
+            return;
+        }
+		if (!newPassword2 || newPassword2.length<6 || newPassword2.length>20) {
+            alertWarning("请输入6~20位的密码");
+            return;
+        }
+		if(newPassword!=newPassword2){
+			alertWarning("新密码和确认密码不一致");
+            return;			
+		}
+		
+        var data="platform=all&token="+$rootScope.tokenInfo.token+"&oldPassword="+password+"&newPassword="+newPassword;
+        httpRequest.APIPOST('/user/updatePassword', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            if (result && result.code == statusCode.Success) {                  
+				alertWarning("密码修改成功。");
+				$scope.step=1;
+            }else{
+                alertWarning(result.msg);
+            }
+        });
+		
+	};
+	
+	$scope.save=function(){
+		if($scope.step==2){
+			$scope.saveName();
+		}
+		if($scope.step==3){
+			$scope.savePassword();
+		}
+	};
+	
+	
     $scope.back = function () {
 		if($scope.step>1){
 			$scope.step=1;
@@ -493,6 +625,7 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
         var c=$scope.code;
         var p=$scope.password;
         var ic=$scope.inviteCode;
+		var name=$scope.name;
 		
         if (!u || (u && u.length<1)) {
             alertWarning("请输入手机号");
@@ -508,17 +641,22 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
             alertWarning("请输入验证码");
             return;
         } 
-        if (!p || p.length<4 || p.length>20) {
-            alertWarning("请输入4~20位的密码");
+        if (!p || p.length<6 || p.length>20) {
+            alertWarning("请输入6~20位的密码");
             return;
         }
 		
-		if (!ic || ic.length<4 || ic.length>20) {
-            alertWarning("请输入4~20位的密码");
+		if (!ic || ic.length<7 || ic.length>20) {
+            alertWarning("请输入7位的邀请码");
+            return;
+        }
+		
+		if (!name || name.length<6 || name.length>20) {
+            alertWarning("请输入您的真实姓名");
             return;
         }
         $scope.wait=0;
-        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic;
+        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic+"&realname="+name;
         httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
@@ -534,6 +672,9 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
                         $scope.user.headimgurl=userInfo.avatar;
                         $scope.user.mobile=userInfo.mobible;
                         $scope.user.bind=userInfo.bind || 0;
+						$scope.user.category=userInfo.category;
+						$scope.user.realName=userInfo.realName;
+						$scope.user.incomeAmount=userInfo.incomeAmount;
                         setToken($scope.user);
                         $location.path("/myProfile");
                     }else{
@@ -589,7 +730,6 @@ app.controller('forgotController', function ($rootScope, $scope, httpRequest, $h
         var u=$scope.username;
         var c=$scope.code;
         var p=$scope.password;
-        var ic=$scope.inviteCode;
 		
         if (!u || (u && u.length<1)) {
             alertWarning("请输入手机号");
@@ -610,33 +750,12 @@ app.controller('forgotController', function ($rootScope, $scope, httpRequest, $h
             return;
         }
 		
-		if (!ic || ic.length<4 || ic.length>20) {
-            alertWarning("请输入4~20位的密码");
-            return;
-        }
         $scope.wait=0;
-        var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic;
-        httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        var data="platform=all&mobile="+u+"&password="+p+"&code="+c;
+        httpRequest.APIPOST('/user/password', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
-                var token=result.result.token;
-                var data2="platform=all&token="+token;
-                httpRequest.APIPOST('/mine/index', dataStringify(data2), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                    if (result && result.code == statusCode.Success) {
-                        var userInfo=result.result;
-                        $scope.user={};
-                        $scope.user.token=token;               
-                        $scope.user.openId="0";
-                        $scope.user.source=4;
-                        $scope.user.nickname=userInfo.nickname;
-                        $scope.user.headimgurl=userInfo.avatar;
-                        $scope.user.mobile=userInfo.mobible;
-                        $scope.user.bind=userInfo.bind || 0;
-                        setToken($scope.user);
-                        $location.path("/myProfile");
-                    }else{
-                        alertWarning(result.msg);
-                    }
-                });
+                alertWarning("新密码设置成功！");
+				$location.path("/products");
             }else{
                 alertWarning(result.msg);
             }
@@ -669,7 +788,7 @@ app.controller('forgotController', function ($rootScope, $scope, httpRequest, $h
         }
         $("#codeClock").css("display","inline-block");
         time();
-        var data="platform=all&type=1&mobile="+$scope.username;
+        var data="platform=all&type=2&mobile="+$scope.username;
         httpRequest.APIPOST('/sms/getVerifyCode', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                  
