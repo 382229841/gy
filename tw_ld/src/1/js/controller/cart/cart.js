@@ -52,6 +52,10 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
 		});
 	}
 	$scope.getCart();
+	
+	$rootScope.$on("CtrlLoginModule", function (event, tokenInfo) {
+        $scope.getCart();
+    });
 
     if (getMobileType() == MobileTypes.iPhone || getMobileType() == MobileTypes.iPad) {
         window.onresize = function () {
@@ -127,76 +131,17 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
             alertWarning("您还没有选择商品哦");
             return;
         }
-		$scope.synCart();
+		var ids=[];
+		var nums=[];
 		
-		return;
-        
-        var user=$location.$$search;
-        var currentUser=getToken();
-        if((user && user.openId) || (currentUser && currentUser.token)){
-            if(!currentUser || (currentUser && !currentUser.token)){
-                var source=user.source;//用户来源，1：微信， 2：QQ， 3：微博
-                var data="platform=all&openid="+user.openId+"&nickname="+user.nickname
-                         +"&gender=0&avatar="+user.headimgurl+"&source="+source+"&channel=H5"
-                         +"&appVersion="+easybuy.version;
-                httpRequest.APIPOST('/user/thirdLogin', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                    if (result && result.code == statusCode.Success) {
-                        $scope.user=result.result;
-                        $scope.user.openId=user.openId;
-                        $scope.user.source=user.source;
-                        $scope.user.nickname=user.nickname;
-                        $scope.user.headimgurl=user.headimgurl;
-                        if($scope.user.mobile==null){
-                            $scope.user.mobile="0";
-                        }
-                        setToken($scope.user);                        
-                        var urlUser=$scope.user;
-                        var goodsArr = new Array();
-                        $.each(currentProducts, function (i, product) {
-                            for(var j=0;j<product.goodsList.length;j++){
-                                if (product.goodsList[j].checked) {
-                                    var goods = new Object();
-                                    goods.id = product.goodsList[j].id;
-                                    goods.num = product.goodsList[j].quantity;
-                                    goodsArr.push(goods);
-                                }
-                            }                
-                        });      
-                        $location.path("/pay/999/1").search({area:1,goods:JSON.stringify($scope.products),user:JSON.stringify(urlUser)});
-                        $scope.$apply($location);
-                    }else{
-                        alert(result.msg);
-                    }
-                });
-            }else{
-                var urlUser={};
-                if(currentUser && currentUser.token){
-                    urlUser=currentUser;
-                }else{
-                    urlUser=user;
-                }
-                var goodsArr = new Array();
-                $.each($scope.products, function (i, product) {
-                    for(var j=0;j<product.goodsList.length;j++){
-                        if (product.goodsList[j].checked) {
-                            var goods = new Object();
-                            goods.id = product.goodsList[j].id;
-                            goods.num = product.goodsList[j].quantity;
-                            goodsArr.push(goods);
-                        }
-                    }                
-                });      
-                $location.path("/pay/999/1").search({area:1,goods:JSON.stringify($scope.products),user:JSON.stringify(urlUser)});
-            }
-        }else{
-            if(easybuy.isWechat){
-                $location.path("/wechatOauth/cart");
-            }else{
-                $location.path("/myProfile/cart");
-            }
-        }
-
-        
+		for(var i=0;i<$scope.products.length;i++){
+			if($scope.products[i].checked==1){
+				ids.push($scope.products[i].id);
+				nums.push($scope.products[i].quantity);
+			}
+		}
+		$location.path("/pay/999/1").search({goodsId:ids.join(','),quantity:nums.join(',')});
+		$scope.$apply($location);
     }
 
     $scope.edit = function () {

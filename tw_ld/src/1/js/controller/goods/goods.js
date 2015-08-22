@@ -1,10 +1,10 @@
 app.controller('productListController', function ($rootScope,$templateCache, $scope, httpRequest,dataStringify, analytics, $location, $window, $routeParams) {    
     var code=$routeParams.code || 0;
 	$scope.isSearchPage=false;
-	
 	$scope.showSearch=function(){
-		$scope.isSearchPage=true;
-		$("#searchPage").addClass("current");
+		//$scope.isSearchPage=true;
+		//$("#searchPage").addClass("current");
+		$location.path("/productsSearch");
 	};
 	
 	$scope.$on("CtrlSearchPanel", function (event, isSearchPage) {
@@ -131,19 +131,36 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
     }
 	
 	$scope.cartNum();
+	
+	$rootScope.$on("CtrlLoginModule", function (event, tokenInfo) {
+        $scope.cartNum();
+    });
 
 });
 
 app.controller('searchPanelController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
+	$scope.back=function(){
+		$location.path("/products");
+	};
+	
+	
+	$scope.isQuery=false;
+	$scope.searchKeyword="";
+	$scope.isFocus=false;
+	
 	$scope.cancelSearch=function(){
+		if($scope.isFocus){
+			$(".search-result").removeClass("focus");
+			$scope.isFocus=false;
+			return;
+		}
 		$scope.$emit("CtrlSearchPanel", false);
 		$scope.searchKeyword="";
 		$scope.isLocalKey=true;
 		$scope.isQuery=false;
 		$scope.queryProducts=[];
 	};
-	$scope.isQuery=false;
-	$scope.searchKeyword="";
+	
 	
 	//setSearchLocalItems([{value:"凤梨酥"},{value:"郭元益凤梨酥"},{value:"凤梨酥350g"},{value:"凤梨酥350g"}]);
 	
@@ -151,36 +168,57 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	$scope.searchItems=[];//["凤梨酥","郭元益凤梨酥","凤梨酥350g0"];
 	
 	$scope.isLocalKey=true;//显示搜索历史记录
-	$scope.searchKeyup=function(){
+	$scope.searchKeyup=function(e){
+		if(e.keyCode==13){
+			if($scope.searchKeyword.length>0){
+				$scope.queryGoods($scope.searchKeyword,1);
+				return;
+			}
+		}
 		if($scope.searchKeyword.length>0){
 			$scope.isLocalKey=false;
 			$scope.getSuggestKeywords($scope.searchKeyword);
 		}else{
 			$scope.isLocalKey=true;
+			$(".search-result").addClass("focus");
 		}
 		
 	};
 	$scope.searchFocus=function(){
-		if($scope.searchLocalItems.length>0)
-			$(".search-result").addClass("focus");
+		$scope.searchLocalItems=getSearchLocalItems() || [];
+		$scope.isFocus=true;
+		if($scope.searchKeyword.length>0){
+			$scope.isLocalKey=false;
+			$scope.getSuggestKeywords($scope.searchKeyword);
+			$scope.isFocus=false;
+		}else{
+			if($scope.searchLocalItems.length>0)
+				$(".search-result").addClass("focus");
+		}
+		
 	};
 	
 	$scope.searchBlur=function(){
-		$(".search-result").removeClass("focus");
+		//$(".search-result").removeClass("focus");
 	};
+	
+	$scope.hideSearchDropdown=function(){
+		$(".search-result").removeClass("focus");
+	}
 	
 	$scope.saveSearchKeyword=function(value){
 		$scope.searchLocalItems.push({"value":value});
 		setSearchLocalItems($scope.searchLocalItems);
 		
 		$scope.searchKeyword=value;
-
+		
 		$scope.queryGoods(value,1);
 	}
 	
 	$scope.removeSearchKeyword=function(){
 		setSearchLocalItems(null);
 		$scope.searchLocalItems=[];
+		$(".search-result").removeClass("focus");
 	};
 	$(".search-input").bind("keyup",function(e){
 		if(e.keyCode==13 && $scope.searchKeyword.length>0){
@@ -216,6 +254,8 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	}
 	
 	$scope.queryGoods=function(q,pageNo){
+		$(".search-result").removeClass("focus");
+		$scope.isFocus=false;
 		$scope.searchKeyword=q;
 		httpRequest.APIPOST('/solr/goods/query', dataStringify("platform=all&q="+q+"&pageNo="+pageNo+"&pageSize=10"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
@@ -265,17 +305,6 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	
 	
 });
-
-/*app.controller('cartNumController', function ($rootScope, $scope, analytics, $location) {
-    $scope.cart = function () {
-        $location.path("/cart");
-    }
-
-    $scope.cartNum = function () {
-        return getCartNum();
-    }
-});*/
-
 
 
 app.controller('productAppController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
@@ -476,61 +505,12 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
     }
 	
 	$scope.cartNum();
-
-
-});
-app.controller('commentController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window, $routeParams) {
-    $scope.pageNum = 1;
-    appendComments($scope.pageNum);
-
-    var loadObj = new loadControl('#myLoadCanvas', function () {
-        $(".pull-loading").html("加载中...");
-        $scope.pageNum++;
-        appendComments($scope.pageNum);
+	
+	$rootScope.$on("CtrlLoginModule", function (event, tokenInfo) {
+        $scope.cartNum();
     });
 
-    $(".scrollable-content").scroll(function () {
-        if ($("#divProductComments").length > 0) {
-            if ($scope.isloading == false && $scope.page) {
-                advanceLoadCommon("#divProductComments", loadObj, $scope.pageNum < $scope.page.totalPage);
-            }
-        }
-    });
 
-    function appendComments(pageNum) {
-        $scope.isloading = true;
-        httpRequest.APIPOST('/goods/listComment', dataStringify("platform=all&goodsId=" + $routeParams.id + "&pageNo=" + pageNum + "&pageSize=15" + (pageNum > 1 ? "&now=" + $scope.pageTime : "")), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            $scope.isloading = false;
-            if (result && result.code == statusCode.Success) {
-                $scope.commentInfo = result.result;
-                $scope.page = result.page;
-                if ($scope.commentInfo) {
-                    if($(".rateTotal img").length<1)
-                        $(".rateTotal").raty({ path: "image/raty", size: 15, score: $scope.commentInfo.avgStar, readOnly: true });
-                }
-                var comments = $scope.commentInfo.comments;
-                if (comments) {
-                    var index = 0;
-                    if ($scope.comments) {
-                        index = $scope.comments.length;
-                        $scope.comments = $scope.comments.concat(comments);
-                    }
-                    else {
-                        $scope.comments = comments;
-                    }
-                    setTimeout(function () {
-                        $scope.$apply($scope.comments);
-                        $.each($(".product-item-comment"), function (i, item) {
-                            if($(item).find(".itemRate img").length<1)
-                                $(item).find(".itemRate").raty({ path: "image/raty", size: 15, score: parseInt($(item).find(".itemRate").attr("score")), readOnly: true });
-                        });
-                    }, 0);
-                }
-            }
-            loadObj.clear();
-            $(".pull-loading").html("上拉加载");
-        });
-    }
 });
 
 app.controller('downloadController', function ($rootScope, $scope, httpRequest, analytics, $location, $window, $routeParams) {

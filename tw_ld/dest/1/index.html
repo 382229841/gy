@@ -20,6 +20,7 @@
 	<script src="lib/angular.min.js?1" type="text/javascript"></script>
 	<script src="lib/libs.min.js?1" type="text/javascript"></script>
     <script src="js/config.js?1" type="text/javascript"></script>
+	<script src="js/config-test.js?1" type="text/javascript"></script>
 	<!-- <script src="js/config-test.js?1" type="text/javascript"></script> -->
     <script src="js/app.min.js?1" type="text/javascript"></script>
     <script src="js/mains.min.js?1" type="text/javascript"></script>
@@ -32,8 +33,8 @@
     <div class="app">
         <div class="app-body" ng-class="{loading: loading}">
             <div ng-show="loading" class="app-content-loading"><img src="image/favicon.png" class="loading-spinner-logo"/><i class="loading-spinner fa fa-circle-o-notch fa-spin"></i></div>
-            <ng-view class="app-content" ng-hide="loading || !isRootLogin"></ng-view>
-			<div ng-include=" 'views/user/my.html' " ng-hide="isRootLogin"></div>
+            <ng-view class="app-content" ng-hide="loading || !isRootLogin"></ng-view>			
+			<div ng-include=" '../views/user/my.html' " ng-hide="isRootLogin"></div>
 		</div>
         <div class="loadingDiv">     
             <div id="floatingBarsG"><div class="blockG" id="rotateG_01"></div><div class="blockG" id="rotateG_02"></div><div class="blockG" id="rotateG_03"></div><div class="blockG" id="rotateG_04"></div><div class="blockG" id="rotateG_05"></div><div class="blockG" id="rotateG_06"></div><div class="blockG" id="rotateG_07"></div><div class="blockG" id="rotateG_08"></div></div>

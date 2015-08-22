@@ -288,6 +288,19 @@ function generateAddressTemp($scope, timeSelector,regionSelector) {
     return {"returnAirport":$scope.returnAirport,"returnAirportId":$scope.returnAirportId,"returnFlightno":$scope.returnFlightno,"shopName":$scope.shopName,"shopPhone":$scope.shopPhone,"nick_name": $scope.name, "mobile": $scope.mobile, "flight_id": $scope.flight != null ? $scope.flight.id : null, "terminal": $scope.flight != null ? $scope.flight.terminal : null, "take_off_time": $(timeSelector).val(),"agentName":$scope.agentName,"agentRegionIds": $scope.agentRegionIds || $(regionSelector).attr("data"),"agentRegion": $scope.agentRegion || $(regionSelector).val(),"agentMobile":$scope.agentMobile,"agentAddress":$scope.agentAddress,"agentComment":$scope.agentComment };
 }
 
+var userModel={
+	bind: '',
+	category: '',
+	headimgurl: '',
+	incomeAmount: '',
+	nickname: '',
+	openId: '',
+	realName: '',
+	source: '',
+	timestamp: '',
+	token: '',
+	version: ''
+};
 function getUserInfo() {
     if (localStorage && localStorage.getItem(easybuy.Storage.UserInfo)) {
         return JSON.parse(localStorage.getItem(easybuy.Storage.UserInfo));

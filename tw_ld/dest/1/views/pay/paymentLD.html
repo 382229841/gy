@@ -245,7 +245,7 @@
 					
 					<span class="col-xs-6">运费</span>					
 					<span class="col-xs-6 text-right">
-						+ <span>￥{{orderPrice.expressPrice}}</span>					
+						+ <span>￥{{orderPrice.expressPrice | currency:''}}</span>					
 					</span>
 					
 					<div class="clear"></div>
@@ -414,7 +414,7 @@
     <div class="nav-bottom" style="font-size:1.2em;padding:0 .5em;line-height:60px;" ng-show="step<2">
         <span class="col-xs-8">商品总额 <span class="cash">{{orderPrice.total}}</span></span>					
 		<span class="col-xs-4 text-right">
-			<span class="btn-span" ng-click="generateOrder();">确认</span>					
+			<span class="btn-span" ng-click="generateOrder();" id='btnOrder'>确认</span>					
 		</span>
 		
     </div>

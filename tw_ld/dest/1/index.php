@@ -41,7 +41,7 @@
     <div class="app">
         <div class="app-body" ng-class="{loading: loading}">
             <div ng-show="loading" class="app-content-loading"><img src="image/favicon.png" class="loading-spinner-logo"/><i class="loading-spinner fa fa-circle-o-notch fa-spin"></i></div>
-            <ng-view class="app-content" ng-hide="loading || !isRootLogin"></ng-view>
+            <ng-view class="app-content" ng-hide="loading || !isRootLogin"></ng-view>			
 			<div ng-include=" '../views/user/my.html' " ng-hide="isRootLogin"></div>
 		</div>
         <div class="loadingDiv">     

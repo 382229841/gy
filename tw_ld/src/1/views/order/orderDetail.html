@@ -23,7 +23,7 @@
                 取消       
             </div>
         </div>
-        <div class="btn-group pull-right" ng-if="order.status==2 && order.category!=3" ng-click="drawbackOrder(order.orderId)">
+        <div class="btn-group pull-right" ng-if="order.status==2" ng-click="drawbackOrder(order.orderId)">
             <div class="btn btn-navbar" style="color:#ffffff;">
                 退款       
             </div>
@@ -219,8 +219,12 @@
                     </div>
                 </div>
                 
-                <div class="main-btn main-btn-90 main-btn-red main-btn-red3" ng-if="order.status==1"><button class="btn" ng-click="pay(order.orderNum,order.totalPrice,order.pickupAddress,order.pickupTime,order.orderId)">付款</button></div>
-                <div class="main-btn main-btn-90 main-btn-red main-btn-red3" ng-if="order.status==2 && order.category!=3"><button class="btn" ng-click="takeOverOrder(order.orderId)">确认收货</button></div>
+                <div class="main-btn main-btn-90 main-btn-red main-btn-red3" ng-if="order.status==1">
+					<button class="btn" ng-click="pay(order.orderNum,order.discountPrice,order.goodsNum,order.orderId)">付款</button>
+				</div>
+                <div class="main-btn main-btn-90 main-btn-red main-btn-red3" ng-if="order.status==2">
+					<button class="btn" ng-click="takeOverOrder(order.orderId)">确认收货</button>
+				</div>
              
             </div>
         </div>

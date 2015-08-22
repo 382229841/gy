@@ -19,9 +19,9 @@ var appDownloadKrUrl = {
 };
 var webchatOauth=function(state,type){
     if(type=="userinfo"){
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb9379aa3ae5ab5c6&redirect_uri=http://ops.yhiker.com/api/wx/oauth4.php&response_type=code&scope=snsapi_userinfo&state="+state+"#wechat_redirect";
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb9379aa3ae5ab5c6&redirect_uri=http://ops.yhiker.com/api/wx/oauth4kr.php&response_type=code&scope=snsapi_userinfo&state="+state+"#wechat_redirect";
     }else{
-        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb9379aa3ae5ab5c6&redirect_uri=http://ops.yhiker.com/api/wx/oauth4.php&response_type=code&scope=snsapi_base&state="+state+"#wechat_redirect";
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb9379aa3ae5ab5c6&redirect_uri=http://ops.yhiker.com/api/wx/oauth4kr.php&response_type=code&scope=snsapi_base&state="+state+"#wechat_redirect";
     }
 };
 //?environment=test

@@ -1,4 +1,75 @@
 <style>
+	.list-products-item{
+		min-height: 100px;
+		width: 49%;
+		float:left;
+		background-color:#fff;
+		margin-bottom:10px;
+	}
+	.list-products{
+		min-height: 100px;
+		padding: 0 8px;
+	}
+	.list-products-item:nth-child(odd){
+		margin-right:2%;
+		
+	}
+	.products-item-image{
+		background-position: center 0;
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+	.list-show-product-brief-0{
+		color:#333;
+		font-size:.85em;
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		word-break: break-all;
+		-webkit-box-orient: vertical;
+	}
+	.products-item-title{
+		padding:0 .5em;
+		position:relative;
+	}
+	.products-item-price{
+		position: absolute;
+		bottom: 0em;
+		padding-top:.2em;
+		padding-bottom:.3em;
+		width: 90%;
+		background-color: #fff;
+	}
+	
+	.products-item-title hr {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.price.promotePrice {
+		font-size: 1em;
+		color: #ec3f35;
+	}
+	.price.shopPrice {
+		font-size: .9em;
+		color: #999;
+	}
+	.price{
+		text-align:center;
+		line-height:1.3;
+	}
+	@media only screen and (min-width: 500px)
+    {
+        .price{
+			line-height:2;
+		}
+		
+		.products-item-price{
+			padding-bottom: 1em;
+			padding-top:.5em;
+		}
+    }
+
+
 	.btn-cancel{
 		background-image:none;
 		color:#fff;
@@ -70,6 +141,16 @@
 		background:#f7f7f7;
 		width: 50%;
 	}
+	.fa-search:before {
+		content: "\f002";
+	}
+	.fa-search {
+		position: absolute;
+		top: 22px;
+		right: 24px;
+		color: #999;
+		z-index: 9999999999;
+	}
 
 </style>
 <div ng-controller="searchPanelController">
@@ -78,15 +159,23 @@
         <div class="navbar-brand navbar-brand-search" style="text-align:right;">
             <input type="text" class="search-input" placeholder="商品名" 
 				ng-model="searchKeyword" 
-				ng-keyup="searchKeyup();"
+				ng-keyup="searchKeyup($event);"
 				ng-focus="searchFocus();"
 				ng-blur="searchBlur();"
 				/>
+			<i class="fa fa-search" ng-click="queryGoods(searchKeyword,1);"></i>
         </div>
-        <div class="btn-group pull-left" ng-click="cancelSearch();">
+        <div class="btn-group pull-left" ng-click="cancelSearch();" ng-show="isQuery || isFocus">
             <div class="btn btn-navbar sidebar-toggle">
                 <div class="btn-left btn-cancel">
 					取消
+                </div>
+            </div>
+        </div>
+		
+		<div class="btn-group pull-left" ng-click="back()" ng-show="!isQuery && !isFocus">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
                 </div>
             </div>
         </div>
@@ -95,7 +184,7 @@
 
     <div class="scrollable product-list product-list-query">
     	
-        <div class="scrollable-content background-gray" style="padding-bottom:1em;">  
+        <div class="scrollable-content background-gray" style="padding-bottom:1em;" ng-click="hideSearchDropdown();">  
 			<div class="nav-main-block"></div>
 			
             <span ng-show="!isQuery"
@@ -182,4 +271,6 @@
 		
 		
 	</div>
+	
+	<div class="clear"></div>
 </div>

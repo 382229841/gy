@@ -108,8 +108,8 @@
 	.page {
 		-webkit-transition: all .2s ease-in-out;
 		transition: all .2s ease-in-out;
-		-webkit-transform: translateX(100%);
-		transform: translateX(100%);
+		-webkit-transform: translateX(200%);
+		transform: translateX(200%);
 		background:#f7e7e7;
 	}
 	.page.current {
@@ -144,6 +144,11 @@
 	.list-show-product-brief-0{
 		color:#333;
 		font-size:.85em;
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		word-break: break-all;
+		-webkit-box-orient: vertical;
 	}
 	.products-item-title{
 		padding:0 .5em;
@@ -185,12 +190,24 @@
 			padding-top:.5em;
 		}
     }
+	.fa-search:before {
+		content: "\f002  输入商品名";
+	}
+	.fa-search {
+		position: absolute;
+		top: 22px;
+		left: 17%;
+		color: #fff;
+		z-index: 9999999999;
+		font-size: .9em;
+	}
 </style>
 <div ng-controller="productListController">
     <!-- Navbars -->
     <div class="navbar navbar-app nav-main" ng-show="!isSearchPage">
         <div class="navbar-brand navbar-brand-search" ng-click="showSearch();">
-            <input type="text" class="search-input-index" placeholder="输入商品名"/>
+			<i class="fa fa-search"></i>
+            <input type="text" class="search-input-index" placeholder=""/>
         </div>
         <div class="btn-group pull-left" ng-click="inquiry()">
             <div class="btn btn-navbar sidebar-toggle">
@@ -280,7 +297,7 @@
 		
 		<div id="searchPage" class="scrollable-content background-gray page">
 			
-			<div ng-include="'views/goods/searchPanel.html'"></div>
+			<!-- <div ng-include="'views/goods/searchPanel.html'"></div> -->
 		
 		
 		</div>

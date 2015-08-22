@@ -1,3 +1,16 @@
+var userModel={
+	bind: '',
+	category: '',
+	headimgurl: '',
+	incomeAmount: '',
+	nickname: '',
+	openId: '',
+	realName: '',
+	source: '',
+	timestamp: '',
+	token: '',
+	version: ''
+};
 function getUserInfo() {
     if (localStorage && localStorage.getItem(easybuy.Storage.UserInfo)) {
         return JSON.parse(localStorage.getItem(easybuy.Storage.UserInfo));

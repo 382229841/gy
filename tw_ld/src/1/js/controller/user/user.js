@@ -1,152 +1,3 @@
-app.controller('myPhoneController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window,$routeParams) {
-    $scope.mobile=$routeParams.mobile || "";
-    $scope.token=$routeParams.token || getToken().token;
-    $scope.isSetMobile=$routeParams.mobile?true:false;
-    if($routeParams.mobile=="0"){
-        $scope.isSetMobile=false;
-        $scope.mobile="";
-    }
-    if(easybuy.isWechat && !$routeParams.token){
-        if(getToken() && getToken().token){
-            httpRequest.APIPOST('/mine/index', dataStringify("platform=all&token="+getToken().token), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                if (result && result.code == statusCode.Success) {
-                    var userInfo=result.result;
-                    $scope.mobile=userInfo.mobile;
-                    if($scope.mobile){
-                        $scope.isSetMobile=true;
-                    }
-                }else{
-                    alertWarning(result.msg);
-                }
-            });
-        }
-    }
-    $scope.focus=function(){
-        $("#myPhoneNumber").focus();
-    };
-    $scope.back=function(){
-        $location.path("/myProfile");
-    };
-    $scope.setPhone=function(){
-        if (!$scope.mobile || $scope.mobile.toString().length < 9 || $scope.mobile.toString().length > 13) {
-            alertWarning("请输入9~13位的手机号码");
-            return;
-        }
-        if (!$scope.code || $scope.code.toString().length < 4 || $scope.code.toString().length > 8) {
-            alertWarning("请输入验证码");
-            return;
-        }
-        var data="platform=all&token="+$scope.token+"&mobile="+$scope.mobile+"&code="+$scope.code;
-        $scope.wait=0;
-        showLoading();
-        httpRequest.APIPOST('/user/bindMobile', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            if (result && result.code == statusCode.Success) {
-                 alertWarning("手机号设置成功");
-                 var temp=getToken();
-                 if(temp){
-                    temp.mobile=$scope.mobile;
-                    setToken(temp);
-                 }
-                 if($location.$$search && $location.$$search.user && $location.$$search.user.openId){
-                      var arr=$location.$$search.state.split('-');
-                      if(arr[0]=="orderDetail"){
-                          $location.path("/orderDetail/"+arr[1]+"/"+$scope.token).search(user);
-                          return;
-                      }
-                      if(arr.length<2){
-                          $location.path("/"+$location.$$search.state).search($location.$$search.user);
-                          return;
-                      }
-                      if(arr.length==2){
-                          $location.path("/"+arr[0]+'/'+arr[1]).search($location.$$search.user);
-                          return;
-                      }
-                      if(arr.length==3){
-                          $location.path("/"+arr[0]+'/'+arr[1]+'/'+arr[2]).search($location.$$search.user);
-                          return;
-                      }
-                 }else{
-                     $location.path("/myProfile");
-                 }
-            }else{
-                alertWarning(result.msg);
-            }
-        });
-
-    }
-    $scope.wait=60;  
-    var time=function() {  
-        if ($scope.wait == 0) {  
-            $scope.wait=60; 
-            $("#codeClock").css("display","none");
-        } else {
-             $scope.wait--;
-             $scope.$apply($scope.wait);
-            setTimeout(function() {  
-                time();
-            },  
-            1000)  
-        }  
-    }  
-    $scope.getCheckCode=function(){
-        if ($scope.mobile.toString().length < 9 || $scope.mobile.toString().length > 13) {
-            alertWarning("请输入9~13位的手机号码");
-            return;
-        }
-        $("#codeClock").css("display","inline-block");
-        time();
-        var data="platform=all&type=3&mobile="+$scope.mobile;
-        httpRequest.APIPOST('/sms/getVerifyCode', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            if (result && result.code == statusCode.Success) {
-                 
-            }else{
-                alertWarning(result.msg);
-            }
-        });
-    };
-});
-
-app.controller('myCouponController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window,$routeParams) {
-    if($routeParams.token){
-        $scope.token=$routeParams.token;
-    }else{
-        $scope.token=getToken()?getToken().token:"";
-    }
-    var from=($location.search() && $location.search().from)?$location.search().from:"";
-    if(easybuy.isWechat && !$routeParams.token && from=="activity"){
-        var t=getToken();        
-        $scope.token=t.token;
-        if(!t.mobile || (t.mobile && t.mobile.length<6)){
-            $location.path("/wechatOauth/myCoupon").search({from:from});
-            return
-        }		
-    }
-    if($scope.token){
-        var data="platform=all&token="+$scope.token;
-        showLoading();
-        httpRequest.APIPOST('/coupons/mine', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-            if (result && result.code == statusCode.Success) {
-                 hideLoading();
-                 $scope.coupons=result.result;
-
-            }else{
-                hideLoading();
-                alert(result.msg);
-            }
-        });
-    }else{
-        $location.path("/myProfile");
-    }
-    $scope.back=function(){
-        if($location.search() && $location.search().from){
-            history.back();
-        }else{
-            $location.path("/myProfile");
-        }        
-    }
-	
-});
-
 app.controller('myIncomeController', function ($rootScope, $scope, httpRequest, dataStringify, analytics, $location, $window,$routeParams) {
     $scope.step=1;
 	
@@ -225,9 +76,16 @@ app.controller('myIncomeController', function ($rootScope, $scope, httpRequest, 
 			}
 		});
 	}
+	
 	$scope.getIncomeList(1);
 	$scope.getIncomeList(2);
 	$scope.getIncomeList(3);
+	
+	$rootScope.$on("CtrlLoginModule", function (event, tokenInfo) {
+        $scope.getIncomeList(1);
+		$scope.getIncomeList(2);
+		$scope.getIncomeList(3);
+    });
 	
 });
 
@@ -314,6 +172,10 @@ app.controller('myWishController', function ($rootScope, $scope, httpRequest, da
 
     };
     $scope.getWishList();
+	
+	$rootScope.$on("CtrlLoginModule", function (event, tokenInfo) {
+        $scope.getWishList();
+    });
 });
 
 /** added in 1.6**/
@@ -386,24 +248,20 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
                         $scope.user.headimgurl=userInfo.avatar;
                         $scope.user.mobile=userInfo.mobible;
 						$scope.user.category=userInfo.category;
-						$scope.user.realName=userInfo.realName;
+						$scope.user.realName=userInfo.realname;
 						$scope.user.incomeAmount=userInfo.incomeAmount;
 						$scope.incomeAmount=userInfo.incomeAmount;
                         $scope.user.bind=0;
                         $scope.isNeedBind=false;
                         setToken($scope.user);
 						
-						if($location.path()!="/myProfile"){
-							
+						$rootScope.tokenInfo=$scope.user;
+						
+						if($location.path()!="/myProfile"){							
 							$rootScope.isRootLogin=true;
+							$rootScope.$emit("CtrlLoginModule", $rootScope.tokenInfo);
 							return;
 						}
-						
-                        if(from){
-                            //alertSuccess("登录成功");
-                            $location.path('/oauth2/'+$scope.user.openId+'/'+from).search({openId:$scope.user.openId,nickname:userInfo.nickname,headimgurl:userInfo.avatar,source:4,bind:$scope.user.bind}); 
-                            $scope.$apply($location);
-                        }
                     }else{
                         alertWarning(result.msg);
                     }
@@ -425,58 +283,7 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
     $scope.back = function () {
         $location.path("/products");
     }
-    if(easybuy.isWechat){
-        callback();
-    } 
-    function callback(u){
-        //console.log("callback");
-        var user=u?u:$location.$$search;
-        $scope.user=user;
-        if(user && user.openId){                    
-            var source=user.source;//用户来源，1：微信， 2：QQ， 3：微博
-            var data="platform=all&openid="+user.openId+"&nickname="+user.nickname
-                     +"&gender=0&avatar="+user.headimgurl+"&source="+source+"&channel=H5"
-                     +"&appVersion="+easybuy.version;
-            httpRequest.APIPOST('/user/thirdLogin', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                if (result && result.code == statusCode.Success) {
-                    $scope.isLogin=true;
-                    $scope.user=result.result;
-                    $scope.user.openId=user.openId;
-                    $scope.user.source=user.source;
-                    $scope.user.nickname=user.nickname;
-                    $scope.user.headimgurl=user.headimgurl;
-                    $scope.user.bind=1;
-                    if($scope.user.mobile==null){
-                        $scope.user.mobile="0";
-                    }
-                    if(!$scope.user.mobile || $scope.user.mobile=="0"){
-                        $location.path("/myPhone/0/"+$scope.user.token).search({user:$scope.user,state:"myProfile"});
-                    }                    
-                    setToken($scope.user);
-                    $scope.isNeedBind=true;
-                    $scope.$apply($scope.isNeedBind);
-                    $scope.$apply($scope.user);
-                    //alert(user.openId);
-                    //location.reload(true);
-                }else{
-                    alert(result.msg);
-                }
-            });
-        }else{
-            $scope.user=getToken();
-            if($scope.user){
-                $scope.isLogin=true;
-                if(!$scope.user.mobile ||($scope.user.mobile && $scope.user.mobile.length<6)){
-					$scope.user.mobile=0;
-				}
-            }else{
-                $scope.isLogin=false;
-                $scope.user={};
-            }
-            $scope.$apply($scope.user);
-            $scope.$apply($scope.isLogin);
-        } 
-    } 
+
     $scope.validNum = function () {
         $scope.username = validInteger($scope.username);
     }
@@ -492,6 +299,11 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
 
 app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $http, dataStringify, analytics, $location, $window, $routeParams) {
     $scope.step=1;
+	
+	$rootScope.$on("CtrlLoginModule", function (event, tokenInfo) {
+        $rootScope.tokenInfo = tokenInfo;
+    });
+	
 	$scope.updatePassword=function(){
 		$scope.step=3;
 		
@@ -673,7 +485,7 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
                         $scope.user.mobile=userInfo.mobible;
                         $scope.user.bind=userInfo.bind || 0;
 						$scope.user.category=userInfo.category;
-						$scope.user.realName=userInfo.realName;
+						$scope.user.realName=userInfo.realname;
 						$scope.user.incomeAmount=userInfo.incomeAmount;
                         setToken($scope.user);
                         $location.path("/myProfile");

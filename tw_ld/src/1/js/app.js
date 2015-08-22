@@ -36,6 +36,7 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
     $routeProvider
         .when('/products', { templateUrl: "views/goods/products.html?"+preventCache })
         .when('/products/:code', { templateUrl: "views/goods/products.html?"+preventCache })
+		.when('/productsSearch', { templateUrl: "views/goods/searchPanel.html?"+preventCache })
         .when('/pay/:id', { templateUrl: "views/pay/paymentLD.html?"+preventCache 
 			,resolve: {
 				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
@@ -46,6 +47,7 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs(['lib/mobiscroll.zepto.js','lib/mobiscroll.custom-2.6.2.js'])
 			}
         })
+		.when('/pay/confirm/:orderNum/:totalPrice/:quantity', { templateUrl: "views/pay/confirm.html?"+preventCache })
         .when('/dividedPay/:orderNum/:fee', { templateUrl: "views/pay/dividedPay.html?"+preventCache })
         .when('/dividedPay/success', { templateUrl: "views/pay/success2.html?"+preventCache })
         .when('/address/:payid', { templateUrl: "views/order/address.html?"+preventCache
@@ -104,6 +106,7 @@ app.run( function($rootScope, $location) {
     	var tokenInfo=getToken();
     	$rootScope.isRootLogin=true;
 		if(!tokenInfo){
+			$rootScope.tokenInfo=$.extend(true,{},userModel);
 			if($location.path()!=='/register' && $location.path()!=='/forgot'){
 				$rootScope.isRootLogin=false;
 				$rootScope.$emit("CtrlUserModule", $rootScope.isRootLogin);
@@ -144,7 +147,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
         $("#scroller2ul").html(lis);
         $("#scroller2").css("width",liCount*25+"%");
         $("#scroller2ul").css("width",liCount*25+"%");
-        $("#scroller2ul li").css("width",90/liCount+"%");
+        $("#scroller2ul li").css("width",(liCount>4?90:100)/liCount+"%");
         var generateScroll=function(){
         	var myScroll = new IScroll('#wrapper2', 
 			 { 

@@ -1,0 +1,102 @@
+<style>
+.app-body .btn.btn-confirm {
+	font-size: 1.2em;
+	border: 1px solid #F75757;
+	background-color: #F75757;
+}
+
+
+</style>
+<div ng-controller="dividedPayController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-if="!isShowTips">
+        <div class="navbar-brand navbar-brand-center">
+            支付订单
+        </div>  
+		<div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                	
+                </div>
+            </div>
+        </div>		
+    </div>
+    <div class="scrollable background-gray">
+        <div class="scrollable-content" ng-if="!isShowTips">
+            <div class="nav-main-block">
+            </div>
+
+            <div class="fill-area status-box" style="line-height:1.8em;font-size:1.1em">
+                <div style="border:0px solid #eeeeee;border-bottom:0;padding:.5em;">
+                    <span class="pull-left text-gray">数量</span>
+                    <span class="pull-right">{{order.quantity}} 件</span>
+                    <div class="clear"></div>
+                </div>
+                <div style="border-top:1px solid #eeeeee;border-bottom:0;padding:.5em;">
+                    <span class="pull-left text-gray">总计</span>
+                    <span class="pull-right">￥{{order.totalPrice | currency:''}}</span>
+                    <div class="clear"></div>
+                </div>
+            </div>
+			
+			<div style="padding:.0em 10px;color:#aaa;">选择支付方式</div>
+			
+			<div class="pay-area" ng-hide="isInCoupons">
+                <div>
+                    <!-- <div class="list-head">
+                        支付方式
+                    </div> -->
+                    <div class="list-group">
+                        <div class="list-group-item media border-bottom-0 product-item" ng-repeat="payment in Payments">
+                            <div class="pull-right check-area" ng-click="checked(payment);">
+                                <div class="checkbox radio {{payment.checked? 'checked':''}}">
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <div class="product-area">
+                                    <div class="pull-left">
+                                        <img alt="" src="image/{{payment.img}}" class="payment-image" />
+                                    </div>
+                                    <div class="media-body payment-instruction">
+                                        <div class="payment-title" style="{{payment.id==1?'line-height:1.5em;font-size:1em;':'line-height:1.5em;font-size:1em;'}}">
+                                            {{payment.name}}
+                                            <div ng-if="payment.id==1" style="font-size:.8em;color:gray;">
+                                            支持无支付宝账号银行卡、信用卡支付
+                                            </div>
+											<div ng-if="payment.id==2" style="font-size:.8em;color:gray;">
+                                            支持大额支付
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+            <div class="main-btn-80" style="margin-top:25px;">          
+                <button class="btn btn-default btn-confirm" ng-click="pay()" style="background-image: linear-gradient(to bottom, #F75757, #F75757);">
+                    确定支付</button>
+            </div>
+        </div>
+        
+        <div ng-if="isShowTips" class="overlay-panel">
+                <img src="/image/pay/icon_alipay.jpg" style="width:8em;margin-top:5px;"/>
+                <br/>
+                点击 页面右上角<img src="/image/pay/icon_pop.png" style="width:2.5em;margin-left:5px;"/> 
+                <br/>         
+
+
+            选择 在浏览器/Safari中打开<br/> 
+
+            即可 使用 支付宝付款<br/> 
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>    
+</div>
