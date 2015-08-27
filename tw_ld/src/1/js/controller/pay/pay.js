@@ -154,7 +154,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
                 return;
             }
         }
-        
+        $scope.$apply($scope.defaultAddress);
         
 
         $scope.search(function(){
@@ -180,6 +180,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
                     $scope.step=1;
                     $scope.$apply($scope.step);
                     $scope.getDefaultAddress();
+                    $scope.$apply($scope.defaultAddress);
                 }else {
                     alertWarning(result.msg);
                 }
