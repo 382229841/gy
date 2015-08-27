@@ -2,7 +2,7 @@
     //var _const = {};
     //easybuy.Const = _const;
     //_const.xx = xx;
-    easybuy.version="1.8.5";
+    easybuy.version="1.8.8";
     
     easybuy.Storage = { 
 		OrderProducts: "Order.OrderProducts", 
@@ -15,7 +15,7 @@
 		DownloadAppClose: "Global.DownloadAppClose", 
 		oAuth: "Global.oAuth", 
 		Order:"Global.Order", 
-		Token:"Global.Token",
+		Token:"Global.TokenLD",
 		AppToken:"Global.AppToken", 
 		WxSdkToken:"Global.WxSdkToken", 
 		Find:"Global.Find",

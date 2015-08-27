@@ -191,20 +191,18 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
     var loginFrom=1;
     $scope.isLogin=true;
     $scope.isShowLogoutBtn=!easybuy.isWechat;
-    if(!easybuy.isWechat){
-        if(getToken()){
-            $scope.user=getToken();
-            $scope.isLogin=true;
-            if($scope.user.bind==0 || $scope.user.bind=="0" || ($scope.user.source && $scope.user==4)){
-                $scope.isNeedBind=false;
-            }else{
-                $scope.isNeedBind=true;
-            }
-            loginFrom=$scope.user.source;       
-        }else{
-             $scope.isLogin=false;
-        }
-    }
+    if(getToken()){
+		$scope.user=getToken();
+		$scope.isLogin=true;
+		if($scope.user.bind==0 || $scope.user.bind=="0" || ($scope.user.source && $scope.user==4)){
+			$scope.isNeedBind=false;
+		}else{
+			$scope.isNeedBind=true;
+		}
+		loginFrom=$scope.user.source;       
+	}else{
+		 $scope.isLogin=false;
+	}
 	
 	$scope.forgot=function(){
 		$location.path("/forgot");
@@ -463,8 +461,8 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
             return;
         }
 		
-		if (!name || name.length<6 || name.length>20) {
-            alertWarning("请输入您的真实姓名");
+		if (!name || name.length<2 || name.length>30) {
+            alertWarning("请输入2-30位真实姓名");
             return;
         }
         $scope.wait=0;

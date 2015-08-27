@@ -15,7 +15,7 @@
 	<link type="image/x-icon" rel="shortcut icon" href="image/favicon.png">
     <!-- CSS================================================== -->
 	<?php
-		$preventCache=201507221242;
+		$preventCache=2015072212405;
 	?>
     <link href="css/goeasy.min.css?<?php echo $preventCache;?>" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/landscape.css" media="all and (orientation:landscape)" type="text/css">	
@@ -42,7 +42,7 @@
         <div class="app-body" ng-class="{loading: loading}">
             <div ng-show="loading" class="app-content-loading"><img src="image/favicon.png" class="loading-spinner-logo"/><i class="loading-spinner fa fa-circle-o-notch fa-spin"></i></div>
             <ng-view class="app-content" ng-hide="loading || !isRootLogin"></ng-view>			
-			<div ng-include=" '../views/user/my.html' " ng-hide="isRootLogin"></div>
+			<div ng-include=" 'views/user/my.html' " ng-hide="isRootLogin"></div>
 		</div>
         <div class="loadingDiv">     
             <div id="floatingBarsG"><div class="blockG" id="rotateG_01"></div><div class="blockG" id="rotateG_02"></div><div class="blockG" id="rotateG_03"></div><div class="blockG" id="rotateG_04"></div><div class="blockG" id="rotateG_05"></div><div class="blockG" id="rotateG_06"></div><div class="blockG" id="rotateG_07"></div><div class="blockG" id="rotateG_08"></div></div>

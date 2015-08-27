@@ -17,8 +17,14 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 	
 	$scope.enterAddress=function(s){
 		$scope.step=s;
+		//alert(s);
 		$scope.addressInfo=$.extend(true, {}, $scope.defaultAddress);
-	    $("#appDateTime").val($scope.addressInfo.returnDate+" "+$scope.addressInfo.returnTime);
+		if(s==1){
+			$("#appDateTime").val("");
+			$scope.step=$scope.takeoverMethod==1?2:3;
+		}else{
+			$("#appDateTime").val($scope.addressInfo.returnDate);
+		}
 	};
 	
 	$scope.goodsItems=function(){
@@ -37,7 +43,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 		var data="platform=all&token="+$rootScope.tokenInfo.token+"&goodsId="+$location.search().goodsId+"&quantity="+$location.search().quantity;
 		httpRequest.APIPOST('/order/price', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
-				$scope.orderPrice=result.result;
+				$scope.orderPrice=result.result || {};
 				
 			}else{
 				alertWarning(result.msg);
@@ -50,7 +56,9 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 		httpRequest.APIPOST('/address/default', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
 				$scope.defaultAddress=result.result;
-				
+				if($scope.defaultAddress!=null){
+					$scope.$apply($scope.defaultAddress);
+				}				
 			}else{
 				alertWarning(result.msg);
 			}
@@ -130,6 +138,10 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 			
 			if (!$scope.addressInfo.hotelTel || $scope.addressInfo.hotelTel == '') {
                 alertWarning("请输入酒店电话");
+                return;
+            }
+            if ($scope.addressInfo.hotelTel.length<9 || $scope.addressInfo.hotelTel.length >13) {
+                alertWarning("请输入9-13位酒店电话");
                 return;
             }
 			
@@ -251,9 +263,13 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
     	if($scope.isGoPay){
     		return;
     	}
-    	$scope.isGoPay=true;
+    	
 		var comment=$scope.comments?"&comments="+$scope.comments:"&comments=''";
     	var data="";
+    	if($scope.defaultAddress==null){
+			alertWarning("请填写联系人信息");
+    		return;
+    	}
 		if($scope.takeoverMethod==2){
 		  data="platform=all&token="+$rootScope.tokenInfo.token
 				  +"&contact="+$scope.defaultAddress.contact
@@ -269,6 +285,17 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 				  +"&quantity="+quantity
 				  +comment; 
 		}else{
+			if($scope.defaultAddress.returnDate==null){
+				alertWarning("请填写完整回程信息");
+				return;
+			}
+
+			if($scope.defaultAddress.returnTime==null){
+				alertWarning("请填写完整回程信息");
+				return;
+			}
+			
+
 			data="platform=all&token="+$rootScope.tokenInfo.token
 				  +"&pickupWay=1"
 				  +"&contact="+$scope.defaultAddress.contact
@@ -277,10 +304,12 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 				  +"&returnAirportId="+$scope.defaultAddress.returnAirportId					
 				  +"&returnFlightno="+$scope.defaultAddress.returnFlightno
 				  +"&goodsId="+goodsId
-				  +"&quantity="+quantity+comment; 
+				  +"&quantity="+quantity+comment;
 		}
 		httpRequest.APIPOST('/orderLd/add', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if(result.msg==="success"){
+				$scope.isGoPay=true;
+				$("#btnOrder").text("正在下单...");
 				$location.path("/pay/confirm/"
 					+result.result.orderNum+"/"
 					+$scope.orderPrice.total+"/"
@@ -308,7 +337,12 @@ app.controller('dividedPayController', function ($rootScope, $scope, httpRequest
 			return;
 		}
 		if($scope.payWay==1){
-			window.location.href = paymentUrl+ "callback=2&out_trade_no=" + $scope.order.orderNum + "&total_fee=" + $scope.order.totalPrice;
+			if($scope.payWay==1 && $scope.isWechat){
+				window.location.href = paymentUrl+ "callback=2&out_trade_no=" + $scope.order.orderNum + "&total_fee=" + $scope.order.totalPrice;
+			}else{
+				window.location.href = paymentUrl+ "callback=4&out_trade_no=" + $scope.order.orderNum + "&total_fee=" + $scope.order.totalPrice;
+			}
+			
 		}else{
 			window.location.href = serviceUrl + "/order/pay/orderid/" + $scope.order.orderNum+"/amount/"+$scope.order.totalPrice+"/address/hiker/time/201508221140";
 		}
@@ -340,6 +374,13 @@ app.controller('dividedPayController', function ($rootScope, $scope, httpRequest
 	$scope.back=function(){
 		history.back();
 	};
+	var t=getToken() || {};
+	if(!t.isFresh){
+		location.reload();
+		t.isFresh=1;
+		setToken(t);
+	}
+	
 });
 
 app.controller('successController', function ($rootScope, $scope, httpRequest, analytics, $location, $window, $routeParams) {
@@ -372,7 +413,7 @@ app.controller('successController', function ($rootScope, $scope, httpRequest, a
             window.location.href = easybuy.appActivity + "?action=16&orderId="+$routeParams.ordersn;
             return;
         }
-        $location.path("/orderDetail/" + $routeParams.ordersn+"/"+$routeParams.token);
+        $location.path("/orderDetail/" + $routeParams.ordersn);
     }
 
     $scope.back = function () {

@@ -66,26 +66,32 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
 
     $scope.reduceNum = function (index) {
         $scope.products[index].quantity--;        
-		$scope.synCart
+		$scope.synCart();
     }
 
     $scope.addNum = function (index) {
 		$scope.products[index].quantity++;
+		$scope.synCart();
         $scope.totalAmount();
     }
 
     $scope.validNum = function (index) {
         $scope.products[index].quantity=validInteger($scope.products[index].quantity)==""?0:parseInt(validInteger($scope.products[index].quantity));
+		$scope.synCart();
 		$scope.totalAmount();
     }
 
-    $scope.checked = function (product,parentIndex,index) {
+    $scope.checked = function (product,parentIndex,index) {		
         if (product.checked) {
             product.checked = 0;
         }
         else {
             product.checked = 1;
         }
+		if($scope.products[index].error=="库存不足"){
+			product.checked = 0;
+			return;
+		}
         $scope.updateStatus();
         $scope.totalAmount(parentIndex,index);
     }

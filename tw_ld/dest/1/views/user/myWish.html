@@ -1,178 +1,178 @@
-<style>
-    .tab-navigation{
-        padding:0px 0px;
-        padding-left:0;
-    }
-    .tab-navigation ul{
-         width:100%;         
-    }
-    .tab-navigation ul li{
-         width:33.33333333333333%;
-         text-align:center;
-    }
-    .nav > li > a{
-          padding:10px 15px;
-    }
-    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
-          color: #F75757;
-          background-color: #FFFFFF;
-		  border: 0px;
-          border-bottom: 2px solid #F75757;
-          cursor: default;
-    }
-    .nav-tabs > li > a{
-          color: #333;
-          background-color: #ffffff;
-          border: 0px solid #F75757;
-          cursor: default;
-          font-size: 1.1em;
-          margin-right: 0px;
-    }
-    .nav-tabs > li:first-child > a{
-          border-radius: 4px 0 0 4px;
-    }
-    .nav-tabs > li:last-child > a{
-          border-radius: 0 4px 4px 0;
-    }
-	.withdraw-cash-title{
-		border-bottom:1px solid #eee;
-		padding: 1em 0;
-	}
-	.withdraw-cash-btn{
-		border:1px solid #f75757;
-		background-color:#f75757;
-		padding: .4em .7em;
-		color:#fff;
-		border-radius:4px;
-	}
-	
-	.withdraw-cash-status{
-		border:1px solid #eee;
-		background-color:#fff;
-		padding: .4em .7em;
-		color:#999;
-		border-radius:4px;
-	}
-	.withdraw-cash-item{
-		padding: .8em 0;
-		border-bottom: 1px solid #eee;
-		color:#666;
-	}
-	.withdraw-cash-item .item1{
-		font-size: 1.3em;
-		padding: .2em 0em;
-	
-	}
-	.withdraw-cash-item .item2{
-		font-size: 1.1em;
-		padding: .2em 0em;
-		color: #999;
-	
-	}
-	.withdraw-cash-item::last-child{
-		border:0px;
-	}
-	.tab-content{
-		margin-top: 0em;
-		background-color: #fff;
-		padding: .5em;
-	}
-    @media only screen and (max-width: 450px)
-    {
-        
-    }
-    @media only screen and (max-width: 320px)
-    {
-        
-    }
-	.text-right img{
-		width: 80%;
-	}
-</style>
-<div ng-controller="myWishController">
-    <!-- Navbars -->
-    <div class="navbar navbar-app nav-main">
-        <div class="navbar-brand navbar-brand-center">
-            我的心愿
-        </div>
-        <div class="btn-group pull-left" ng-click="back()">
-            <div class="btn btn-navbar sidebar-toggle">
-                <div class="btn-to-back">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="scrollable">
-        <div class="scrollable-content background-gray">
-            <div class="nav-main-block"></div>
-           
-            <div ng-show="step<2">                
-                <div class="tab-content">
-                     <div>                            
-							<div class="withdraw-cash-item" ng-repeat="w in wishList" ng-click="editWish(w.id,$index);">
-								<span class="col-xs-10">
-									&nbsp;{{w.name}}
-								</span>
-								<span class="col-xs-2 text-right"><img src="/image/public_ico_arrow.png"></span>
-								<div class="clear"></div>
-							</div>
-							
-							
-							
-
-                            <div ng-if="wishList.length<1" style="text-align:center;">快去填写您的心愿吧~</div>
-                            <br/>
-                      </div>
-					
-                </div>
-				<div class="nav-main-block"></div>
-				<div class="nav-main-block"></div>
-				
-            </div>
-			
-			<div ng-show="step==2">
-				<div class="myPhone-item-text" style="  background-color: #fff;margin:0;">
-					<span class="col-xs-5" style="height: 3em;line-height: 3em;text-align:left;">心愿产品名称</span>
-					
-					<span class="col-xs-7">
-						<input type="text" ng-model="wish.name" 
-						placeholder=""/>
-					
-					</span>
-					<div class="clear"></div>
-					
-					<span class="col-xs-5" style="height: 3em;line-height: 3em;text-align:left;">产品链接(选填)</span>
-					<span class="col-xs-7">
-						 <input type="text" ng-model="wish.link" style="border:0;"
-						 placeholder=""/>
-					
-					</span>
-					
-					<div class="clear"></div>
-				 </div>
-				 
-				 <div class="myPhone-item-text text-center" 
-						style="background-color: #fff;margin:10px 0 0 0;padding:1em;border:1px solid #eee;">
-					<textarea ng-model="wish.feature"
-					placeholder="产品特点：规格、体积、特性等（不少于5位）" 
-					style="width:100%;height:5em;border:1px solid #e7e7e7;"></textarea>
-					
-					<div class="clear"></div>
-				 </div>
-				 
-				 <div class="myPhone-item-text" style="text-align:center;margin-top:25px;white-space:nowrap;">
-					<button class="btn" ng-click="saveWish(wish);" 
-					style="width:80%;background:#ff5757;border:#ff5757;">提交</button>
-				 </div>
-			</div>
-            
-        </div>
-    </div>
-	<div  ng-show="step<2" style="position: fixed;bottom: 0;width: 100%;background-color: rgba(255,255,255,.9);">
-		<div class="myPhone-item-text" style="text-align:center;margin-bottom:15px;margin-top:5px;white-space:nowrap;">
-			<button class="btn" ng-click="wishNow();" 
-			style="width:80%;background:#ff5757;border:#ff5757;"
-			>我要写个心愿</button>
-		</div>
-	</div>
-</div>
+<style>
+    .tab-navigation{
+        padding:0px 0px;
+        padding-left:0;
+    }
+    .tab-navigation ul{
+         width:100%;         
+    }
+    .tab-navigation ul li{
+         width:33.33333333333333%;
+         text-align:center;
+    }
+    .nav > li > a{
+          padding:10px 15px;
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+          color: #F75757;
+          background-color: #FFFFFF;
+		  border: 0px;
+          border-bottom: 2px solid #F75757;
+          cursor: default;
+    }
+    .nav-tabs > li > a{
+          color: #333;
+          background-color: #ffffff;
+          border: 0px solid #F75757;
+          cursor: default;
+          font-size: 1.1em;
+          margin-right: 0px;
+    }
+    .nav-tabs > li:first-child > a{
+          border-radius: 4px 0 0 4px;
+    }
+    .nav-tabs > li:last-child > a{
+          border-radius: 0 4px 4px 0;
+    }
+	.withdraw-cash-title{
+		border-bottom:1px solid #eee;
+		padding: 1em 0;
+	}
+	.withdraw-cash-btn{
+		border:1px solid #f75757;
+		background-color:#f75757;
+		padding: .4em .7em;
+		color:#fff;
+		border-radius:4px;
+	}
+	
+	.withdraw-cash-status{
+		border:1px solid #eee;
+		background-color:#fff;
+		padding: .4em .7em;
+		color:#999;
+		border-radius:4px;
+	}
+	.withdraw-cash-item{
+		padding: .8em 0;
+		border-bottom: 1px solid #eee;
+		color:#666;
+	}
+	.withdraw-cash-item .item1{
+		font-size: 1.3em;
+		padding: .2em 0em;
+	
+	}
+	.withdraw-cash-item .item2{
+		font-size: 1.1em;
+		padding: .2em 0em;
+		color: #999;
+	
+	}
+	.withdraw-cash-item::last-child{
+		border:0px;
+	}
+	.tab-content{
+		margin-top: 0em;
+		background-color: #fff;
+		padding: .5em;
+	}
+    @media only screen and (max-width: 450px)
+    {
+        
+    }
+    @media only screen and (max-width: 320px)
+    {
+        
+    }
+	.text-right img{
+		width: 80%;
+	}
+</style>
+<div ng-controller="myWishController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main">
+        <div class="navbar-brand navbar-brand-center">
+            我的心愿
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable">
+        <div class="scrollable-content background-gray">
+            <div class="nav-main-block"></div>
+           
+            <div ng-show="step<2">                
+                <div class="tab-content">
+                     <div>                            
+							<div class="withdraw-cash-item" ng-repeat="w in wishList" ng-click="editWish(w.id,$index);">
+								<span class="col-xs-10">
+									&nbsp;{{w.name}}
+								</span>
+								<span class="col-xs-2 text-right"><img src="image/public_ico_arrow.png"></span>
+								<div class="clear"></div>
+							</div>
+							
+							
+							
+
+                            <div ng-if="wishList.length<1" style="text-align:center;">快去填写您的心愿吧~</div>
+                            <br/>
+                      </div>
+					
+                </div>
+				<div class="nav-main-block"></div>
+				<div class="nav-main-block"></div>
+				
+            </div>
+			
+			<div ng-show="step==2">
+				<div class="myPhone-item-text" style="  background-color: #fff;margin:0;">
+					<span class="col-xs-5" style="height: 3em;line-height: 3em;text-align:left;">心愿产品名称</span>
+					
+					<span class="col-xs-7">
+						<input type="text" ng-model="wish.name" 
+						placeholder=""/>
+					
+					</span>
+					<div class="clear"></div>
+					
+					<span class="col-xs-5" style="height: 3em;line-height: 3em;text-align:left;">产品链接(选填)</span>
+					<span class="col-xs-7">
+						 <input type="text" ng-model="wish.link" style="border:0;"
+						 placeholder=""/>
+					
+					</span>
+					
+					<div class="clear"></div>
+				 </div>
+				 
+				 <div class="myPhone-item-text text-center" 
+						style="background-color: #fff;margin:10px 0 0 0;padding:1em;border:1px solid #eee;">
+					<textarea ng-model="wish.feature"
+					placeholder="产品特点：规格、体积、特性等（不少于5位）" 
+					style="width:100%;height:5em;border:1px solid #e7e7e7;"></textarea>
+					
+					<div class="clear"></div>
+				 </div>
+				 
+				 <div class="myPhone-item-text" style="text-align:center;margin-top:25px;white-space:nowrap;">
+					<button class="btn" ng-click="saveWish(wish);" 
+					style="width:80%;background:#ff5757;border:#ff5757;">提交</button>
+				 </div>
+			</div>
+            
+        </div>
+    </div>
+	<div  ng-show="step<2" style="position: fixed;bottom: 0;width: 100%;background-color: rgba(255,255,255,.9);">
+		<div class="myPhone-item-text" style="text-align:center;margin-bottom:15px;margin-top:5px;white-space:nowrap;">
+			<button class="btn" ng-click="wishNow();" 
+			style="width:80%;background:#ff5757;border:#ff5757;"
+			>我要写个心愿</button>
+		</div>
+	</div>
+</div>

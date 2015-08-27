@@ -1,423 +1,846 @@
 <style>
+
     .pay-panel{
+
 		padding:.5em .5em;
+
 		line-height:1.5;
+
 		margin-bottom:.6em;
+
 		box-shadow: 2px 2px 2px #ddd;
+
 	}
+
 	.address-border {
+
 		width: 100%;
+
 		height: 5px;
+
 		background-image: url("../image/order_img_address.png");
+
 		background-repeat: repeat;
+
 		background-color:#fff;
+
 	}
+
 	hr {
+
 	  margin-top: 5px;
+
 	  margin-bottom: 5px;
+
 	  border: 0;
+
 	  border-top: 1px solid #eeeeee;
+
 	}
+
 	.btn-span{
+
 		padding:.6em 1.3em;
+
 		color:#fff;
+
 		background:#f75757;
+
 		border:1px solid #f75757;
+
 		border-radius:5px;
+
 	}
+
 	.nav-bottom{
+
 		min-height:60px;
+
 		height:60px;
+
 	}
+
 	.nav-bottom-background{
+
 		min-height:60px;
+
 		height:60px;
+
 	}
+
 	.dropdown-img{
+
 		transform: rotate(90deg);
+
 		-webkit-transform: rotate(90deg);
+
 		
+
 	}
+
 	.dropdown{
+
 		transition: all .2s ease-in-out;
+
 		-webkit-transition: all .2s ease-in-out;
+
 	}
+
 	.fa-info-circle:before {
+
 		content: "\f05a";
+
 	}
+
 </style>
+
 <div ng-controller="paymentLDController">
+
     <!-- Navbars -->
+
     <div class="navbar navbar-app nav-main">
+
         <div class="navbar-brand navbar-brand-center" ng-show="step<2">
+
             订单确认
+
         </div>
+
 		<div class="navbar-brand navbar-brand-center" ng-show="step==2 || step==3">
+
             联系人信息
+
         </div>
+
 		<div class="navbar-brand navbar-brand-center" ng-show="step==4">
+
             商品清单
+
         </div>
+
 		
+
         <div class="btn-group pull-left" ng-click="back()">
+
             <div class="btn btn-navbar sidebar-toggle">
+
                 <div class="btn-to-back">
+
                 	
+
                 </div>
+
             </div>
+
         </div>
+
 		
+
         <div class="btn-group pull-right" ng-show="step==2">
+
             <div class="btn btn-navbar" style="color:#fff;font-size:1.1em;" ng-click="saveDefaultAddress();">
+
                 保存
+
             </div>
+
         </div>
+
 		<div class="btn-group pull-right" ng-show="step==3">
+
             <div class="btn btn-navbar" style="color:#fff;font-size:1.1em;" ng-click="saveDefaultAddress();">
+
                 保存
+
             </div>
+
         </div>
+
     </div>
+
 	
+
 	
+
     <div class="scrollable">
+
         <div class="scrollable-content background-gray">
+
             <div class="nav-main-block">
+
             </div>
+
             <div ng-show="step<2">
+
 				<div class="background-white pay-panel" style="line-height:2em;font-size:1.2em;color:#000;">
+
 					<div ng-click="toggleTakeover();">
+
 						<span class="col-xs-6">取货方式</span>
+
 						<span class="col-xs-6 text-right">
+
 							<span ng-show="takeoverMethod==1">机场取货</span>
+
 							<span ng-show="takeoverMethod==2">酒店取货</span>
-							<img class="dropdown {{toggleOn?'dropdown-img':''}}" src="/image/public_ico_arrow.png" style="height:1.8em;"/>
+
+							<img class="dropdown {{toggleOn?'dropdown-img':''}}" src="image/public_ico_arrow.png" style="height:1.8em;"/>
+
 						</span>
+
 						<div class="clear"></div>
+
 					</div>
+
 					
+
 					<div ng-show="toggleOn">
+
 						<div class="clear" style="border-bottom:1px solid #eee;"></div>						
+
 						<span class="col-xs-12 text-center" style="line-height:2.5em;" ng-click="selectTakeover(1);">
+
 							<span>机场取货</span>
+
 						</span>						
+
 						<div class="clear" style="border-bottom:1px solid #eee;"></div>
+
 						
+
 						<span class="col-xs-12 text-center" style="line-height:2.5em;" ng-click="selectTakeover(2);">
+
 							<span>酒店取货</span>
+
 						</span>
+
 						<div class="clear"></div>
+
 					</div>
+
 					
+
 					<div class="clear"></div>
+
 					
+
 				</div>
+
 				
+
 				<div class="address-border"></div>
+
 				<div 
+
 					class="background-white pay-panel" 
+
 					style="line-height:2em;font-size:1.1em;" 
+
 					ng-show="defaultAddress==null" 
-					ng-click="enterAddress(2);">
+
+					ng-click="enterAddress(1);">
+
 					
+
 					<span class="col-xs-12 text-center" style="padding:1em .5em;font-size:1.5em;">
+
 						+ 添加收货人信息
+
 					</span>
+
 					
+
 								
+
 					<div class="clear"></div>
+
 				</div>
+
 				
+
 				
+
 				<div 
+
 					class="background-white pay-panel" 
+
 					style="line-height:2em;font-size:1.1em;" 
+
 					ng-show="takeoverMethod==1 && defaultAddress!=null" 
+
 					ng-click="enterAddress(2);">
+
 					
+
 					<span class="col-xs-3">
+
 						<div>联系人</div>
+
 						<div style="height:10px"></div>
+
 						<div>回程</div>
+
 					</span>
+
 					
+
 					<span class="col-xs-7 text-left">
+
 						<div><span>{{defaultAddress.contact}}</span> <span>{{defaultAddress.mobile}}</span></div>					
+
 						<div><hr/></div>					
+
 						<div style="line-height:1.5;">
+
 							<div>{{defaultAddress.returnDate}} {{defaultAddress.returnTime}} {{defaultAddress.returnFlightno}}</div>						
+
 							<div>{{defaultAddress.returnAirport}}</div>					
+
 						</div>					
+
 					</span>
+
 					
+
 					<span class="col-xs-2 text-right">
+
 					<div>&nbsp;</div>
-					<div><img src="/image/public_ico_arrow.png" style="height:1.8em;"/></div>
+
+					<div><img src="image/public_ico_arrow.png" style="height:1.8em;"/></div>
+
 					<div>&nbsp;</div>
+
 					
+
 					</span>				
+
 					<div class="clear"></div>
+
 				</div>
+
 				
+
 				<div 
+
 					class="background-white pay-panel" 
+
 					style="line-height:2em;font-size:1.1em;" 
+
 					ng-show="takeoverMethod==2 && defaultAddress!=null"
+
 					ng-click="enterAddress(3);"
+
 					>
+
 					
+
 					<span class="col-xs-3">
+
 						<div>联系人</div>
+
 						<div style="height:10px"></div>
+
 						<div>酒店</div>
+
 					</span>
+
 					
+
 					<span class="col-xs-7 text-left">
+
 						<div><span>{{defaultAddress.contact}}</span> <span>{{defaultAddress.mobile}}</span></div>		
+
 						<div><hr/></div>					
+
 						<div style="line-height:1.5;">
+
 							<div>{{defaultAddress.hotelName}}</div>						
+
 							<div>{{defaultAddress.hotelPickupDate}}</div>
+
 							<div>{{defaultAddress.hotelTel}}</div>
+
 							<div>{{defaultAddress.hotelAddress}}</div>
+
 						</div>					
+
 					</span>
+
 					
+
 					<span class="col-xs-2 text-right">
+
 					<div>&nbsp;</div>
-					<div><img src="/image/public_ico_arrow.png" style="height:1.8em;"/></div>
+
+					<div><img src="image/public_ico_arrow.png" style="height:1.8em;"/></div>
+
 					<div>&nbsp;</div>
+
 					
+
 					</span>				
+
 					<div class="clear"></div>
+
 				</div>
+
 				
+
 				
+
 				<div 
+
 					class="background-white pay-panel" 
+
 					style="line-height:2em;font-size:1.1em;"					
+
 					>
+
 					<div ng-click="goodsItems();">
+
 						<span class="col-xs-6">共{{orderPrice.totalNum}}件 约{{orderPrice.weight}}g</span>
+
 						<span class="col-xs-6 text-right">
-							<img src="/image/public_ico_arrow.png" style="height:1.8em;"/>
+
+							<img src="image/public_ico_arrow.png" style="height:1.8em;"/>
+
 						</span>
+
 						<div class="clear"></div>
+
 					</div>
+
 					<div class="clear"></div>
+
 					
+
 					<div style="border-top:1px solid #eee;border-bottom:1px solid #eee;">
+
 					
+
 						<span class="col-xs-3" style="padding: .5em;">
+
 							<img ng-src="{{orderPrice.goodsList[0].img}}" ng-if="orderPrice.goodsList.length>0"/>
+
 						</span>
+
 						<span class="col-xs-3" style="padding: .5em;">
+
 							<img ng-src="{{orderPrice.goodsList[1].img}}" ng-if="orderPrice.goodsList.length>1"/>
+
 						</span>
+
 						<span class="col-xs-3" style="padding: .5em;">
+
 							<img ng-src="{{orderPrice.goodsList[2].img}}" ng-if="orderPrice.goodsList.length>2"/>
+
 						</span>
+
 						<span class="col-xs-3 text-center" style="padding: .5em;">
-							<img src="/image/order_img_more.png"/>
+
+							<img src="image/order_img_more.png"/>
+
 						</span>					
+
 						<div class="clear"></div>
+
 						
+
 					</div>
+
 					
+
 					<div style="width:100%;background:#ffffff;padding:0px .5em;">
+
 						<input ng-model="comments" style="width:100%;border: 0;background-color: #eeeeee;padding:0.2em;margin:10px 0" 
+
 							placeholder="备注：包装需求等" type="text"  ng-blur="saveUserInfo()"/>
+
 					</div>
+
 					
+
 					<div class="clear"></div>
+
 				</div>
+
 				
+
 				<div class="background-white pay-panel" style="line-height:2em;font-size:1.2em;">
+
 					<span class="col-xs-6">商品总额</span>					
+
 					<span class="col-xs-6 text-right">
+
 						<span>￥{{orderPrice.oldTotal}}</span>					
+
 					</span>
+
 					
+
 					<span class="col-xs-6">优惠合计</span>					
+
 					<span class="col-xs-6 text-right">
+
 						- <span>￥{{orderPrice.js}}</span>					
+
 					</span>
+
 					
+
 					<span class="col-xs-6">运费</span>					
+
 					<span class="col-xs-6 text-right">
+
 						+ <span>￥{{orderPrice.expressPrice | currency:''}}</span>					
+
 					</span>
+
 					
+
 					<div class="clear"></div>
+
 				</div>
+
 				
+
 			</div>
+
 			
+
 			
+
 			
+
 			<div ng-show="step==2">
+
 				<div class="myPhone-item-text" style="margin:0;background-color: #fff;">
+
 					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">联系人</span>
+
 					
+
 					<span class="col-xs-9">
+
 						<input type="text" ng-model="addressInfo.contact"
+
 						placeholder="联系人姓名"/>
+
 					
+
 					</span>
+
 					<div class="clear"></div>
+
 					
+
 					
+
 					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">手机号</span>
+
 					<span class="col-xs-9">
+
 						 <input type="text" ng-model="addressInfo.mobile"  style="border:0px;"
+
 						 placeholder="联系人手机号"/>
+
 					
+
 					</span>
+
 					
+
 					<div class="clear"></div>
+
 				 </div>
+
 				 
+
 				 <div class="myPhone-item-text" style="text-align:;margin-top:10px;margin-bottom:10px;color:#000;">					
+
 					<span class="col-xs-12">回程</span>
+
 					<div class="clear"></div>
+
 				 </div>
+
 				 
+
 				 <div class="myPhone-item-text" style="margin:0;background-color: #fff;">
+
 					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">日期</span>
+
 					
+
 					<span class="col-xs-9">
+
 						<input type="text" id="appDateTime"
-						 placeholder=""/>
+
+						 placeholder="日期"/>
+
 					
+
 					</span>
+
 					<div class="clear"></div>
+
 					
+
 					
+
 					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">航班号</span>
+
 					<span class="col-xs-9">
+
 						 <input type="text" ng-model="addressInfo.returnFlightno"
-						 placeholder="" style="border:0px;"/>
+
+						 placeholder="航班号" style="border:0px;"/>
+
 					
+
 					</span>
+
 					
+
 					<div class="clear"></div>
+
 				 </div>
 
+
+
 				 
+
 			</div>
+
 			
+
 			
+
 			<div ng-show="step==3">
+
 				<div class="myPhone-item-text" style="margin:0;background-color: #fff;">
+
 					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">联系人</span>
+
 					
+
 					<span class="col-xs-9">
+
 						<input type="text" ng-model="addressInfo.contact"
+
 						placeholder="联系人姓名"/>
+
 					
+
 					</span>
+
 					<div class="clear"></div>
+
 					
+
 					
+
 					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">手机号</span>
+
 					<span class="col-xs-9">
+
 						 <input type="text" ng-model="addressInfo.mobile"  style="border:0px;"
+
 						 placeholder="联系人手机号"/>
+
 					
+
 					</span>
+
 					
+
 					<div class="clear"></div>
-				 </div>
-				 
-				 <div class="myPhone-item-text" style="text-align:;margin-top:10px;color:#000;">					
-					<div class="clear"></div>
-				 </div>
-				 
-				 <div class="myPhone-item-text" style="margin:0;background-color: #fff;">
-					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">取货酒店</span>
-					
-					<span class="col-xs-9">
-						<input type="text" ng-model="addressInfo.hotelName"
-						placeholder="回程前入住酒店名称"/>
-					
-					</span>
-					<div class="clear"></div>
-					
-					
-					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">取货日期</span>
-					<span class="col-xs-9">
-						 <input type="text"  ng-model="addressInfo.hotelPickupDate" id="appDateTime2"
-						 placeholder="回程前入住酒店的取货日期"/>
-					
-					</span>
-					
-					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">酒店电话</span>
-					
-					<span class="col-xs-9">
-						<input type="text"  ng-model="addressInfo.hotelTel"
-						placeholder="酒店联系电话"/>
-					
-					</span>
-					<div class="clear"></div>
-					
-					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">酒店地址</span>
-					
-					<span class="col-xs-9">
-						<input type="text" ng-model="addressInfo.hotelAddress" style="border:0px;"
-						placeholder="酒店详细地址"/>
-					
-					</span>
-					<div class="clear"></div>
-					
-					
-					
-					<div class="clear"></div>
+
 				 </div>
 
 				 
-				 <div class="myPhone-item-text" style="text-align:;margin-top:25px;color:#999;">
-					<span class="col-xs-1 text-right">
-						<i class="fa fa-info-circle" style="position:static;font-size:1em;color:#999;"></i>
-					</span>
-					<span class="col-xs-11">仅支持首尔酒店取货</span>
+
+				 <div class="myPhone-item-text" style="text-align:;margin-top:10px;color:#000;">					
+
+					<div class="clear"></div>
+
 				 </div>
+
+				 
+
+				 <div class="myPhone-item-text" style="margin:0;background-color: #fff;">
+
+					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">取货酒店</span>
+
+					
+
+					<span class="col-xs-9">
+
+						<input type="text" ng-model="addressInfo.hotelName"
+
+						placeholder="回程前入住酒店名称"/>
+
+					
+
+					</span>
+
+					<div class="clear"></div>
+
+					
+
+					
+
+					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">取货日期</span>
+
+					<span class="col-xs-9">
+
+						 <input type="text"  ng-model="addressInfo.hotelPickupDate" id="appDateTime2"
+
+						 placeholder="回程前入住酒店的取货日期"/>
+
+					
+
+					</span>
+
+					
+
+					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">酒店电话</span>
+
+					
+
+					<span class="col-xs-9">
+
+						<input type="text"  ng-model="addressInfo.hotelTel"
+
+						placeholder="酒店联系电话"/>
+
+					
+
+					</span>
+
+					<div class="clear"></div>
+
+					
+
+					<span class="col-xs-3" style="padding-left:1em;height: 3em;line-height: 3em;text-align:left;">酒店地址</span>
+
+					
+
+					<span class="col-xs-9">
+
+						<input type="text" ng-model="addressInfo.hotelAddress" style="border:0px;"
+
+						placeholder="酒店详细地址"/>
+
+					
+
+					</span>
+
+					<div class="clear"></div>
+
+					
+
+					
+
+					
+
+					<div class="clear"></div>
+
+				 </div>
+
+
+
+				 
+
+				 <div class="myPhone-item-text" style="text-align:;margin-top:25px;color:#999;">
+
+					<span class="col-xs-1 text-right">
+
+						<i class="fa fa-info-circle" style="position:static;font-size:1em;color:#999;"></i>
+
+					</span>
+
+					<span class="col-xs-11">仅支持首尔酒店取货</span>
+
+				 </div>
+
 			</div>
+
 		  
+
 			
+
 			<div ng-show="step==4">
+
 				<div style="background-color:#fff;padding:.5em;" ng-repeat="g in orderPrice.goodsList">
+
 					<span class="col-xs-4 text-center">
+
 						<img alt="" ng-src="{{g.img}}" class="product-image">
+
 					</span>
+
 					
+
 					<span class="col-xs-8">
+
 						{{g.name}}
-						<span class="col-xs-6 cash">{{g.price}}</span>
+
+						<span class="col-xs-6 cash">{{g.ldPrice}}</span>
+
 						<span class="col-xs-6 text-right text-gray">×{{g.quantity}}</span>
+
 					</span>
+
 					
+
 					<div class="clear"></div>
+
 					<hr style="margin-top:15px;"/>
+
 					<div class="clear"></div>
+
 				</div>
+
 				
+
 			</div>
+
             
+
 			
+
             <div class="nav-bottom-block">
+
             </div>			
+
         </div>
+
     </div>
+
     <div class="nav-bottom-background" ng-show="step<2">
+
     </div>
+
 	
+
     <div class="nav-bottom" style="font-size:1.2em;padding:0 .5em;line-height:60px;" ng-show="step<2">
+
         <span class="col-xs-8">商品总额 <span class="cash">{{orderPrice.total}}</span></span>					
+
 		<span class="col-xs-4 text-right">
+
 			<span class="btn-span" ng-click="generateOrder();" id='btnOrder'>确认</span>					
+
 		</span>
+
 		
+
     </div>
+
 	
+
 	
+
 </div>
+

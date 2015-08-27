@@ -1,305 +1,305 @@
-<style>
-#wrapper2 {
-        position: relative;
-        z-index: 1;
-        height: 3em;
-        width: 100%;
-        background: #fff;
-        overflow: hidden;
-        -ms-touch-action: none;
-    }
-
-    #scroller2 {
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
-        width: 200%;
-        height: 3em;
-        -webkit-transform: translateZ(0);
-        -moz-transform: translateZ(0);
-        -ms-transform: translateZ(0);
-        -o-transform: translateZ(0);
-        transform: translateZ(0);
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-text-size-adjust: none;
-        -moz-text-size-adjust: none;
-        -ms-text-size-adjust: none;
-        -o-text-size-adjust: none;
-        text-size-adjust: none;
-    }
-
-    #scroller2 ul {
-        list-style: none;
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        margin-top:.5em;
-    }
-
-    #scroller2 li {
-        height: 3em;
-        width:12.5%;
-        float: left;
-        line-height: 3em;
-        border-right: 0px solid #ccc;
-        border-bottom: 0px solid #ccc;
-        background-color: #fff;
-        font-size: .9em;
-        overflow: hidden;
-        text-align: center;
-        
-    }
-    #scroller2 li.last{
-        border-right: 0px solid #ccc;
-    }
-    #scroller2 li .fa{
-        color:#1eb0fe;
-    }
-    @media only screen and (max-width: 100px)
-    {
-        #scroller2 li {
-            font-size: .5em;
-        }
-    }
-    @media only screen and (max-width: 200px)
-    {
-        #scroller2 li {
-            font-size: .6em;
-        }
-    }
-    @media only screen and (max-width: 300px)
-    {
-        #scroller2 li {
-            font-size: .7em;
-        }
-    }
-    @media only screen and (max-width: 400px)
-    {
-        #scroller2 li {
-            font-size: .9em;
-        }
-    }
-    .nav-menu ul{
-        display:inline;
-    }
-    .nav-menu ul li .actived, .nav-menu ul li a:hover {
-      border-bottom: 0px solid #F14F57;
-      color: #333;
-    }
-    .delivery-tag{
-		color: #ffffff;
-		background-color: #FEB33E;
-		padding: 4px;
-		border-radius: 0px;
-		box-shadow: 1px 1px 0px #ddd;
-    	font-size: .8em;
-    }
-    .discount-des{
-    	color: #ffffff;
-		background-color: #FEB33E;
-		padding: 3px;
-		border-radius: 0px;
-		box-shadow: 1px 1px 0px #ddd;
-    	font-size: .8em;
-    }
-	
-	.page {
-		-webkit-transition: all .2s ease-in-out;
-		transition: all .2s ease-in-out;
-		-webkit-transform: translateX(200%);
-		transform: translateX(200%);
-		background:#f7e7e7;
-	}
-	.page.current {
-		-webkit-transform: none;
-		transform: none;
-		display: block;
-		position: static;
-	}
-	#scroller2ul li a.active{
-		color:#ff5757;
-	}
-	.list-products-item{
-		min-height: 100px;
-		width: 49%;
-		float:left;
-		background-color:#fff;
-		margin-bottom:10px;
-	}
-	.list-products{
-		min-height: 100px;
-		padding: 0 8px;
-	}
-	.list-products-item:nth-child(odd){
-		margin-right:2%;
-		
-	}
-	.products-item-image{
-		background-position: center 0;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
-	.list-show-product-brief-0{
-		color:#333;
-		font-size:.85em;
-		display: -webkit-box;
-		overflow: hidden;
-		-webkit-line-clamp: 2;
-		word-break: break-all;
-		-webkit-box-orient: vertical;
-	}
-	.products-item-title{
-		padding:0 .5em;
-		position:relative;
-	}
-	.products-item-price{
-		position: absolute;
-		bottom: 0em;
-		padding-top:.2em;
-		padding-bottom:.3em;
-		width: 90%;
-		background-color: #fff;
-	}
-	
-	.products-item-title hr {
-		margin-top: 10px;
-		margin-bottom: 10px;
-	}
-	.price.promotePrice {
-		font-size: 1em;
-		color: #ec3f35;
-	}
-	.price.shopPrice {
-		font-size: .9em;
-		color: #999;
-	}
-	.price{
-		text-align:center;
-		line-height:1.3;
-	}
-	@media only screen and (min-width: 500px)
-    {
-        .price{
-			line-height:2;
-		}
-		
-		.products-item-price{
-			padding-bottom: 1em;
-			padding-top:.5em;
-		}
-    }
-	.fa-search:before {
-		content: "\f002  输入商品名";
-	}
-	.fa-search {
-		position: absolute;
-		top: 22px;
-		left: 17%;
-		color: #fff;
-		z-index: 9999999999;
-		font-size: .9em;
-	}
-</style>
-<div ng-controller="productListController">
-    <!-- Navbars -->
-    <div class="navbar navbar-app nav-main" ng-show="!isSearchPage">
-        <div class="navbar-brand navbar-brand-search" ng-click="showSearch();">
-			<i class="fa fa-search"></i>
-            <input type="text" class="search-input-index" placeholder=""/>
-        </div>
-        <div class="btn-group pull-left" ng-click="inquiry()">
-            <div class="btn btn-navbar sidebar-toggle">
-                <div class="btn-left btn-profile">
-                </div>
-            </div>
-        </div>
-        <div class="btn-group pull-right" ng-click="cart()">
-            <div class="btn btn-navbar">
-                <div class="btn-nav-cart">
-                    <div class="cart-mark" ng-show="cartQuantity > 0">
-                        {{cartQuantity}}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="nav-menu" ng-show="!isSearchPage">
-         <!------ 导航 ------->
-          <div id="wrapper2">
-                <div id="scroller2">
-                    <ul id="scroller2ul" style="display:inline;">
-                    </ul>
-                </div>
-            </div>
-<!------ 导航 ------->
-
-    </div>
-
-    <div class="scrollable product-list">
-        <div id="contentPage" class="scrollable-content background-gray" ng-show="!isSearchPage">            
-            <div id="divProductList">
-                <div class="nav-main-block"></div>
-                
-                <div class="nav-sort-block"></div>
-                
-                <div id="divProducts" style="margin-top: 15px;">
-					<div class="list-products">
-						<div class="list-products-item" ng-repeat="product in products" ng-click="goProduct(product.id);">
-							<div class="products-item-image" style="background-image:url({{product.img}})"></div>
-							
-							<div class="products-item-title">
-								<hr/>
-								<div class="products-item-name">
-									<span class="list-show-product-brief-0">
-										{{product.name}}
-									</span>
-								</div>
-								
-								<div class="products-item-price">
-									<div class="shopPrice price">￥{{product.shopPrice}}</div>								
-									<div class="promotePrice price">￥{{product.ldPrice || product.promotePrice}}</div>								
-								</div>
-								
-							
-							</div>
-							
-							
-							
-							
-							
-							<span style="display:none;" ng-if="$last">
-								{{drawProductsPanel();}}
-							</span>
-						</div>
-						
-						<div class="clear"></div>
-					
-					</div>
-                </div> 
-
-
-                <div class="load-bar" ng-hide="(pageNum == null || pageNum == pageCount || products.length==0)">
-                    <div class="pull-loading">
-                        上拉加载
-                    </div>
-                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
-                </div>
-                <div class="complete-bar-words" ng-show="(pageNum != null && pageNum == pageCount)">
-                    已经到底了哦~
-                </div>
-                <div class="complete-bar-words" ng-show="(products.length==0)">
-                    该分类下商品正在上架，敬请期待~
-                </div>
-            </div>
-			
-        </div>
-		
-		<div id="searchPage" class="scrollable-content background-gray page">
-			
-			<!-- <div ng-include="'views/goods/searchPanel.html'"></div> -->
-		
-		
-		</div>
-	</div>
-</div>
+<style>
+#wrapper2 {
+        position: relative;
+        z-index: 1;
+        height: 3em;
+        width: 100%;
+        background: #fff;
+        overflow: hidden;
+        -ms-touch-action: none;
+    }
+
+    #scroller2 {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 200%;
+        height: 3em;
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-text-size-adjust: none;
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+        -o-text-size-adjust: none;
+        text-size-adjust: none;
+    }
+
+    #scroller2 ul {
+        list-style: none;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-top:.5em;
+    }
+
+    #scroller2 li {
+        height: 3em;
+        width:12.5%;
+        float: left;
+        line-height: 3em;
+        border-right: 0px solid #ccc;
+        border-bottom: 0px solid #ccc;
+        background-color: #fff;
+        font-size: .9em;
+        overflow: hidden;
+        text-align: center;
+        
+    }
+    #scroller2 li.last{
+        border-right: 0px solid #ccc;
+    }
+    #scroller2 li .fa{
+        color:#1eb0fe;
+    }
+    @media only screen and (max-width: 100px)
+    {
+        #scroller2 li {
+            font-size: .5em;
+        }
+    }
+    @media only screen and (max-width: 200px)
+    {
+        #scroller2 li {
+            font-size: .6em;
+        }
+    }
+    @media only screen and (max-width: 300px)
+    {
+        #scroller2 li {
+            font-size: .7em;
+        }
+    }
+    @media only screen and (max-width: 400px)
+    {
+        #scroller2 li {
+            font-size: .9em;
+        }
+    }
+    .nav-menu ul{
+        display:inline;
+    }
+    .nav-menu ul li .actived, .nav-menu ul li a:hover {
+      border-bottom: 0px solid #F14F57;
+      color: #333;
+    }
+    .delivery-tag{
+		color: #ffffff;
+		background-color: #FEB33E;
+		padding: 4px;
+		border-radius: 0px;
+		box-shadow: 1px 1px 0px #ddd;
+    	font-size: .8em;
+    }
+    .discount-des{
+    	color: #ffffff;
+		background-color: #FEB33E;
+		padding: 3px;
+		border-radius: 0px;
+		box-shadow: 1px 1px 0px #ddd;
+    	font-size: .8em;
+    }
+	
+	.page {
+		-webkit-transition: all .2s ease-in-out;
+		transition: all .2s ease-in-out;
+		-webkit-transform: translateX(200%);
+		transform: translateX(200%);
+		background:#f7e7e7;
+	}
+	.page.current {
+		-webkit-transform: none;
+		transform: none;
+		display: block;
+		position: static;
+	}
+	#scroller2ul li a.active{
+		color:#ff5757;
+	}
+	.list-products-item{
+		min-height: 100px;
+		width: 49%;
+		float:left;
+		background-color:#fff;
+		margin-bottom:10px;
+	}
+	.list-products{
+		min-height: 100px;
+		padding: 0 8px;
+	}
+	.list-products-item:nth-child(odd){
+		margin-right:2%;
+		
+	}
+	.products-item-image{
+		background-position: center 0;
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+	.list-show-product-brief-0{
+		color:#333;
+		font-size:.85em;
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		word-break: break-all;
+		-webkit-box-orient: vertical;
+	}
+	.products-item-title{
+		padding:0 .5em;
+		position:relative;
+	}
+	.products-item-price{
+		position: absolute;
+		bottom: 0em;
+		padding-top:.2em;
+		padding-bottom:.3em;
+		width: 90%;
+		background-color: #fff;
+	}
+	
+	.products-item-title hr {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.price.promotePrice {
+		font-size: 1em;
+		color: #ec3f35;
+	}
+	.price.shopPrice {
+		font-size: .9em;
+		color: #999;
+	}
+	.price{
+		text-align:center;
+		line-height:1.3;
+	}
+	@media only screen and (min-width: 500px)
+    {
+        .price{
+			line-height:2;
+		}
+		
+		.products-item-price{
+			padding-bottom: 1em;
+			padding-top:.5em;
+		}
+    }
+	.fa-search:before {
+		content: "\f002  输入商品名";
+	}
+	.fa-search {
+		position: absolute;
+		top: 22px;
+		left: 17%;
+		color: #fff;
+		z-index: 9999999999;
+		font-size: .9em;
+	}
+</style>
+<div ng-controller="productListController">
+    <!-- Navbars -->
+    <div class="navbar navbar-app nav-main" ng-show="!isSearchPage">
+        <div class="navbar-brand navbar-brand-search" ng-click="showSearch();">
+			<i class="fa fa-search"></i>
+            <input type="text" class="search-input-index" placeholder=""/>
+        </div>
+        <div class="btn-group pull-left" ng-click="inquiry()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-left btn-profile">
+                </div>
+            </div>
+        </div>
+        <div class="btn-group pull-right" ng-click="cart()">
+            <div class="btn btn-navbar">
+                <div class="btn-nav-cart">
+                    <div class="cart-mark" ng-show="cartQuantity > 0">
+                        {{cartQuantity}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-menu" ng-show="!isSearchPage">
+         <!------ 导航 ------->
+          <div id="wrapper2">
+                <div id="scroller2">
+                    <ul id="scroller2ul" style="display:inline;">
+                    </ul>
+                </div>
+            </div>
+<!------ 导航 ------->
+
+    </div>
+
+    <div class="scrollable product-list">
+        <div id="contentPage" class="scrollable-content background-gray" ng-show="!isSearchPage">            
+            <div id="divProductList">
+                <div class="nav-main-block"></div>
+                
+                <div class="nav-sort-block"></div>
+                
+                <div id="divProducts" style="margin-top: 15px;">
+					<div class="list-products">
+						<div class="list-products-item" ng-repeat="product in products" ng-click="goProduct(product.id);">
+							<div class="products-item-image" style="background-image:url({{product.img}})"></div>
+							
+							<div class="products-item-title">
+								<hr/>
+								<div class="products-item-name">
+									<span class="list-show-product-brief-0">
+										{{product.name}}
+									</span>
+								</div>
+								
+								<div class="products-item-price">
+									<div class="shopPrice price">￥{{product.promotePrice}}</div>
+									<div class="promotePrice price">￥{{product.ldPrice || product.promotePrice}}</div>								
+								</div>
+								
+							
+							</div>
+							
+							
+							
+							
+							
+							<span style="display:none;" ng-if="$last">
+								{{drawProductsPanel();}}
+							</span>
+						</div>
+						
+						<div class="clear"></div>
+					
+					</div>
+                </div> 
+
+
+                <div class="load-bar" ng-hide="(pageNum == null || pageNum == pageCount || products.length==0)">
+                    <div class="pull-loading">
+                        上拉加载
+                    </div>
+                    <canvas id="myLoadCanvas" width="70px" height="70px;"></canvas>
+                </div>
+                <div class="complete-bar-words" ng-show="(pageNum != null && pageNum == pageCount)">
+                    已经到底了哦~
+                </div>
+                <div class="complete-bar-words" ng-show="(products.length==0)">
+                    该分类下商品正在上架，敬请期待~
+                </div>
+            </div>
+			
+        </div>
+		
+		<div id="searchPage" class="scrollable-content background-gray page">
+			
+			<!-- <div ng-include="'views/goods/searchPanel.html'"></div> -->
+		
+		
+		</div>
+	</div>
+</div>

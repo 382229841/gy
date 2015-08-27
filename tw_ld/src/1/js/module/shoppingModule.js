@@ -26,7 +26,18 @@ function getCloseDownloadApp() {
 
 function getSearchLocalItems() {
     if (localStorage && localStorage.getItem(easybuy.Storage.SearchLocalItems)) {
-        return JSON.parse(localStorage.getItem(easybuy.Storage.SearchLocalItems));
+		var items=JSON.parse(localStorage.getItem(easybuy.Storage.SearchLocalItems));
+		var maxLength=items.length;
+		var temp=[];
+		for(var i=0;i<maxLength;i++){
+			if(i>=6){
+				break;
+			}
+			temp.push(items[maxLength-i-1]);
+
+		}
+
+        return temp;
     }
 
     return null;
@@ -49,6 +60,13 @@ function setSearchLocalItems(items) {
 						newItems.push(items[i]);
 					}
 				}
+				
+				//var maxLength=newItems.length>6?6:newItems.length;
+				//var temp=[];
+				//for(var i=0;i<maxLength;i++){
+				//	temp.push(newItems[maxLength-i-1]);
+				//};
+
                 localStorage.setItem(easybuy.Storage.SearchLocalItems, JSON.stringify(newItems));
             }
             else {

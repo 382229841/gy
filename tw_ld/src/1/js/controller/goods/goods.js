@@ -53,7 +53,7 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
         $scope.isloading = true;
 		var paramCategory=code?"&category="+code : "";
 		var ldToken=$scope.user?"&token="+$scope.user.token : '';		
-        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=10&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
+        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=20&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 if(pageNum>1){
                     $scope.products=$scope.products.concat(result.result);
@@ -165,8 +165,16 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	//setSearchLocalItems([{value:"凤梨酥"},{value:"郭元益凤梨酥"},{value:"凤梨酥350g"},{value:"凤梨酥350g"}]);
 	
 	$scope.searchLocalItems=getSearchLocalItems() || [];
+
+	/*var maxLength=$scope.searchLocalItemsT.length>6?6:$scope.searchLocalItemsT.length;
+	var tempArr=[];
+	for(var i=(maxLength-1);i>=0;i--){
+		tempArr.push($scope.searchLocalItemsT[i]);
+	}
+	$scope.searchLocalItems=$.extend(true,{},tempArr);
+
 	$scope.searchItems=[];//["凤梨酥","郭元益凤梨酥","凤梨酥350g0"];
-	
+	*/
 	$scope.isLocalKey=true;//显示搜索历史记录
 	$scope.searchKeyup=function(e){
 		if(e.keyCode==13){

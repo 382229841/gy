@@ -114,7 +114,7 @@ app.run( function($rootScope, $location) {
 		}else{
 			$rootScope.tokenInfo=tokenInfo;
 		}
-        hideLoading();                          
+        hideLoading();
     });
 });
 

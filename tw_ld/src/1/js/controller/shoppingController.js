@@ -59,7 +59,7 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
         $scope.isloading = true;
 		var paramCategory=code?"&category="+code : "";
 		var ldToken=$scope.user?"&token="+$scope.user.token : '';		
-        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=10&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
+        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=20&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 if(pageNum>1){
                     $scope.products=$scope.products.concat(result.result);
@@ -171,8 +171,16 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	//setSearchLocalItems([{value:"凤梨酥"},{value:"郭元益凤梨酥"},{value:"凤梨酥350g"},{value:"凤梨酥350g"}]);
 	
 	$scope.searchLocalItems=getSearchLocalItems() || [];
+
+	/*var maxLength=$scope.searchLocalItemsT.length>6?6:$scope.searchLocalItemsT.length;
+	var tempArr=[];
+	for(var i=(maxLength-1);i>=0;i--){
+		tempArr.push($scope.searchLocalItemsT[i]);
+	}
+	$scope.searchLocalItems=$.extend(true,{},tempArr);
+
 	$scope.searchItems=[];//["凤梨酥","郭元益凤梨酥","凤梨酥350g0"];
-	
+	*/
 	$scope.isLocalKey=true;//显示搜索历史记录
 	$scope.searchKeyup=function(e){
 		if(e.keyCode==13){
@@ -666,26 +674,32 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
 
     $scope.reduceNum = function (index) {
         $scope.products[index].quantity--;        
-		$scope.synCart
+		$scope.synCart();
     }
 
     $scope.addNum = function (index) {
 		$scope.products[index].quantity++;
+		$scope.synCart();
         $scope.totalAmount();
     }
 
     $scope.validNum = function (index) {
         $scope.products[index].quantity=validInteger($scope.products[index].quantity)==""?0:parseInt(validInteger($scope.products[index].quantity));
+		$scope.synCart();
 		$scope.totalAmount();
     }
 
-    $scope.checked = function (product,parentIndex,index) {
+    $scope.checked = function (product,parentIndex,index) {		
         if (product.checked) {
             product.checked = 0;
         }
         else {
             product.checked = 1;
         }
+		if($scope.products[index].error=="库存不足"){
+			product.checked = 0;
+			return;
+		}
         $scope.updateStatus();
         $scope.totalAmount(parentIndex,index);
     }
@@ -1114,8 +1128,14 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 	
 	$scope.enterAddress=function(s){
 		$scope.step=s;
+		//alert(s);
 		$scope.addressInfo=$.extend(true, {}, $scope.defaultAddress);
-	    $("#appDateTime").val($scope.addressInfo.returnDate+" "+$scope.addressInfo.returnTime);
+		if(s==1){
+			$("#appDateTime").val("");
+			$scope.step=$scope.takeoverMethod==1?2:3;
+		}else{
+			$("#appDateTime").val($scope.addressInfo.returnDate);
+		}
 	};
 	
 	$scope.goodsItems=function(){
@@ -1134,7 +1154,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 		var data="platform=all&token="+$rootScope.tokenInfo.token+"&goodsId="+$location.search().goodsId+"&quantity="+$location.search().quantity;
 		httpRequest.APIPOST('/order/price', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
-				$scope.orderPrice=result.result;
+				$scope.orderPrice=result.result || {};
 				
 			}else{
 				alertWarning(result.msg);
@@ -1147,7 +1167,9 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 		httpRequest.APIPOST('/address/default', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
 				$scope.defaultAddress=result.result;
-				
+				if($scope.defaultAddress!=null){
+					$scope.$apply($scope.defaultAddress);
+				}				
 			}else{
 				alertWarning(result.msg);
 			}
@@ -1227,6 +1249,10 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 			
 			if (!$scope.addressInfo.hotelTel || $scope.addressInfo.hotelTel == '') {
                 alertWarning("请输入酒店电话");
+                return;
+            }
+            if ($scope.addressInfo.hotelTel.length<9 || $scope.addressInfo.hotelTel.length >13) {
+                alertWarning("请输入9-13位酒店电话");
                 return;
             }
 			
@@ -1348,9 +1374,13 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
     	if($scope.isGoPay){
     		return;
     	}
-    	$scope.isGoPay=true;
+    	
 		var comment=$scope.comments?"&comments="+$scope.comments:"&comments=''";
     	var data="";
+    	if($scope.defaultAddress==null){
+			alertWarning("请填写联系人信息");
+    		return;
+    	}
 		if($scope.takeoverMethod==2){
 		  data="platform=all&token="+$rootScope.tokenInfo.token
 				  +"&contact="+$scope.defaultAddress.contact
@@ -1366,6 +1396,17 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 				  +"&quantity="+quantity
 				  +comment; 
 		}else{
+			if($scope.defaultAddress.returnDate==null){
+				alertWarning("请填写完整回程信息");
+				return;
+			}
+
+			if($scope.defaultAddress.returnTime==null){
+				alertWarning("请填写完整回程信息");
+				return;
+			}
+			
+
 			data="platform=all&token="+$rootScope.tokenInfo.token
 				  +"&pickupWay=1"
 				  +"&contact="+$scope.defaultAddress.contact
@@ -1374,10 +1415,12 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 				  +"&returnAirportId="+$scope.defaultAddress.returnAirportId					
 				  +"&returnFlightno="+$scope.defaultAddress.returnFlightno
 				  +"&goodsId="+goodsId
-				  +"&quantity="+quantity+comment; 
+				  +"&quantity="+quantity+comment;
 		}
 		httpRequest.APIPOST('/orderLd/add', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if(result.msg==="success"){
+				$scope.isGoPay=true;
+				$("#btnOrder").text("正在下单...");
 				$location.path("/pay/confirm/"
 					+result.result.orderNum+"/"
 					+$scope.orderPrice.total+"/"
@@ -1405,7 +1448,12 @@ app.controller('dividedPayController', function ($rootScope, $scope, httpRequest
 			return;
 		}
 		if($scope.payWay==1){
-			window.location.href = paymentUrl+ "callback=2&out_trade_no=" + $scope.order.orderNum + "&total_fee=" + $scope.order.totalPrice;
+			if($scope.payWay==1 && $scope.isWechat){
+				window.location.href = paymentUrl+ "callback=2&out_trade_no=" + $scope.order.orderNum + "&total_fee=" + $scope.order.totalPrice;
+			}else{
+				window.location.href = paymentUrl+ "callback=4&out_trade_no=" + $scope.order.orderNum + "&total_fee=" + $scope.order.totalPrice;
+			}
+			
 		}else{
 			window.location.href = serviceUrl + "/order/pay/orderid/" + $scope.order.orderNum+"/amount/"+$scope.order.totalPrice+"/address/hiker/time/201508221140";
 		}
@@ -1437,6 +1485,13 @@ app.controller('dividedPayController', function ($rootScope, $scope, httpRequest
 	$scope.back=function(){
 		history.back();
 	};
+	var t=getToken() || {};
+	if(!t.isFresh){
+		location.reload();
+		t.isFresh=1;
+		setToken(t);
+	}
+	
 });
 
 app.controller('successController', function ($rootScope, $scope, httpRequest, analytics, $location, $window, $routeParams) {
@@ -1469,7 +1524,7 @@ app.controller('successController', function ($rootScope, $scope, httpRequest, a
             window.location.href = easybuy.appActivity + "?action=16&orderId="+$routeParams.ordersn;
             return;
         }
-        $location.path("/orderDetail/" + $routeParams.ordersn+"/"+$routeParams.token);
+        $location.path("/orderDetail/" + $routeParams.ordersn);
     }
 
     $scope.back = function () {
@@ -1714,20 +1769,18 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
     var loginFrom=1;
     $scope.isLogin=true;
     $scope.isShowLogoutBtn=!easybuy.isWechat;
-    if(!easybuy.isWechat){
-        if(getToken()){
-            $scope.user=getToken();
-            $scope.isLogin=true;
-            if($scope.user.bind==0 || $scope.user.bind=="0" || ($scope.user.source && $scope.user==4)){
-                $scope.isNeedBind=false;
-            }else{
-                $scope.isNeedBind=true;
-            }
-            loginFrom=$scope.user.source;       
-        }else{
-             $scope.isLogin=false;
-        }
-    }
+    if(getToken()){
+		$scope.user=getToken();
+		$scope.isLogin=true;
+		if($scope.user.bind==0 || $scope.user.bind=="0" || ($scope.user.source && $scope.user==4)){
+			$scope.isNeedBind=false;
+		}else{
+			$scope.isNeedBind=true;
+		}
+		loginFrom=$scope.user.source;       
+	}else{
+		 $scope.isLogin=false;
+	}
 	
 	$scope.forgot=function(){
 		$location.path("/forgot");
@@ -1986,8 +2039,8 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
             return;
         }
 		
-		if (!name || name.length<6 || name.length>20) {
-            alertWarning("请输入您的真实姓名");
+		if (!name || name.length<2 || name.length>30) {
+            alertWarning("请输入2-30位真实姓名");
             return;
         }
         $scope.wait=0;

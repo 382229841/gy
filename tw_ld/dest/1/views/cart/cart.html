@@ -51,7 +51,7 @@
 					<div class="list-group-item media border-bottom-0 product-item product-cart">	
 						<div class="product-box">
 							<div class="pull-left check-area" ng-click="checked(good,parentIndex,$index);">
-								<div class="checkbox {{good.checked? 'checked':''}}">
+								<div class="checkbox {{(good.checked && good.error!='库存不足')? 'checked':''}}">
 								</div>
 							</div>
 							<div class="media-body product-body">
@@ -82,7 +82,10 @@
 										</div>
 										
 										<div class="clear"></div>
-										<div><span>库存不足</span></div>
+										<div><span ng-if="good.error" style="background: #f75757;
+color: #fff;
+font-size: .6em;
+padding: .2em .4em;">{{good.error}}</span></div>
 									</div>
 								</div>
 							</div>
