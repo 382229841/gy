@@ -184,6 +184,28 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
         $scope.isLogin = isLogin;
     });
 	
+	 if (getToken()) {
+        var tmptoken = getToken().token;
+        if (tmptoken) {
+            var tmpdata2 = "platform=all&token=" + tmptoken;
+            httpRequest.APIPOST("/mine/index", dataStringify(tmpdata2), {
+                "content-type": "application/x-www-form-urlencoded"
+            }).then(function(result) {
+                if (result && result.code == statusCode.Success) {
+                    var userInfo = result.result;
+                    if ($scope.isLogin = !0, $scope.user = {},
+                    $scope.user.token = tmptoken, $scope.user.openId = "0", $scope.user.source = 4, $scope.user.nickname = userInfo.nickname, $scope.user.headimgurl = userInfo.avatar, $scope.user.mobile = userInfo.mobible, $scope.user.category = userInfo.category, $scope.user.realName = userInfo.realname, $scope.user.incomeAmount = userInfo.incomeAmount, $scope.incomeAmount = userInfo.incomeAmount, $scope.user.bind = 0, $scope.isNeedBind = !1, setToken($scope.user), $rootScope.tokenInfo = $scope.user, "/myProfile" != $location.path()) {
+                        return $rootScope.isRootLogin = !0,
+                        void $rootScope.$emit("CtrlLoginModule", $rootScope.tokenInfo)
+                    }
+                } else {
+                    alertWarning(result.msg)
+                }
+            })
+        }
+    };
+
+	
 	
 	var from=$routeParams.from || "";
     $scope.isNeedBind=true;
@@ -230,7 +252,7 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
         }
 
         var data="platform=all&account="+u+"&password="+p+"&category=2";
-        httpRequest.APIPOST('/user/login/ld', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/ldUser/login', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
                 var data2="platform=all&token="+token;
@@ -308,6 +330,7 @@ app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $h
 	};
 	
 	$scope.updateName=function(){
+		$scope.username=$rootScope.tokenInfo.realName;
 		$scope.step=2;
 	};
 	
@@ -467,7 +490,7 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
         }
         $scope.wait=0;
         var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic+"&realname="+name;
-        httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/ldUser/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
                 var data2="platform=all&token="+token;

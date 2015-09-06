@@ -53,7 +53,7 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
         $scope.isloading = true;
 		var paramCategory=code?"&category="+code : "";
 		var ldToken=$scope.user?"&token="+$scope.user.token : '';		
-        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=20&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
+        httpRequest.APIPOST('/goods/listByCategoryLd', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=20&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 if(pageNum>1){
                     $scope.products=$scope.products.concat(result.result);
@@ -142,6 +142,10 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	$scope.back=function(){
 		$location.path("/products");
 	};
+    $scope.goProduct = function(id) {
+        return id ? void($scope.isApp ? window.location.href = easybuy.appActivity + "?action=1&goodId=" + id: $location.path("/product/" + id + "/1")) : void alertWarning("该商品已经下架，请选择其他商品购买^_^")
+    }
+
 	
 	
 	$scope.isQuery=false;
@@ -177,7 +181,7 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	*/
 	$scope.isLocalKey=true;//显示搜索历史记录
 	$scope.searchKeyup=function(e){
-		if(e.keyCode==13){
+		if(e && e.keyCode==13){
 			if($scope.searchKeyword.length>0){
 				$scope.queryGoods($scope.searchKeyword,1);
 				return;
@@ -192,7 +196,13 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 		}
 		
 	};
+	
+	$("#searchInput").bind("input",function(){
+		$scope.searchKeyup();
+	});
+	
 	$scope.searchFocus=function(){
+		$("#searchInput").focus();
 		$scope.searchLocalItems=getSearchLocalItems() || [];
 		$scope.isFocus=true;
 		if($scope.searchKeyword.length>0){
@@ -201,7 +211,7 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 			$scope.isFocus=false;
 		}else{
 			if($scope.searchLocalItems.length>0)
-				$(".search-result").addClass("focus");
+				$(".search-result").addClass("focus");				
 		}
 		
 	};
@@ -215,8 +225,8 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	}
 	
 	$scope.saveSearchKeyword=function(value){
-		$scope.searchLocalItems.push({"value":value});
-		setSearchLocalItems($scope.searchLocalItems);
+		//$scope.searchLocalItems.push({"value":value});
+		setSearchLocalItems(value);
 		
 		$scope.searchKeyword=value;
 		
@@ -230,8 +240,8 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	};
 	$(".search-input").bind("keyup",function(e){
 		if(e.keyCode==13 && $scope.searchKeyword.length>0){
-			$scope.searchLocalItems.push({"value":$scope.searchKeyword});
-			setSearchLocalItems($scope.searchLocalItems);
+			//$scope.searchLocalItems.push({"value":$scope.searchKeyword});
+			setSearchLocalItems($scope.searchKeyword);
 		}
 	})
 
@@ -247,7 +257,7 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	$scope.getShowKeywords();
 	
 	$scope.getSuggestKeywords=function(q){
-		httpRequest.APIPOST('/solr/keywords/suggest', dataStringify("platform=all&q="+q), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+		httpRequest.APIPOST('/solr/keywords/suggest', dataStringify("platform=all&area=kr&q="+q), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
 				$scope.searchItems=result.result;
 				if($scope.searchItems.length>0){
@@ -323,7 +333,7 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
         //return $routeParams.openId?true:false;
         return false;
     }
-    httpRequest.APIPOST('/goods/detail', dataStringify("platform=all&id=" + $routeParams.id), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+    httpRequest.APIPOST('/goods/detailLd', dataStringify("platform=all&id=" + $routeParams.id), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
         if (result && result.code == statusCode.Success) {
             $scope.product = result.result;
             if ($scope.product) {

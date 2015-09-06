@@ -57,7 +57,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 			if (result && result.code == statusCode.Success) {
 				$scope.defaultAddress=result.result;
 				if($scope.defaultAddress!=null){
-					$scope.$apply($scope.defaultAddress);
+					//$scope.$apply($scope.defaultAddress);
 				}				
 			}else{
 				alertWarning(result.msg);
@@ -154,7 +154,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
                 return;
             }
         }
-        $scope.$apply($scope.defaultAddress);
+        //$scope.$apply($scope.defaultAddress);
         
 
         $scope.search(function(){
@@ -277,7 +277,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 				  +"&pickupWay=2"
 				  
 				  +"&hotelName="+$scope.defaultAddress.hotelName
-				  +"&hotelPhone="+$scope.defaultAddress.hotelPhone
+				  +"&hotelPhone="+$scope.defaultAddress.hotelPhoneTel
 				  +"&hotelAddress="+$scope.defaultAddress.hotelAddress
 				  +"&pickupDate="+$scope.defaultAddress.hotelPickupDate
 				  
@@ -439,6 +439,8 @@ app.controller('errorController', function ($rootScope, $scope, httpRequest,data
             return;
         }
         if ($routeParams.orderId) {
+			$location.path("/products");
+			return;
             var orderId=$routeParams.orderId;
             var mobile=$routeParams.mobile
             httpRequest.APIPOST('/user/h5Login', dataStringify("platform=all&account=" + mobile + "&password=" + mobile), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {

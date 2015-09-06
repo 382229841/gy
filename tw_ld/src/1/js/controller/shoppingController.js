@@ -59,7 +59,7 @@ app.controller('productListController', function ($rootScope,$templateCache, $sc
         $scope.isloading = true;
 		var paramCategory=code?"&category="+code : "";
 		var ldToken=$scope.user?"&token="+$scope.user.token : '';		
-        httpRequest.APIPOST('/goods/listByCategory', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=20&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
+        httpRequest.APIPOST('/goods/listByCategoryLd', dataStringify("platform=all"+ldToken+paramCategory+"&pageNo="+pageNum+"&pageSize=20&now="+now), { "content-type": "application/x-www-form-urlencoded" },(pageNum==1?true:false)).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 if(pageNum>1){
                     $scope.products=$scope.products.concat(result.result);
@@ -148,6 +148,10 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	$scope.back=function(){
 		$location.path("/products");
 	};
+    $scope.goProduct = function(id) {
+        return id ? void($scope.isApp ? window.location.href = easybuy.appActivity + "?action=1&goodId=" + id: $location.path("/product/" + id + "/1")) : void alertWarning("该商品已经下架，请选择其他商品购买^_^")
+    }
+
 	
 	
 	$scope.isQuery=false;
@@ -183,7 +187,7 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	*/
 	$scope.isLocalKey=true;//显示搜索历史记录
 	$scope.searchKeyup=function(e){
-		if(e.keyCode==13){
+		if(e && e.keyCode==13){
 			if($scope.searchKeyword.length>0){
 				$scope.queryGoods($scope.searchKeyword,1);
 				return;
@@ -198,7 +202,13 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 		}
 		
 	};
+	
+	$("#searchInput").bind("input",function(){
+		$scope.searchKeyup();
+	});
+	
 	$scope.searchFocus=function(){
+		$("#searchInput").focus();
 		$scope.searchLocalItems=getSearchLocalItems() || [];
 		$scope.isFocus=true;
 		if($scope.searchKeyword.length>0){
@@ -207,7 +217,7 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 			$scope.isFocus=false;
 		}else{
 			if($scope.searchLocalItems.length>0)
-				$(".search-result").addClass("focus");
+				$(".search-result").addClass("focus");				
 		}
 		
 	};
@@ -221,8 +231,8 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	}
 	
 	$scope.saveSearchKeyword=function(value){
-		$scope.searchLocalItems.push({"value":value});
-		setSearchLocalItems($scope.searchLocalItems);
+		//$scope.searchLocalItems.push({"value":value});
+		setSearchLocalItems(value);
 		
 		$scope.searchKeyword=value;
 		
@@ -236,8 +246,8 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	};
 	$(".search-input").bind("keyup",function(e){
 		if(e.keyCode==13 && $scope.searchKeyword.length>0){
-			$scope.searchLocalItems.push({"value":$scope.searchKeyword});
-			setSearchLocalItems($scope.searchLocalItems);
+			//$scope.searchLocalItems.push({"value":$scope.searchKeyword});
+			setSearchLocalItems($scope.searchKeyword);
 		}
 	})
 
@@ -253,7 +263,7 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	$scope.getShowKeywords();
 	
 	$scope.getSuggestKeywords=function(q){
-		httpRequest.APIPOST('/solr/keywords/suggest', dataStringify("platform=all&q="+q), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+		httpRequest.APIPOST('/solr/keywords/suggest', dataStringify("platform=all&area=kr&q="+q), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
 				$scope.searchItems=result.result;
 				if($scope.searchItems.length>0){
@@ -329,7 +339,7 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
         //return $routeParams.openId?true:false;
         return false;
     }
-    httpRequest.APIPOST('/goods/detail', dataStringify("platform=all&id=" + $routeParams.id), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+    httpRequest.APIPOST('/goods/detailLd', dataStringify("platform=all&id=" + $routeParams.id), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
         if (result && result.code == statusCode.Success) {
             $scope.product = result.result;
             if ($scope.product) {
@@ -703,6 +713,15 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         $scope.updateStatus();
         $scope.totalAmount(parentIndex,index);
     }
+	
+	$scope.deleteItem=function(product,parentIndex,index){
+		var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+product.id;
+		httpRequest.APIPOST('/cart/delete', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.getCart();
+			}
+		});
+	};
 
     $scope.totalNum = function () {
         var totalNum = 0;
@@ -766,7 +785,7 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         $scope.editMode = false;
         $scope.totalAmount();        
     }
-
+	
     $scope.remove = function () {
         if ($scope.totalNum() == 0) {
             alertWarning("请选中您要删除的商品");
@@ -1168,7 +1187,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 			if (result && result.code == statusCode.Success) {
 				$scope.defaultAddress=result.result;
 				if($scope.defaultAddress!=null){
-					$scope.$apply($scope.defaultAddress);
+					//$scope.$apply($scope.defaultAddress);
 				}				
 			}else{
 				alertWarning(result.msg);
@@ -1265,7 +1284,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
                 return;
             }
         }
-        $scope.$apply($scope.defaultAddress);
+        //$scope.$apply($scope.defaultAddress);
         
 
         $scope.search(function(){
@@ -1388,7 +1407,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 				  +"&pickupWay=2"
 				  
 				  +"&hotelName="+$scope.defaultAddress.hotelName
-				  +"&hotelPhone="+$scope.defaultAddress.hotelPhone
+				  +"&hotelPhone="+$scope.defaultAddress.hotelPhoneTel
 				  +"&hotelAddress="+$scope.defaultAddress.hotelAddress
 				  +"&pickupDate="+$scope.defaultAddress.hotelPickupDate
 				  
@@ -1550,6 +1569,8 @@ app.controller('errorController', function ($rootScope, $scope, httpRequest,data
             return;
         }
         if ($routeParams.orderId) {
+			$location.path("/products");
+			return;
             var orderId=$routeParams.orderId;
             var mobile=$routeParams.mobile
             httpRequest.APIPOST('/user/h5Login', dataStringify("platform=all&account=" + mobile + "&password=" + mobile), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
@@ -1763,6 +1784,28 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
         $scope.isLogin = isLogin;
     });
 	
+	 if (getToken()) {
+        var tmptoken = getToken().token;
+        if (tmptoken) {
+            var tmpdata2 = "platform=all&token=" + tmptoken;
+            httpRequest.APIPOST("/mine/index", dataStringify(tmpdata2), {
+                "content-type": "application/x-www-form-urlencoded"
+            }).then(function(result) {
+                if (result && result.code == statusCode.Success) {
+                    var userInfo = result.result;
+                    if ($scope.isLogin = !0, $scope.user = {},
+                    $scope.user.token = tmptoken, $scope.user.openId = "0", $scope.user.source = 4, $scope.user.nickname = userInfo.nickname, $scope.user.headimgurl = userInfo.avatar, $scope.user.mobile = userInfo.mobible, $scope.user.category = userInfo.category, $scope.user.realName = userInfo.realname, $scope.user.incomeAmount = userInfo.incomeAmount, $scope.incomeAmount = userInfo.incomeAmount, $scope.user.bind = 0, $scope.isNeedBind = !1, setToken($scope.user), $rootScope.tokenInfo = $scope.user, "/myProfile" != $location.path()) {
+                        return $rootScope.isRootLogin = !0,
+                        void $rootScope.$emit("CtrlLoginModule", $rootScope.tokenInfo)
+                    }
+                } else {
+                    alertWarning(result.msg)
+                }
+            })
+        }
+    };
+
+	
 	
 	var from=$routeParams.from || "";
     $scope.isNeedBind=true;
@@ -1809,7 +1852,7 @@ app.controller('myController', function ($rootScope, $scope, httpRequest, $http,
         }
 
         var data="platform=all&account="+u+"&password="+p+"&category=2";
-        httpRequest.APIPOST('/user/login/ld', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/ldUser/login', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
                 var data2="platform=all&token="+token;
@@ -1887,6 +1930,7 @@ app.controller('myInfoController', function ($rootScope, $scope, httpRequest, $h
 	};
 	
 	$scope.updateName=function(){
+		$scope.username=$rootScope.tokenInfo.realName;
 		$scope.step=2;
 	};
 	
@@ -2046,7 +2090,7 @@ app.controller('registerController', function ($rootScope, $scope, httpRequest, 
         }
         $scope.wait=0;
         var data="platform=all&mobile="+u+"&password="+p+"&code="+c+"&inviteCode="+ic+"&realname="+name;
-        httpRequest.APIPOST('/user/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+        httpRequest.APIPOST('/ldUser/register', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
             if (result && result.code == statusCode.Success) {
                 var token=result.result.token;
                 var data2="platform=all&token="+token;

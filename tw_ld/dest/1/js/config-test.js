@@ -1,7 +1,7 @@
 //var serviceUrl = "http://ops.yhiker.com/api";
 var serviceUrl = "http://opstest.yhiker.com/api";
 var imageServiceUrl = "http://opstest.yhiker.com";
-var javaServiceUrl = "http://test.yhiker.com/api_kr";
+var javaServiceUrl = "http://test.yhiker.com/api";
 var paymentUrl="http://test.yhiker.com/pay_kr/alipayapi.jsp?";
 var appDownloadUrl = {
     android: "http://www.yhiker.com/download/app/goeasy_tw.apk",

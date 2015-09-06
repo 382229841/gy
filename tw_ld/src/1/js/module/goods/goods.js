@@ -26,47 +26,58 @@ function getCloseDownloadApp() {
 function getSearchLocalItems() {
     if (localStorage && localStorage.getItem(easybuy.Storage.SearchLocalItems)) {
 		var items=JSON.parse(localStorage.getItem(easybuy.Storage.SearchLocalItems));
-		var maxLength=items.length;
-		var temp=[];
-		for(var i=0;i<maxLength;i++){
-			if(i>=6){
-				break;
-			}
-			temp.push(items[maxLength-i-1]);
-
-		}
-
-        return temp;
+		return items;
     }
 
     return null;
 }
 
-function setSearchLocalItems(items) {
+function setSearchLocalItems(item) {
     if (localStorage) {
         try {
-            if (items) {
+            if (item) {
+				var items=JSON.parse(localStorage.getItem(easybuy.Storage.SearchLocalItems));
 				var newItems=[];
+				
+				var isContain=false;
+				if(!items){
+					newItems.push({"value":item});
+					localStorage.setItem(easybuy.Storage.SearchLocalItems, JSON.stringify(newItems));
+					return;
+				}
+				if(items && items.length<1){
+					newItems.push({"value":item});
+					localStorage.setItem(easybuy.Storage.SearchLocalItems, JSON.stringify(newItems));
+					return;
+				}
+				var index=0;
 				for(var i=0;i<items.length;i++){
-					var isContain=false;
-					for(var j=0;j<newItems.length;j++){
-						if(newItems[j].value==items[i].value){
-							isContain=true;
-							continue;
-						}
-					}
-					if(!isContain){
-						newItems.push(items[i]);
+					if(items[i].value==item){
+						isContain=true;
+						index=i;
+						break;
 					}
 				}
-				
-				//var maxLength=newItems.length>6?6:newItems.length;
-				//var temp=[];
-				//for(var i=0;i<maxLength;i++){
-				//	temp.push(newItems[maxLength-i-1]);
-				//};
-
-                localStorage.setItem(easybuy.Storage.SearchLocalItems, JSON.stringify(newItems));
+				if(!isContain){
+					newItems.push({"value":item});
+					for(var i=0;i<items.length;i++){
+						newItems.push(items[i]);
+					}
+					if(newItems.length>6){
+						newItems.slice(0,6);
+						localStorage.setItem(easybuy.Storage.SearchLocalItems, JSON.stringify(newItems.slice(0,6)));
+					}else{
+						localStorage.setItem(easybuy.Storage.SearchLocalItems, JSON.stringify(newItems));
+					}
+				}else{
+					newItems.push(items[index]);
+					for(var i=0;i<items.length;i++){
+						if(i!=index){
+							newItems.push(items[i]);
+						}
+					}
+					localStorage.setItem(easybuy.Storage.SearchLocalItems, JSON.stringify(newItems));
+				}
             }
             else {
                 localStorage.removeItem(easybuy.Storage.SearchLocalItems);

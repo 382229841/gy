@@ -14,6 +14,9 @@
 		width: 1.5em;
 		height: 1.5em;
 	}
+	.fa-trash:before {
+	  content: "\f1f8";
+	}
 
 </style>
 <div ng-controller="cartController">
@@ -50,10 +53,17 @@
 
 					<div class="list-group-item media border-bottom-0 product-item product-cart">	
 						<div class="product-box">
-							<div class="pull-left check-area" ng-click="checked(good,parentIndex,$index);">
+							<div ng-show="good.error!='库存不足'" class="pull-left check-area" ng-click="checked(good,parentIndex,$index);">
 								<div class="checkbox {{(good.checked && good.error!='库存不足')? 'checked':''}}">
 								</div>
 							</div>
+							
+							<div style="line-height: 5em;text-align: center;color: #f75757;" ng-show="good.error=='库存不足'"
+							class="pull-left check-area"
+							ng-click="deleteItem(good,parentIndex,$index);">
+								<i class="fa fa-trash" style="font-size: 1.8em;"></i>
+							</div>
+							
 							<div class="media-body product-body">
 								<div class="product-area">
 									<div class="pull-left">
@@ -107,13 +117,14 @@ padding: .2em .4em;">{{good.error}}</span></div>
         <div class="nav-bottom">
 			<div style="  border-top: 1px solid #eee;">
 				<span class="col-xs-2 text-left" style="padding-left: 10px;" ng-click="checkAll()">
-					<div class="checkbox checkboxTotal {{isAllChecked()? 'checked':''}}">
+				
+					<div class="checkbox checkboxTotal {{isAllChecked()? 'checked':''}}" style="{{editMode?'':'margin-top: 20px;'}}">
 					</div>
 					<div class="clear"></div>
-					全选                            
+					<span ng-show="editMode">全选</span>                            
 				</span>
 				
-				<span class="col-xs-6">
+				<span class="col-xs-6" ng-hide="editMode">
 					<div>合计：<span class="cash">{{cartInfo.total | currency:""}}</span></div>
 					<div class="clear"></div>
 					<div style="font-size:.5em;">
@@ -122,6 +133,10 @@ padding: .2em .4em;">{{good.error}}</span></div>
 					<div style="font-size:.5em;">
 						领队优惠：￥{{cartInfo.js | currency:""}}
 					</div>
+				</span>
+				
+				<span class="col-xs-6" ng-show="editMode">
+					&nbsp;
 				</span>
 				
 				<span class="col-xs-4">

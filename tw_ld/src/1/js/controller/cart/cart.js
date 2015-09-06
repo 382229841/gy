@@ -95,6 +95,15 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         $scope.updateStatus();
         $scope.totalAmount(parentIndex,index);
     }
+	
+	$scope.deleteItem=function(product,parentIndex,index){
+		var data="platform=all&token=" + $rootScope.tokenInfo.token+"&goodsId="+product.id;
+		httpRequest.APIPOST('/cart/delete', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+			if (result && result.code == statusCode.Success) {
+				$scope.getCart();
+			}
+		});
+	};
 
     $scope.totalNum = function () {
         var totalNum = 0;
@@ -158,7 +167,7 @@ app.controller('cartController', function ($rootScope, $scope, httpRequest, data
         $scope.editMode = false;
         $scope.totalAmount();        
     }
-
+	
     $scope.remove = function () {
         if ($scope.totalNum() == 0) {
             alertWarning("请选中您要删除的商品");

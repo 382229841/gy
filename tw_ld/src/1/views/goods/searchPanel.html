@@ -160,8 +160,10 @@
             <input type="text" class="search-input" placeholder="商品名" 
 				ng-model="searchKeyword" 
 				ng-keyup="searchKeyup($event);"
-				ng-focus="searchFocus();"
+				ng-click="searchFocus();"
 				ng-blur="searchBlur();"
+				
+				id="searchInput"
 				/>
 			<i class="fa fa-search" ng-click="queryGoods(searchKeyword,1);"></i>
         </div>
