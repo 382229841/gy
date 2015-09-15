@@ -1,0 +1,254 @@
+<style>
+	img{
+		border:0;
+		margin:0;
+		vertical-align: bottom;
+	}
+	.activity-panel{
+		max-width:640px;
+		width:100%;
+		text-align:center;
+		margin:0 auto;
+	}
+	.img-panel{
+		font-size:0 ;
+	}
+	.img-panel table{
+		width:100%;
+		max-width:640px;
+		background:#83D7FB;
+	}
+	.img-panel table tr{
+		border:0;
+	}
+	.img-panel table tr td{
+		border:0;
+	}
+</style>
+<div ng-controller="activityHalfPriceController">
+	<div id="shareHint" ng-click="fadeOutShare();" style="display:none;position: fixed;
+				background: #000000;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 99999999;
+				opacity: .8;
+				height: 100%;">
+		<img src="image/activity/hint-1.png" style="position: fixed;width:55%;left:2em;top:2.8em;"/>
+		<img src="image/activity/hint-2.png" style="position: fixed;width:30%;right:1em;"/> 
+	</div>
+	<!-- Navbars -->
+    <div  class="navbar navbar-app nav-main" ng-show="isShowNavbar">
+        <div class="navbar-brand navbar-brand-center">
+            {{activityInfo.activity.name}}         
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable background-white">
+		<div class="scrollable-content relative background-white">	
+			<div class="nav-main-block" ng-show="isShowNavbar"></div>
+			<div class="activity-panel">
+				<div class="img-panel">
+					<img src="image/activity/half/4_01.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/half/4_02.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/half/4_03.jpg?20150422"/>
+				</div>
+				
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_04.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_05.jpg?20150422"  ng-click="goProduct(products[0].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_06.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				
+				<div class="img-panel">
+					<img src="image/activity/half/4_07.jpg?20150422"/>
+				</div>				
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_08.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_09.jpg?20150422"  ng-click="goProduct(products[1].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_10.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				
+				<div class="img-panel">
+					<img src="image/activity/half/4_11.jpg?20150422"/>
+				</div>	
+				<div class="img-panel">
+					<img src="image/activity/half/4_12.jpg?20150422"/>
+				</div>				
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_13.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_14.jpg?20150422"  ng-click="goProduct(products[2].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_15.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/half/4_16.jpg?20150422"/>
+				</div>				
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_17.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_18.jpg?20150422"  ng-click="goProduct(products[3].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_19.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/half/4_20.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/half/4_21.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_22.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_23.jpg?20150422"  ng-click="goProduct(products[4].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_24.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				
+				
+				<div class="img-panel">
+					<img src="image/activity/half/4_25.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_26.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_27.jpg?20150422"  ng-click="goProduct(products[5].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_28.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				
+				<div class="img-panel">
+					<img src="image/activity/half/4_29.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_30.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_31.jpg?20150422"  ng-click="goProduct(products[6].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_32.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				
+				<div class="img-panel">
+					<img src="image/activity/half/4_33.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<table style="width:100%;max-width:640px;" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td style="width:10%">
+								<img src="image/activity/half/4_34.jpg?20150422"/>
+							</td>
+							
+							<td style="width:80%">
+								<img src="image/activity/half/4_35.jpg?20150422"  ng-click="goProduct(products[7].goodsId);"/>
+							</td>
+							
+							<td style="width:10%">
+								<img src="image/activity/half/4_36.jpg?20150422"/>
+							</td>
+						</tr>
+					</table>					
+				</div>
+				
+				<div class="img-panel">
+					<img src="image/activity/half/4_37.jpg?20150422"/>
+				</div>
+				<div class="img-panel">
+					<img src="image/activity/half/4_38.jpg?20150422"/>
+				</div>
+
+
+
+
+
+			</div>
+
+			
+			
+			
+		</div>
+	 </div>
+</div>

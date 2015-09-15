@@ -300,6 +300,12 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 			  }
 		})
 		
+		.when('/activity/half', { templateUrl: "views/activity/half.html?"+preventCache 
+			  ,resolve: {
+				load: app.asyncjs('js/controller/activity/halfPrice.js')
+			  }
+		})
+		
 		.when('/activity/dutyFree', { templateUrl: "views/activity/dutyFree.html?"+preventCache 
 			  ,resolve: {
 				load: app.asyncjs('js/controller/activity/activityDown.js')
@@ -412,7 +418,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
         return;
     };
 
-    httpRequest.APIPOST('/goods/category', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+    httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 		if (result && result.code == statusCode.Success) {
 			var cat=result.result;			
 			$rootScope.categories=cat.slice(1);

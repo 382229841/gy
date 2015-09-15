@@ -89,6 +89,10 @@ module.exports = function (grunt) {
 							[
 								'src/<%= pkg.version%>/js/controller/activity/fullGive.js',
 							],
+				'dest/<%= pkg.version%>/js/controller/activity/halfPrice.js': 
+							[
+								'src/<%= pkg.version%>/js/controller/activity/halfPrice.js',
+							],
 				'dest/<%= pkg.version%>/js/controller/app/apppages.js': 
 							[
 								'src/<%= pkg.version%>/js/controller/app/apppages.js',

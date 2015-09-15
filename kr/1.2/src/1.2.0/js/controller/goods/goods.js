@@ -156,7 +156,7 @@ app.controller('productsController', function ($rootScope, $scope, httpRequest,d
             $(".nav-menu ul").css("margin-left","0");
             $scope.categories=cat;
         } else{
-            httpRequest.APIPOST('/goods/category', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
                 if (result && result.code == statusCode.Success) {
                     var cat=result.result; 
                     cat.slice(1);  
@@ -300,7 +300,7 @@ app.controller('productListController', function ($rootScope, $scope, httpReques
                 $(".nav-menu ul").css("margin-left","0");
             }
         }else{
-            httpRequest.APIPOST('/goods/category', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+            httpRequest.APIPOST('/goods/category_v1.3', dataStringify("platform=all"), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
                 if (result && result.code == statusCode.Success) {
                     var cat=result.result;   
                     cat.slice(1);

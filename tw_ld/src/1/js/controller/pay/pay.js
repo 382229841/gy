@@ -41,7 +41,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 
 	$scope.getOrderPrice=function(){
 		var data="platform=all&token="+$rootScope.tokenInfo.token+"&goodsId="+$location.search().goodsId+"&quantity="+$location.search().quantity;
-		httpRequest.APIPOST('/order/price', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
+		httpRequest.APIPOST('/orderLd/price', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
 			if (result && result.code == statusCode.Success) {
 				$scope.orderPrice=result.result || {};
 				
@@ -136,11 +136,11 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
                 return;
             }
 			
-			if (!$scope.addressInfo.hotelTel || $scope.addressInfo.hotelTel == '') {
+			if (!$scope.addressInfo.hotelPhone || $scope.addressInfo.hotelPhone == '') {
                 alertWarning("请输入酒店电话");
                 return;
             }
-            if ($scope.addressInfo.hotelTel.length<9 || $scope.addressInfo.hotelTel.length >13) {
+            if ($scope.addressInfo.hotelPhone.length<9 || $scope.addressInfo.hotelPhone.length >13) {
                 alertWarning("请输入9-13位酒店电话");
                 return;
             }
@@ -164,7 +164,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
                       +"&contact="+$scope.addressInfo.contact
                       +"&hotelName="+$scope.addressInfo.hotelName
                       +"&hotelPickupDate="+$scope.addressInfo.hotelPickupDate
-                      +"&hotelTel="+$scope.addressInfo.hotelTel
+                      +"&hotelPhone="+$scope.addressInfo.hotelPhone
                       +"&hotelAddress="+$scope.addressInfo.hotelAddress
                       +"&mobile="+$scope.addressInfo.mobile;  
             }else{
@@ -277,7 +277,7 @@ app.controller('paymentLDController', function ($rootScope, $scope, httpRequest,
 				  +"&pickupWay=2"
 				  
 				  +"&hotelName="+$scope.defaultAddress.hotelName
-				  +"&hotelPhone="+$scope.defaultAddress.hotelPhoneTel
+				  +"&hotelPhone="+$scope.defaultAddress.hotelPhone
 				  +"&hotelAddress="+$scope.defaultAddress.hotelAddress
 				  +"&pickupDate="+$scope.defaultAddress.hotelPickupDate
 				  
