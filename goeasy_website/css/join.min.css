@@ -29,15 +29,15 @@ strong{font-weight:bold}table{border-spacing:0;border-collapse:collapse}img{bord
 .zhiwei ul li{color:#8c8989;padding:0;list-style:decimal;line-height:31px}.zhiwei ol{padding:0 0 38px 19px;font-size:13px}.zhiwei ol li{padding:0;color:#8c8989;list-style:decimal;line-height:31px}
 .zhiwei .jianli{margin:0 0 0 -20px;list-style:none}.about{color:#545454}.abouttitle{padding:65px 85px;color:#8c8989;text-align:center;font-size:14px;line-height:34px}
 .aboutcontent{padding:100px 0 50px;width:100%;font-size:14px;color:#777}.aboutcontent .left{position:relative;margin:0 550px 0 0;width:550px;border-top:1px #fbb040 solid;border-right:1px #fbb040 solid}
-.aboutcontent .left:last-child{border-right:0}.aboutcontent .left ul{padding:40px 0;width:310px}.aboutcontent .left ul li{position:relative;margin-bottom:13px;text-align:right;line-height:32px}
+.aboutcontent .left:last-child{border-right:0}.aboutcontent .left ul{padding:40px 0;width:398px}.aboutcontent .left ul li{position:relative;margin-bottom:13px;text-align:right;line-height:32px}
 .aboutcontent .left ul li span{position:absolute;top:0;right:-50px}.aboutcontent .right{position:relative;margin:0 0 0 549px;width:550px;border-top:1px #fbb040 solid;border-left:1px solid #fbb040;text-align:right}
-.aboutcontent .right ul{margin:0 0 0 240px;padding:40px 0;width:310px}.aboutcontent .right ul li{position:relative;margin-bottom:13px;text-align:left;line-height:32px}
+.aboutcontent .right ul{margin:0 0 0 130px;padding:40px 0;width:310px}.aboutcontent .right ul li{position:relative;margin-bottom:13px;text-align:left;line-height:32px}
 .aboutcontent .right ul li span{position:absolute;top:0;left:-50px}.leftyuan{position:absolute;top:-115px;right:-115px;width:231px;height:231px;outline:20px solid #fff;color:#fff;text-align:center;font-weight:bold;font-size:84px}
 .rightyuan{position:absolute;top:-115px;left:-115px;width:231px;height:231px;outline:20px solid #fff;color:#fff;text-align:center;font-weight:bold;font-size:84px}
-.yuan2012{background:url(../images/2012.png) center center no-repeat}.yuan2013{background:url(../images/2013.png) center center no-repeat}
+.yuan2012{background:url(../images/2009.png) center center no-repeat}.yuan2013{background:url(../images/2013.png) center center no-repeat}.yuannow{background:url(../images/now.png) center center no-repeat}
 .yuan2014{background:url(../images/2014.png) center center no-repeat}.ceo{width:100%;text-align:center}.ceotitle{padding:10px 0 0 0;font-size:18px;line-height:30px;color:#8c8989}
 .ceotitle span{color:#c8c8c8}.ceo article{padding:65px 0;color:#8c8989;text-align:center;font-size:14px;line-height:34px}.contect{color:#545454}.contect .map{margin:65px 0;width:100%;height:550px;line-height:550px;display:table;text-align:left;background:url(../images/map.png)}
-.contect .maptitle address span{font-size:18px}.contect .maptitle{vertical-align:middle;display:inline-table;padding:50px 0 50px 50px;width:400px;height:250px;background:#fff;opacity:.9;text-align:left;line-height:30px;font-size:14px}
+.contect .maptitle address span{font-size:18px}.contect .maptitle{vertical-align:middle;display:inline-table;padding:50px 0 50px 50px;width:300px;height:250px;background:#fff;opacity:.9;text-align:left;line-height:30px;font-size:14px}
 .contect .bumen{padding:35px 0;width:100%}.contect .bumen li{display:inline-table;margin:0 0 50px 0;width:32%;height:55px;font-size:13px;line-height:30px}
 .contect .bumen li span{font-size:18px}.contect .Help{padding:35px 0;line-height:30px;font-size:13px}.contect .Help li{font-size:13px}.contect a{color:inherit;text-decoration:none}
 .Agreement{padding:50px 0;color:#545454}.Agreement h3{width:400px;border-bottom:1px solid #fd9426}.Agreement p{padding:20px 0 0 0;color:#8c8989;font-size:14px;line-height:30px}

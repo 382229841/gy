@@ -1,4 +1,4 @@
-var serviceUrl="http://test.yhiker.com/api";
+var serviceUrl="http://test.yhiker.com/api_kr";
 var statusCode = {
     Success: 0,
     error: -1
