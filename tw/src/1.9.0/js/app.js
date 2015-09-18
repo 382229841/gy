@@ -382,6 +382,11 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs('js/controller/activity/activityDown.js')
 			  }
 		})
+		.when('/activity/autumn', { templateUrl: "views/activity/autumn.html?"+preventCache
+			  ,resolve: {
+				load: app.asyncjs('js/controller/activity/activityDown.js')
+			  }
+		})
 		.when('/activity/gyy', { templateUrl: "views/activity/gyy.html?"+preventCache
 			  ,resolve: {
 				load: app.asyncjs('js/controller/activity/fullGive.js')
