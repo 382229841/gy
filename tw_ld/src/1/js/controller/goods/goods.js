@@ -202,7 +202,6 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	});
 	
 	$scope.searchFocus=function(){
-		$("#searchInput").focus();
 		$scope.searchLocalItems=getSearchLocalItems() || [];
 		$scope.isFocus=true;
 		if($scope.searchKeyword.length>0){
@@ -218,6 +217,7 @@ app.controller('searchPanelController', function ($rootScope, $scope, httpReques
 	
 	$scope.searchBlur=function(){
 		//$(".search-result").removeClass("focus");
+		$scope.isFocus=false;
 	};
 	
 	$scope.hideSearchDropdown=function(){
@@ -397,7 +397,7 @@ app.controller('productAppController', function ($rootScope, $scope, httpRequest
             alertWarning("库存已不足，请稍后购买");
             return;
         }
-        $(".promotePriceNewTotal").html("￥"+$scope.product.promotePrice);
+        $(".promotePriceNewTotal").html("￥"+$scope.product.ldPrice);
         openPrompt("addToCart",function(num){
             var product=$.extend(true,{},$scope.product);
             product.num=num;

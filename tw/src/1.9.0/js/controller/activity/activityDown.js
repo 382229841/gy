@@ -67,15 +67,7 @@ app.register.controller('activityAutumnController', function ($rootScope, $scope
                         $scope.fadeOutShare();
                         var tokenInfo=getToken();
                         var data="platform=all&token="+tokenInfo.token;
-                        /*httpRequest.APIPOST('/coupons/give', dataStringify(data), { "content-type": "application/x-www-form-urlencoded" }).then(function (result) {
-                              if (result && result.code == statusCode.Success) {
-                                  if(result.result==1){
-                                      //$scope.shareSuccess();
-                                  }                                  
-                              }else{
-                                  alert(result.msg);
-                              }
-                          });*/                        
+                                          
                     },
                     cancel: function () { 
                         // 用户取消分享后执行的回调函数
@@ -311,7 +303,7 @@ app.register.controller('activityAutumnController', function ($rootScope, $scope
                   }
                   
               }else{
-                  alert(result.msg+":ctivity-detail");
+                  alert(result.msg+":activity-detail");
               }
           });
       }
@@ -690,7 +682,7 @@ app.register.controller('activitytwGift_V4Controller', function ($rootScope, $sc
                   }
                   
               }else{
-                  alert(result.msg+":ctivity-detail");
+                  alert(result.msg+":activity-detail");
               }
           });
       }
@@ -1068,7 +1060,7 @@ app.register.controller('activitytwGift_V3Controller', function ($rootScope, $sc
                   }
                   
               }else{
-                  alert(result.msg+":ctivity-detail");
+                  alert(result.msg+":activity-detail");
               }
           });
       }
@@ -1442,7 +1434,7 @@ app.register.controller('activitytwGiftController', function ($rootScope, $scope
                   }
                   
               }else{
-                  alert(result.msg+":ctivity-detail");
+                  alert(result.msg+":activity-detail");
               }
           });
       }

@@ -247,7 +247,7 @@ app.register.controller('activityHalfPriceController', function ($rootScope, $sc
               platform="ios";
           }else{
               platform="all";
-          }          
+          }
           if($location.search().activityId instanceof Array){
               actId=$location.search().activityId[0];
           }else{
