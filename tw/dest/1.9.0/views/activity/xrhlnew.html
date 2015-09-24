@@ -1,0 +1,56 @@
+<div ng-controller="activityXrhlController">
+	<div id="shareHint" ng-click="fadeOutShare();" style="display:none;position: fixed;
+				background: #000000;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 99999999;
+				opacity: .8;
+				height: 100%;">
+		<img src="image/activity/hint-1.png" style="position: fixed;width:55%;left:2em;top:2.8em;"/>
+		<img src="image/activity/hint-2.png" style="position: fixed;width:30%;right:1em;"/> 
+	</div>
+	<!-- Navbars -->
+    <div  class="navbar navbar-app nav-main" ng-show="isShowNavbar">
+        <div class="navbar-brand navbar-brand-center">
+            新人豪礼             
+        </div>
+        <div class="btn-group pull-left" ng-click="back()">
+            <div class="btn btn-navbar sidebar-toggle">
+                <div class="btn-to-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scrollable background-white" style="background:#fbf8f1;">
+		<div class="scrollable-content relative">	
+			<div class="nav-main-block" ng-show="isShowNavbar"></div>	
+				
+				
+			<!--<a class="hide" href="?" id="refresh">点击这里刷新！！！！</a>-->			
+			<img src="image/activity/xrhln/ad2.jpg?20150123" style="width:100%;"/>
+			<div style="padding:.8em 1em;text-align:center;background-image:url(image/activity/xrhln/bg.png);background-size:100%;no-repeat;">
+                <img tite="立即领取" ng-click="goTo(1,6);" src="image/activity/xrhln/btn_regist.png?20150123" style="width:50%;max-width:232px;"/>
+
+            </div>
+			
+			<div style="position:relative;">
+				<img src="image/activity/xrhln/03.jpg?20150123" style="width:100%;"/>
+            </div>
+			
+			<div style="position:relative;">
+				<img src="image/activity/xrhln/04.jpg?20150123" style="width:100%;"/>
+				
+				<div style="position:absolute;bottom: 1.2em;text-align:center;width:100%;">
+					<img tite="查看抵用券" ng-click="goTo('myCoupon',7);" src="image/activity/xrhln/btn_view.png?20150123" style="width:38%;max-width:150px;"/>
+					<img tite="立即使用" ng-click="goTo('products',8);" src="image/activity/xrhln/btn_use.png?20150123" style="width:38%;max-width:150px"/>
+				</div>
+            </div>
+			
+			<div style="position:relative;">
+				<img src="image/activity/xrhln/05.jpg?20150123" style="width:100%;"/>
+            </div>
+			
+		</div>
+	 </div>	 
+</div>

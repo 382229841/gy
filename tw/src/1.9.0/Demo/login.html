@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="eBay">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="css/index.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/angularjs.js"></script>
+    <title></title>
+</head>
+<body>
+  <div class="viewport">
+
+      <!--logo-->
+     <div class="logo-wrap">
+         <img src="images/logo.png" alt="logo"/>
+     </div>
+
+      <form name="myForm" ng-controller="loginController">
+          <div class="login-input-wrap">
+              <div class="account-wrap">
+                  <label for="">账号：</label>
+                  <input type="text" name="username" placeholder="手机号" ng-pattern="/^[a-zA-Z]{1}/"  ng-minlength="6" ng-maxlength="12" ng-model="data.username"/>
+              </div>
+              <div ng-show="myForm.username.$dirty && myForm.username.$error.maxlength">
+                  用户名长度不能超过10位
+              </div>
+              <div ng-show="myForm.username.$dirty && myForm.username.$error.minlength">
+                  用户名长度不能小于6位
+              </div>
+              <div ng-show="myForm.username.$dirty && myForm.username.$error.minlength">
+                  用户名必须以英文字母开始
+              </div>
+              <div class="pwd-wrap">
+                  <label for="">密码：</label>
+                  <input type="password" name="pwd" placeholder="登录密码" autocomplete="off"  ng-minlength="6" ng-maxlength="12" ng-model="data.password"/>
+              </div>
+              <div ng-show="myForm.pwd.$dirty && myForm.pwd.$error.maxlength">
+                  密码长度不能超过12位
+              </div>
+              <div ng-show="myForm.pwd.$dirty && myForm.pwd.$error.minlength">
+                  密码长度不能小于6位
+              </div>
+          </div>
+
+          <p class="fog-pwd">忘记密码？</p>
+          <button type="submit" class="login-btn">登录</button>
+          <p class="login-tip">仅限领队账号登录，普通账号无法登录</p>
+          <a href="javascript:;" class="reg-code">注册(邀请码)</a>
+
+      </form>
+
+  </div>
+  <script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>

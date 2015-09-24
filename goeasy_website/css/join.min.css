@@ -4,7 +4,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{di
 strong{font-weight:bold}table{border-spacing:0;border-collapse:collapse}img{border:0}p{color:#333;font-size:1.2em;line-height:1.0em}area{outline:0;blr:expression_r(this.onFocus=this.blur())}
 .header{top:0;left:0;z-index:9999;width:100%;height:70px;border-bottom:1px solid #e4e4e4;background:rgba(255,255,255,0.95);line-height:70px;overflow:hidden;position:fixed}
 .header>.nav{margin:auto;width:1100px;height:inherit;text-align:right}.header>.nav:after{clear:both;content:'';display:block}
-.header>.nav .logo{display:inline-table;float:left;width:35px;background:url(../images/logo.png) center center no-repeat;background-size:100%}
+.header>.nav .logo{display:inline-table;float:left;width:110px;background:url(../images/logo.png) center center no-repeat;background-size:100%}
 .header>.nav .logo a{display:inline-table;width:100%;height:100%;text-align:left;text-indent:-999px}.header>.nav ul{float:right;margin:0 -46px 0 0;display:table}
 .header>.nav li{vertical-align:middle;position:relative;display:inline-table;color:#6d6e71;text-align:center;font-size:14px;width:150px}.header>.nav li:hover,.header>.nav .li{color:#fd9426}
 .header>.nav li i{width:80px;height:0}.header>.nav li .i{width:80px;left:50%;margin:0 0 0 -40px;height:2px;overflow:hidden;background:#fd9426;display:block;position:absolute;bottom:2px}

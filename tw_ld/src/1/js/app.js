@@ -189,7 +189,7 @@ app.controller('mainController', function ($rootScope, $window, $scope, httpRequ
         if(location.hash.indexOf('activityDown')>-1 || location.hash.indexOf('activityDetail')>-1){
 			//window.location.href="#/erroinfo";
 		}
-        	       
+        closeDialog();	       
 		
 	});
 	

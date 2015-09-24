@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html ng-app="eBay">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="css/index.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
+    <script type="text/javascript" src="js/angular.js"></script>
+    <title></title>
+</head>
+<body>
+<div ng-controller="productController">
+    <div class="search-box search-leader-box">
+        <a href="javascript:;" class="person"></a>
+        <div class="search-inner">
+            <i class="ico"></i>
+            <form action="">
+                <input type="text" class="search-input" placeholder="商品名" ng-model="search.name"/>
+            </form>
+        </div>
+        <a href="javascript:;" class="bag"></a>
+    </div>
+    <div class="nav-outer"> <!-- 高度必须小于导航条的高度 -->
+            <ul class="nav ">
+                <li><a href="javascript:;" class="active">全部</a></li>
+                <li>美妆护肤</li>
+                <li>美妆护肤</li>
+                <li>美妆护肤</li>
+                <li>美妆护肤</li>
+                <li>美妆护肤</li>
+                <li>美妆护肤</li>
+                <li>美妆护肤</li>
+            </ul>
+    </div>
+    <div class="viewport">
+        <ul class="leader-list clearfix">
+            <li>
+                <div class="img-wrap">
+                    <img src="images/list-pic.png" alt=""/>
+                </div>
+                <p class="title">高度必须高度必须高度必须高度必须</p>
+                <p class="delete-p">￥123.22</p>
+                <p class="normal-p">￥126.22</p>
+            </li>
+            <li>
+                <div class="img-wrap">
+                    <img src="images/list-pic.png" alt=""/>
+                </div>
+                <p class="title">高度必须高度必须高度必须高度必须</p>
+                <p class="delete-p">￥123.22</p>
+                <p class="normal-p">￥126.22</p>
+            </li>
+            <li>
+                <div class="img-wrap">
+                    <img src="images/list-pic.png" alt=""/>
+                </div>
+                <p class="title">高度必须高度必须高度必须高度必须</p>
+                <p class="delete-p">￥123.22</p>
+                <p class="normal-p">￥126.22</p>
+            </li>
+            <li>
+                <div class="img-wrap">
+                    <img src="images/list-pic.png" alt=""/>
+                </div>
+                <p class="title">高度必须高度必须高度必须高度必须</p>
+                <p class="delete-p">￥123.22</p>
+                <p class="normal-p">￥126.22</p>
+            </li>
+            <li>
+                <div class="img-wrap">
+                    <img src="images/list-pic.png" alt=""/>
+                </div>
+                <p class="title">高度必须高度必须高度必须高度必须</p>
+                <p class="delete-p">￥123.22</p>
+                <p class="normal-p">￥126.22</p>
+            </li>
+            <li>
+                <div class="img-wrap">
+                    <img src="images/list-pic.png" alt=""/>
+                </div>
+                <p class="title">高度必须高度必须高度必须高度必须</p>
+                <p class="delete-p">￥123.22</p>
+                <p class="normal-p">￥126.22</p>
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript">
+    var $lis=$('.nav li').size();
+    var wh= 100 * $lis+"%";
+    $('.nav').width( wh );
+    var lt=( 100 / $lis / 4 );
+    var lt_li = lt + "%";
+    $('.nav li').width( lt_li );
+    var y=0;
+    var w = $lis / 2;
+    $(".nav").swipe( {
+        swipeLeft:function() {
+            if( y == -lt * w ){
+                return;
+            }else{
+                y  = y - lt;
+                var t = y + "%";
+                $(this).css({'-webkit-transform':"translate("+t+")",'-webkit-transition':'500ms linear'} );
+            }
+        },
+        swipeRight:function() {
+            if( y ==0 ){
+                return;
+            }else{
+                y = y + lt;
+                var t = y + "%";
+                $(this).css({'-webkit-transform':"translate("+t+")",'-webkit-transition':'500ms linear'} );
+            }
+        }
+    });
+</script>
+</body>
+</html>

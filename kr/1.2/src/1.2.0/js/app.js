@@ -311,6 +311,11 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs('js/controller/activity/activityDown.js')
 			  }
 		})
+		.when('/activity/dutyFreeNew', { templateUrl: "views/activity/dutyFreeNew.html?"+preventCache 
+			  ,resolve: {
+				load: app.asyncjs('js/controller/activity/activityDown.js')
+			  }
+		})
 		/* 活动 ***/
 		.otherwise({
             redirectTo: '/products'

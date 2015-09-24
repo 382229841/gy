@@ -253,7 +253,7 @@ app.register.controller('activityCardController', function ($rootScope, $scope, 
                   }
                   
               }else{
-                  alert(result.msg+":ctivity-detail");
+                  alert(result.msg+":activity-detail");
               }
           });
       }
@@ -556,7 +556,7 @@ app.register.controller('dutyFreeController', function ($rootScope, $scope, http
                   }
                   
               }else{
-                  alert(result.msg+":ctivity-detail");
+                  alert(result.msg+":activity-detail");
               }
           });
       }

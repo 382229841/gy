@@ -295,6 +295,11 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 				load: app.asyncjs('js/controller/activity/activity.js')
 			  }
 		})
+		.when('/activity/xrhlnew', { templateUrl: "views/activity/xrhlnew.html?"+preventCache 
+			  ,resolve: {
+				load: app.asyncjs('js/controller/activity/activity.js')
+			  }
+		})
 		.when('/activity/full', { templateUrl: "views/activity/full.html?"+preventCache 
 			  ,resolve: {
 				load: app.asyncjs('js/controller/activity/activity.js')
@@ -385,6 +390,11 @@ app.config(function ($routeProvider, $locationProvider,$controllerProvider,$comp
 		.when('/activity/autumn', { templateUrl: "views/activity/autumn.html?"+preventCache
 			  ,resolve: {
 				load: app.asyncjs('js/controller/activity/activityDown.js')
+			  }
+		})
+		.when('/activity/nationalDay', { templateUrl: "views/activity/nationalDay.html?"+preventCache
+			  ,resolve: {
+				load: app.asyncjs('js/controller/activity/fullGive.js')
 			  }
 		})
 		.when('/activity/gyy', { templateUrl: "views/activity/gyy.html?"+preventCache

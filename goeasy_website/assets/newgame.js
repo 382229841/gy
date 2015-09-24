@@ -109,16 +109,22 @@ $(document).ready(function() {
         // alert(index)
         switch (index) {
             case 1:
-                $('body').css('background', '#FCAF03');
+                $('body').css('background', '#ffb82f');
                 break;
             case 2:
-                $('body').css('background', '#75e0b9');
+                $('body').css('background', '#ff986b');
                 break;
             case 3:
-                $('body').css('background', '#5aa3e0');
+                $('body').css('background', '#53d7a1');
                 break;
             case 4:
-                $('body').css('background', '#ff6f4d');
+                $('body').css('background', '#ff7b7b');
+                break;
+             case 5:
+                $('body').css('background', '#6bb7fb');
+                break;
+             case 6:
+                $('body').css('background', '#ca8c69');
                 break;
             default:
                 break;

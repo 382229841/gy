@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="eBay">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="css/index.css"/>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/angularjs.js"></script>
+    <title></title>
+</head>
+<body>
+<div ng-controller="productController">
+    <div class="search-box">
+        <a href="javascript:;" class="cancel-search">取消</a>
+        <div class="search-inner">
+            <form action="">
+                <input type="text" class="search-input" placeholder="商品名" ng-model="search.name"/>
+            </form>
+        </div>
+    </div>
+    <div class="viewport">
+        <div class="search-result-wrap" >
+            <div ng-repeat="product in productData | filter:search">
+                <span>{{product.name}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
